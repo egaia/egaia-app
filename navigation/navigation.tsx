@@ -12,11 +12,40 @@ import RegisterScreen from "../screens/authentication/RegisterScreen";
 import React from "react";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {Colors} from "../services/constants";
+import SplashScreen from "../screens/SplashScreen";
+import LandingScreen from "../screens/LandingScreen";
 
 const Tab = createBottomTabNavigator<TabsParamList>();
 const AuthStack = createNativeStackNavigator<AuthParamList>();
+const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
+    return (
+        <Stack.Navigator>
+            <Stack.Group>
+                <Stack.Screen name="Splash" component={SplashScreen} options={{headerShown: false}}/>
+                <Stack.Screen name="Landing" component={LandingScreen} options={{headerShown: false}}/>
+            </Stack.Group>
+            <Stack.Group>
+                <Stack.Screen name="Tabs" component={Tabs} options={{headerShown: false}} />
+            </Stack.Group>
+            <Stack.Group>
+                <Stack.Screen
+                    name="Auth"
+                    component={AuthStackNavigator}
+                    options={{
+                        headerTransparent: true,
+                        title: '',
+                        headerBackTitleVisible: false,
+                        headerTintColor: '#f022ff'
+                    }}
+                />
+            </Stack.Group>
+        </Stack.Navigator>
+    );
+}
+
+const Tabs = () => {
     return (
         <Tab.Navigator
             screenOptions={{
@@ -137,7 +166,6 @@ const Navigation = () => {
                     )
                 }}
             />
-            {/*<Tab.Screen name="AuthStackNavigator" component={AuthStackNavigator} options={{ headerShown: false}} />*/}
         </Tab.Navigator>
     );
 }
@@ -145,8 +173,8 @@ const Navigation = () => {
 const AuthStackNavigator = () => {
     return (
         <AuthStack.Navigator>
-            <AuthStack.Screen name="Login" component={LoginScreen} options={{title: 'Connexion'}} />
-            <AuthStack.Screen name="Register" component={RegisterScreen} options={{title: 'Inscription'}} />
+            <AuthStack.Screen name="Login" component={LoginScreen} options={{headerShown: false}} />
+            <AuthStack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}} />
         </AuthStack.Navigator>
     );
 }
