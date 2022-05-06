@@ -3,9 +3,16 @@ import {Button, Text} from "react-native";
 import {useEffect} from "react";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {RootParamList} from "../services/types";
+import {useSelector} from "react-redux";
+import {UserProviderState} from "../store/configureStore";
 
 export default function LandingScreen({navigation}: NativeStackScreenProps<RootParamList, "Splash">) {
 
+    const user = useSelector((state: UserProviderState) => state.userProvider.user)
+
+    useEffect(() => {
+        console.log('user', user)
+    }, [])
     const goToRegister = () => {
         navigation.navigate({name: "Auth", key: "Register"});
     }
