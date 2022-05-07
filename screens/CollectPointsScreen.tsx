@@ -4,15 +4,15 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {TabsParamList} from "../services/types";
 import {useSelector} from "react-redux";
-import {UserProviderState} from "../store/configureStore";
+import {User} from "../models/User";
 
 export default function CollectPointsScreen({navigation}: NativeStackScreenProps<TabsParamList, "CollectPoints">) {
 
-  const userProvider = useSelector((state: UserProviderState) => state.userProvider)
+  const user = useSelector((state: User|null) => state)
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Points de collecte</Text>
-      <Text style={styles.title}>{userProvider.user.name}</Text>
+      <Text style={styles.title}>{ user !== null ? user.name : null}</Text>
     </SafeAreaView>
   );
 }

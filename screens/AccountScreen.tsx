@@ -1,23 +1,23 @@
-import {Button, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {Button, StyleSheet, Text} from 'react-native';
 
 import {SafeAreaView} from "react-native-safe-area-context";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {TabsParamList} from "../services/types";
 import {useDispatch, useSelector} from "react-redux";
-import {getUser, removeUser} from "../store/user/userSlice";
-import {UserProviderState} from "../store/configureStore";
+import {User} from "../models/User";
+import {login, logout} from "../store/actions/user.actions";
 
 export default function AccountScreen({navigation}: NativeStackScreenProps<TabsParamList, "Profile">) {
 
-    const userProvider = useSelector((state: UserProviderState) => state.userProvider)
+    const user = useSelector((state: User|null) => state)
     const dispatch = useDispatch()
 
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Profil</Text>
-            {userProvider.user.name !== '' ? <Text>Bonjour {userProvider.user.name} !</Text> : null}
-            {userProvider.user.name !== '' ? <Button title="Déconnexion" onPress={() => dispatch(removeUser())}/>
-                : <Button title="Connexion" onPress={() => dispatch(getUser())}/>
+            {user !== null ? <Text>Bonjour {user.name} !</Text> : null}
+            {user !== null ? <Button title="Déconnexion" onPress={() => dispatch(logout())}/>
+                : <Button title="Connexion" onPress={() => dispatch(login())}/>
             }
         </SafeAreaView>
     );
