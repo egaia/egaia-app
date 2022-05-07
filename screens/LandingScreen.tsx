@@ -1,18 +1,14 @@
 import {SafeAreaView} from "react-native-safe-area-context";
 import {Button, Text} from "react-native";
-import {useEffect} from "react";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {RootParamList} from "../services/types";
-import {useSelector} from "react-redux";
-import {User} from "../models/User";
+import {loginUser} from "../repositories/user_repository";
+import {useDispatch} from "react-redux";
+import {login} from "../store/actions/user.actions";
 
 export default function LandingScreen({navigation}: NativeStackScreenProps<RootParamList, "Splash">) {
 
-    const user = useSelector((state: User|null) => state)
-
-    useEffect(() => {
-        console.log('user', user)
-    }, [])
+    const dispatch = useDispatch()
 
     const goToRegister = () => {
         navigation.navigate({name: "Auth", key: "Register"});
@@ -22,8 +18,15 @@ export default function LandingScreen({navigation}: NativeStackScreenProps<RootP
         navigation.navigate({name: "Auth", key: "Login"});
     }
 
-    const goToHome = () => {
+    const goToHomeWithoutAccount = () => {
         navigation.navigate({name: "Tabs", key: "Search"})
+    }
+
+    const goToHomeWithAccount = () => {
+        loginUser().then(function (user) {
+            dispatch(login(user))
+            navigation.navigate({name: "Tabs", key: "Search"})
+        })
     }
 
     return (
@@ -32,7 +35,8 @@ export default function LandingScreen({navigation}: NativeStackScreenProps<RootP
             <SafeAreaView style={{backgroundColor: '#ffffff'}}>
                 <Button title="SE CONNECTER" onPress={goToLogin} />
                 <Button title="S'INSCRIRE" onPress={goToRegister} />
-                <Text onPress={goToHome}>Continuer sans créer de compte</Text>
+                <Text onPress={goToHomeWithAccount}>Continuer avec un compte</Text>
+                <Text onPress={goToHomeWithoutAccount}>Continuer sans créer de compte</Text>
             </SafeAreaView>
         </SafeAreaView>
     );

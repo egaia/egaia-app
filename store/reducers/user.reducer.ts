@@ -1,15 +1,14 @@
 import {User} from "../../models/User";
-import {LOGIN, LOGOUT} from "../actions/user.actions";
+import {UserActionType, LOGIN, LOGOUT} from "../actions/user.actions";
 
-interface ActionType {
-    type: typeof LOGIN | typeof LOGOUT
-}
-
-const UserReducer = (state: User|null = null, action: ActionType) => {
+const UserReducer = (state: User | null = null, action: UserActionType) => {
     switch (action.type) {
-        case LOGIN: return {name: 'Guitou', apiToken: 'abcdef' }
-        case LOGOUT: return null
-        default: return state
+        case LOGIN:
+            return action.payload ?? null
+        case LOGOUT:
+            return null
+        default:
+            return state
     }
 }
 

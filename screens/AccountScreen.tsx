@@ -5,6 +5,7 @@ import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {TabsParamList} from "../services/types";
 import {useDispatch, useSelector} from "react-redux";
 import {User} from "../models/User";
+import {loginUser, logoutUser} from "../repositories/user_repository";
 import {login, logout} from "../store/actions/user.actions";
 
 export default function AccountScreen({navigation}: NativeStackScreenProps<TabsParamList, "Profile">) {
@@ -12,12 +13,24 @@ export default function AccountScreen({navigation}: NativeStackScreenProps<TabsP
     const user = useSelector((state: User|null) => state)
     const dispatch = useDispatch()
 
+    const loginMyUser = () => {
+        loginUser().then(function (user) {
+            dispatch(login(user))
+        })
+    }
+
+    const logoutMyUser = () => {
+        logoutUser().then(function () {
+            dispatch(logout())
+        })
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Profil</Text>
             {user !== null ? <Text>Bonjour {user.name} !</Text> : null}
-            {user !== null ? <Button title="Déconnexion" onPress={() => dispatch(logout())}/>
-                : <Button title="Connexion" onPress={() => dispatch(login())}/>
+            {user !== null ? <Button title="Déconnexion" onPress={() => logoutMyUser()}/>
+                : <Button title="Connexion" onPress={() => loginMyUser()}/>
             }
         </SafeAreaView>
     );
