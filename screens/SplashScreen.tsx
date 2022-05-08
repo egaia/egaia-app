@@ -1,5 +1,5 @@
 import {SafeAreaView} from "react-native-safe-area-context";
-import {Text} from "react-native";
+import {Dimensions, Text} from "react-native";
 import {useEffect} from "react";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {RootParamList} from "../services/types";
@@ -8,6 +8,8 @@ import {User} from "../models/User";
 import DefaultPreference from 'react-native-default-preference';
 import {loginUser} from "../repositories/user_repository";
 import {login} from "../store/actions/user.actions";
+
+const windowHeight: number = Dimensions.get("window").height
 
 export default function SplashScreen({navigation}: NativeStackScreenProps<RootParamList, "Splash">) {
 
@@ -38,7 +40,7 @@ export default function SplashScreen({navigation}: NativeStackScreenProps<RootPa
     }, [])
 
     return (
-        <SafeAreaView style={{backgroundColor: '#57b454', height: 1000}}>
+        <SafeAreaView style={{backgroundColor: '#57b454', height: windowHeight}}>
             <Text style={{textAlign: 'center'}}>EGAIA</Text>
         </SafeAreaView>
     );

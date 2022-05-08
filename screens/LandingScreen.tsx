@@ -1,10 +1,13 @@
 import {SafeAreaView} from "react-native-safe-area-context";
-import {Button, Text} from "react-native";
+import {Button, Dimensions, Text} from "react-native";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {RootParamList} from "../services/types";
 import {loginUser} from "../repositories/user_repository";
 import {useDispatch} from "react-redux";
 import {login} from "../store/actions/user.actions";
+import EgaiaContainer from "../components/EgaiaContainer";
+
+const windowHeight: number = Dimensions.get("window").height
 
 export default function LandingScreen({navigation}: NativeStackScreenProps<RootParamList, "Splash">) {
 
@@ -30,7 +33,7 @@ export default function LandingScreen({navigation}: NativeStackScreenProps<RootP
     }
 
     return (
-        <SafeAreaView style={{backgroundColor: '#57b454', height: 1000}}>
+        <EgaiaContainer style={{backgroundColor: 'green'}}>
             <Text style={{textAlign: 'center'}}>EGAIA</Text>
             <SafeAreaView style={{backgroundColor: '#ffffff'}}>
                 <Button title="SE CONNECTER" onPress={goToLogin} />
@@ -38,6 +41,6 @@ export default function LandingScreen({navigation}: NativeStackScreenProps<RootP
                 <Text onPress={goToHomeWithAccount}>Continuer avec un compte</Text>
                 <Text onPress={goToHomeWithoutAccount}>Continuer sans créer de compte</Text>
             </SafeAreaView>
-        </SafeAreaView>
+        </EgaiaContainer>
     );
 }

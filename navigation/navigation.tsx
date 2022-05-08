@@ -4,7 +4,7 @@ import GoodPlansScreen from "../screens/GoodPlansScreen";
 import CollectPointsScreen from "../screens/CollectPointsScreen";
 import ChallengesScreen from "../screens/ChallengesScreen";
 import AccountScreen from "../screens/AccountScreen";
-import {Image, StyleSheet, Text} from "react-native";
+import {Image, StyleSheet, Text, TouchableOpacity} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {AuthParamList, TabsParamList} from "../services/types";
 import LoginScreen from "../screens/authentication/LoginScreen";
@@ -14,6 +14,7 @@ import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {Colors} from "../services/constants";
 import SplashScreen from "../screens/SplashScreen";
 import LandingScreen from "../screens/LandingScreen";
+import EgaiaHeaderBackButton from "../components/EgaiaHeaderBackButton";
 
 const Tab = createBottomTabNavigator<TabsParamList>();
 const AuthStack = createNativeStackNavigator<AuthParamList>();
@@ -33,12 +34,16 @@ const Navigation = () => {
                 <Stack.Screen
                     name="Auth"
                     component={AuthStackNavigator}
-                    options={{
-                        headerTransparent: true,
-                        title: '',
-                        headerBackTitleVisible: false,
-                        headerTintColor: '#f022ff'
-                    }}
+                    options={(props) => {
+                        const {navigation} = props;
+                        return ({
+                            headerTitle: '',
+                            headerTransparent: true,
+                            headerLeft: () => (
+                                <EgaiaHeaderBackButton navigation={navigation} />
+                            ),
+                            gestureEnabled: false,
+                        })}}
                 />
             </Stack.Group>
         </Stack.Navigator>
@@ -173,8 +178,8 @@ const Tabs = () => {
 const AuthStackNavigator = () => {
     return (
         <AuthStack.Navigator>
-            <AuthStack.Screen name="Login" component={LoginScreen} options={{headerShown: false}} />
             <AuthStack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}} />
+            <AuthStack.Screen name="Login" component={LoginScreen} options={{headerShown: false}} />
         </AuthStack.Navigator>
     );
 }
