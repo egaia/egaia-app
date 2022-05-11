@@ -1,4 +1,4 @@
-export type TabsParamList = {
+/*export type TabsParamList = {
     GoodPlans: undefined,
     CollectPoints: undefined,
     Search: undefined,
@@ -17,4 +17,4 @@ export type RootParamList = {
     Landing: undefined,
     Tabs: TabsParamList,
     Auth: AuthParamList
-}
+}*/

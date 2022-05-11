@@ -1,47 +1,42 @@
-import {SafeAreaView} from "react-native-safe-area-context";
-import {Dimensions, Text} from "react-native";
+import {Text} from "react-native";
 import {useEffect} from "react";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {RootParamList} from "../services/types";
-import {useDispatch, useSelector} from "react-redux";
-import {User} from "../models/User";
-import DefaultPreference from 'react-native-default-preference';
-import {loginUser} from "../repositories/user_repository";
-import {login} from "../store/actions/user.actions";
+import {useDispatch} from "react-redux";
+import {saveUser} from "../store/actions/user.actions";
+import EgaiaContainer from "../components/EgaiaContainer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {getByApiToken} from "../repositories/auth_repository";
+import {Colors} from "../services/constants";
 
-const windowHeight: number = Dimensions.get("window").height
+export default function SplashScreen({navigation}: NativeStackScreenProps<any>) {
 
-export default function SplashScreen({navigation}: NativeStackScreenProps<RootParamList, "Splash">) {
-
-    const user = useSelector((state: User|null) => state)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        DefaultPreference.get('api_token').then(function(value) {
-            if(value !== undefined && value !== null) {
-                console.log('Token', value)
-                loginUser().then(function (user) {
-                    dispatch(login(user))
-                    navigation.navigate({name: "Tabs", key: "Search"})
-                })
-            } else {
-                console.log('No token')
-                navigation.navigate("Landing")
-            }
-        });
-        /*if(user === null) {
-            console.log('pas de user')
-        } else {
-            console.log(user.name)
-        }
         window.setTimeout(() => {
-            navigation.navigate("Landing");
-        }, 3000)*/
+            AsyncStorage.getItem('api_token').then(value => {
+                if (value) {
+                    getByApiToken(value).then(user => {
+                        if (typeof (user) === 'object') {
+                            dispatch(saveUser(user))
+                            navigation.navigate("Tabs")
+                        } else {
+                            console.error(user)
+                        }
+                    })
+                } else {
+                    navigation.navigate("Landing")
+                }
+            }).catch(error => {
+                console.error(error)
+                navigation.navigate("Landing")
+            })
+        }, 1000)
     }, [])
 
     return (
-        <SafeAreaView style={{backgroundColor: '#57b454', height: windowHeight}}>
+        <EgaiaContainer backgroundColor={Colors.primary}>
             <Text style={{textAlign: 'center'}}>EGAIA</Text>
-        </SafeAreaView>
+        </EgaiaContainer>
     );
 }

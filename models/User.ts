@@ -1,4 +1,9 @@
 export interface User {
-    name: String,
-    apiToken: String
+    id: number,
+    firstname: string,
+    lastname: string,
+    birthdate: Date,
+    email: string,
+    points: number,
+    apiToken: string
 }

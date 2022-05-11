@@ -1,38 +1,37 @@
-import {Button, StyleSheet, Text} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 
-import {SafeAreaView} from "react-native-safe-area-context";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {TabsParamList} from "../services/types";
 import {useDispatch, useSelector} from "react-redux";
 import {User} from "../models/User";
-import {loginUser, logoutUser} from "../repositories/user_repository";
-import {login, logout} from "../store/actions/user.actions";
+import {deleteStoreUser} from "../store/actions/user.actions";
+import EgaiaContainer from "../components/EgaiaContainer";
+import {deleteUserInLocalStorage} from "../store/reducers/user.reducer";
 
-export default function AccountScreen({navigation}: NativeStackScreenProps<TabsParamList, "Profile">) {
+export default function AccountScreen({navigation}: NativeStackScreenProps<any>) {
 
-    const user = useSelector((state: User|null) => state)
+    const user = useSelector((state: User | null) => state)
     const dispatch = useDispatch()
 
     const loginMyUser = () => {
-        loginUser().then(function (user) {
-            dispatch(login(user))
-        })
+        navigation.navigate("Auth", "Login")
     }
 
     const logoutMyUser = () => {
-        logoutUser().then(function () {
-            dispatch(logout())
+        deleteUserInLocalStorage().then(() => {
+            dispatch(deleteStoreUser())
         })
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Profil</Text>
-            {user !== null ? <Text>Bonjour {user.name} !</Text> : null}
-            {user !== null ? <Button title="Déconnexion" onPress={() => logoutMyUser()}/>
-                : <Button title="Connexion" onPress={() => loginMyUser()}/>
-            }
-        </SafeAreaView>
+        <EgaiaContainer>
+            <View style={styles.container}>
+                <Text style={styles.title}>Profil</Text>
+                {user !== null ? <Text>Bonjour {user.firstname} !</Text> : null}
+                {user !== null ? <Button title="Déconnexion" onPress={() => logoutMyUser()}/>
+                    : <Button title="Connexion" onPress={() => loginMyUser()}/>
+                }
+            </View>
+        </EgaiaContainer>
     );
 }
 
