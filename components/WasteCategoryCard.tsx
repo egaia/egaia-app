@@ -1,13 +1,14 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {GestureResponderEvent, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {WasteCategory} from "../models/WasteCategory";
 
 interface WasteCategoryCardProps {
-    category: WasteCategory
+    category: WasteCategory,
+    onPress ?: (event: GestureResponderEvent) => void
 }
 
 const WasteCategoryCard = (props: WasteCategoryCardProps) => {
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={props.onPress}>
             <View style={styles.category}>
                 <Image style={styles.image} source={{uri: props.category.image}} />
                 <Text>{props.category.name}</Text>

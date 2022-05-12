@@ -1,4 +1,4 @@
-import {Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Button, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import EgaiaContainer from "../components/EgaiaContainer";
@@ -41,6 +41,12 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
         })
     }, [])
 
+    const goToWasteCategory = (id: number) => {
+        navigation.navigate("WasteCategory", {
+            wasteCategoryId: id
+        })
+    }
+
     return (
         <EgaiaContainer>
             <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -61,7 +67,7 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
                     <View>
                         {wasteCategories.map(wasteCategory => {
                             return (
-                                <WasteCategoryCard key={`waste-category-${wasteCategory.id}`} category={wasteCategory} />
+                                <WasteCategoryCard key={`waste-category-${wasteCategory.id}`} category={wasteCategory} onPress={() => goToWasteCategory(wasteCategory.id)} />
                             )
                         })}
                     </View>

@@ -7,6 +7,7 @@ import ChallengesScreen from "../screens/ChallengesScreen";
 import AccountScreen from "../screens/AccountScreen";
 import React from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import SearchStackNavigator from "./SearchStackNavigator";
 
 const TabsStack = createBottomTabNavigator();
 
@@ -18,7 +19,7 @@ const TabsStackNavigator = () => {
                 tabBarActiveTintColor: Colors.secondary,
                 tabBarInactiveTintColor: Colors.primary,
             }}
-            initialRouteName="Search"
+            initialRouteName="SearchTab"
         >
             <TabsStack.Screen
                 name="GoodPlans"
@@ -60,8 +61,8 @@ const TabsStackNavigator = () => {
                 }}
             />
             <TabsStack.Screen
-                name="Search"
-                component={SearchScreen}
+                name="SearchTab"
+                component={SearchStackNavigator}
                 options={{
                     headerShown: false,
                     title: "Rechercher",
