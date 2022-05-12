@@ -31,9 +31,11 @@ const EgaiaContainer = ({children, backgroundColor}: EgaiaContainerProps) => {
 
     return (
         <View style={styles.container}>
-            <SafeAreaView style={styles.safeContainer}>
-                {children}
-            </SafeAreaView>
+            <SafeAreaProvider>
+                <SafeAreaView style={styles.safeContainer}>
+                    {children}
+                </SafeAreaView>
+            </SafeAreaProvider>
         </View>
     );
 }

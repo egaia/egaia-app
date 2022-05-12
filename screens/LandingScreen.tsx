@@ -6,15 +6,15 @@ import {Colors} from "../services/constants";
 export default function LandingScreen(props: NativeStackScreenProps<any>) {
 
     const goToLogin = () => {
-        props.navigation.navigate("Auth", "Login")
+        props.navigation.navigate("Auth", {screen: "Login"})
     }
 
     const goToRegister = () => {
-        props.navigation.navigate("Auth", "Register")
+        props.navigation.navigate("Auth", {screen: "Register"})
     }
 
     const goToHomeWithoutAccount = () => {
-        props.navigation.navigate("Tabs", "GoodPlans")
+        props.navigation.navigate("Tabs")
     }
 
     return (

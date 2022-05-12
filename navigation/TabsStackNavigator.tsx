@@ -63,6 +63,7 @@ const TabsStackNavigator = () => {
                 name="Search"
                 component={SearchScreen}
                 options={{
+                    headerShown: false,
                     title: "Rechercher",
                     tabBarLabelStyle: {textTransform: 'uppercase'},
                     tabBarIcon: ({color, size}) => (
