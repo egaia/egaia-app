@@ -1,15 +1,20 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Waste} from "../models/Waste";
 
-const WasteCard = () => {
+interface WasteCardProps {
+    waste: Waste
+}
+
+const WasteCard = (props: WasteCardProps) => {
     return (
         <TouchableOpacity>
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={require("../assets/icons/flamme.png")} />
+                    <Image style={styles.image} source={{uri: props.waste.image}} />
                 </View>
                 <View style={styles.labelContainer}>
-                    <Text style={styles.name}>Brique de lait</Text>
-                    <Text>Catégorie</Text>
+                    <Text style={styles.name}>{props.waste.name}</Text>
+                    <Text>{props.waste.category.name}</Text>
                 </View>
             </View>
         </TouchableOpacity>

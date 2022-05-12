@@ -1,10 +1,11 @@
 import {UserDTO} from "../models/DTO/UserDTO";
 import axios from "axios";
 import {User} from "../models/User";
+import {endpointUrl} from "./api";
 
-const baseUrl = 'http://egaia-manager.test/api/auth'
+const baseUrl = `${endpointUrl}/auth`
 
-export const register = async (userDTO: UserDTO): Promise<User | string> => {
+export const registerUser = async (userDTO: UserDTO): Promise<User | string> => {
     return await axios.post(`${baseUrl}/register`, userDTO, {
         headers: {
             'Content-Type': 'application/json',
@@ -14,16 +15,7 @@ export const register = async (userDTO: UserDTO): Promise<User | string> => {
         const data: AuthApiResponse = response.data
 
         if (data.success && data.user) {
-            const {user} = data
-            return {
-                id: user.id,
-                firstname: user.firstname,
-                lastname: user.lastname,
-                birthdate: user.birthdate,
-                email: user.email,
-                points: user.points,
-                apiToken: user.api_token,
-            }
+            return data.user
         } else {
             return data.message
         }
@@ -34,7 +26,7 @@ export const register = async (userDTO: UserDTO): Promise<User | string> => {
     })
 }
 
-export const login = async (email: string, password: string): Promise<User | string> => {
+export const loginUser = async (email: string, password: string): Promise<User | string> => {
     return await axios.post(`${baseUrl}/login`, {
             email,
             password
@@ -48,16 +40,7 @@ export const login = async (email: string, password: string): Promise<User | str
         const data: AuthApiResponse = response.data
 
         if (data.success && data.user) {
-            const {user} = data
-            return {
-                id: user.id,
-                firstname: user.firstname,
-                lastname: user.lastname,
-                birthdate: user.birthdate,
-                email: user.email,
-                points: user.points,
-                apiToken: user.api_token,
-            }
+            return data.user
         } else {
             return data.message
         }
@@ -77,18 +60,8 @@ export const getByApiToken = async (token: string): Promise<User | string> => {
         }
     }).then(response => {
         const data: AuthApiResponse = response.data
-
         if (data.success && data.user) {
-            const {user} = data
-            return {
-                id: user.id,
-                firstname: user.firstname,
-                lastname: user.lastname,
-                birthdate: user.birthdate,
-                email: user.email,
-                points: user.points,
-                apiToken: user.api_token,
-            }
+            return data.user
         } else {
             return data.message
         }
@@ -98,16 +71,8 @@ export const getByApiToken = async (token: string): Promise<User | string> => {
     })
 }
 
-export type AuthApiResponse = {
+type AuthApiResponse = {
     success: boolean,
-    user?: {
-        id: number,
-        firstname: string,
-        lastname: string,
-        birthdate: string,
-        email: string,
-        points: number,
-        api_token: string
-    },
+    user?: User,
     message?: string
 }

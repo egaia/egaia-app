@@ -6,7 +6,7 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import {formsStyle} from "../../assets/styles/forms.style";
 import * as yup from "yup";
 import {useDispatch} from "react-redux";
-import {login} from "../../repositories/auth_repository";
+import {loginUser} from "../../repositories/auth_repository";
 import {saveUserInLocalStorage} from "../../store/reducers/user.reducer";
 import {saveUser} from "../../store/actions/user.actions";
 
@@ -27,9 +27,9 @@ const LoginSchema = yup.object({
 export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
     const dispatch = useDispatch()
 
-    const loginUser = (values: FormValues) => {
+    const tryLoginUser = (values: FormValues) => {
         console.log(values)
-        login(values.email, values.password).then(user => {
+        loginUser(values.email, values.password).then(user => {
             if (typeof (user) === 'object') {
                 console.log('loginUser', user)
                 saveUserInLocalStorage(user.apiToken).then(() => {
@@ -59,7 +59,7 @@ export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
                     }}
                     onSubmit={(values, actions) => {
                         console.log(values)
-                        loginUser(values)
+                        tryLoginUser(values)
                     }}
                 >
                     {(props) => {

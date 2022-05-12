@@ -6,10 +6,40 @@ import {useSelector, useStore} from "react-redux";
 import {User} from "../models/User";
 import WasteCard from "../components/WasteCard";
 import WasteCategoryCard from "../components/WasteCategoryCard";
+import {useEffect, useState} from "react";
+import {Waste} from "../models/Waste";
+import {WasteCategory} from "../models/WasteCategory";
+import {allWasteCategories} from "../repositories/waste_categories_repository";
+import {allWastes} from "../repositories/waste_repository";
 
 export default function SearchScreen({navigation}: NativeStackScreenProps<any>) {
 
     const user = useSelector((state: User | null) => state)
+
+    const [wastes, setWastes] = useState<Waste[]>([])
+    const [wasteCategories, setWasteCategories] = useState<WasteCategory[]>([])
+
+    useEffect(() => {
+        allWasteCategories().then(results => {
+            if(typeof(results) !== 'string') {
+                setWasteCategories(results)
+            } else {
+                console.error(results)
+            }
+        }).catch(error => {
+            console.error(error)
+        })
+
+        allWastes().then(results => {
+            if(typeof(results) !== 'string') {
+                setWastes(results)
+            } else {
+                console.error(results)
+            }
+        }).catch(error => {
+            console.error(error)
+        })
+    }, [])
 
     return (
         <EgaiaContainer>
@@ -20,22 +50,20 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
                     <TextInput placeholder="Saisir un déchet" />
                 </View>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                    <WasteCard />
-                    <WasteCard />
-                    <WasteCard />
-                    <WasteCard />
-                    <WasteCard />
-                    <WasteCard />
+                    {wastes.map(waste => {
+                        return (
+                            <WasteCard key={`waste-${waste.id}`} waste={waste} />
+                        )
+                    })}
                 </ScrollView>
                 <View>
                     <Text>Catégories de déchets</Text>
                     <View>
-                        <WasteCategoryCard />
-                        <WasteCategoryCard />
-                        <WasteCategoryCard />
-                        <WasteCategoryCard />
-                        <WasteCategoryCard />
-                        <WasteCategoryCard />
+                        {wasteCategories.map(wasteCategory => {
+                            return (
+                                <WasteCategoryCard key={`waste-category-${wasteCategory.id}`} category={wasteCategory} />
+                            )
+                        })}
                     </View>
                 </View>
             </ScrollView>

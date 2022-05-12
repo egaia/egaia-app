@@ -12,7 +12,7 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import * as yup from 'yup';
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import EgaiaContainer from "../../components/EgaiaContainer";
-import {register} from "../../repositories/auth_repository";
+import {registerUser} from "../../repositories/auth_repository";
 import {UserDTO} from "../../models/DTO/UserDTO";
 import {saveUserInLocalStorage} from "../../store/reducers/user.reducer";
 import {useDispatch} from "react-redux";
@@ -63,7 +63,7 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
             password: values.password
         }
         console.log(userDTO)
-        register(userDTO).then(user => {
+        registerUser(userDTO).then(user => {
             if (typeof (user) === 'object') {
                 console.log('registeredUser', user)
                 saveUserInLocalStorage(user.apiToken).then(() => {

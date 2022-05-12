@@ -1,11 +1,16 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {WasteCategory} from "../models/WasteCategory";
 
-const WasteCategoryCard = () => {
+interface WasteCategoryCardProps {
+    category: WasteCategory
+}
+
+const WasteCategoryCard = (props: WasteCategoryCardProps) => {
     return (
         <TouchableOpacity>
             <View style={styles.category}>
-                <Image style={styles.image} source={require("../assets/icons/flamme.png")} />
-                <Text>Papeterie</Text>
+                <Image style={styles.image} source={{uri: props.category.image}} />
+                <Text>{props.category.name}</Text>
                 <Text>{"--->"}</Text>
             </View>
         </TouchableOpacity>
