@@ -3,7 +3,7 @@ import axios from "axios";
 import {User} from "../models/User";
 import {endpointUrl} from "./api";
 
-const baseUrl = `${endpointUrl}/auth`
+const baseUrl: string = `${endpointUrl}/auth`
 
 export const registerUser = async (userDTO: UserDTO): Promise<User | string> => {
     return await axios.post(`${baseUrl}/register`, userDTO, {

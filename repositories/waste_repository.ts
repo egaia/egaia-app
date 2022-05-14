@@ -2,7 +2,7 @@ import {endpointUrl} from "./api";
 import axios from "axios";
 import {Waste} from "../models/Waste";
 
-const baseUrl = `${endpointUrl}/wastes`
+const baseUrl: string = `${endpointUrl}/wastes`
 
 export const allWastes = async (): Promise<Waste[] | string> => {
     return await axios.get(baseUrl, {

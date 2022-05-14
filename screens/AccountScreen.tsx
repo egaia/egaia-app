@@ -4,19 +4,39 @@ import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import EgaiaContainer from "../components/EgaiaContainer";
 import {deleteUserInLocalStorage} from "../services/local_storage";
 import {UserContext} from "../contexts/user";
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, useState} from "react";
 import {UserContextType} from "../services/types";
 import SecondaryButton from "../components/SecondaryButton";
 import PrimaryButton from "../components/PrimaryButton";
 import {Colors} from "../services/constants";
 import ParticipationCard from "../components/ParticipationCard";
+import {Challenge} from "../models/Challenge";
+import {getChallengesByUser} from "../repositories/challenge_repository";
 
-export default function AccountScreen({navigation}: NativeStackScreenProps<any>) {
+export default function AccountScreen(props: NativeStackScreenProps<any>) {
 
     const { user, setUser } = useContext<UserContextType>(UserContext)
 
+    const [challenges, setChallenges] = useState<Challenge[]>([])
+
+    useEffect(() => {
+        if (user) {
+            getChallengesByUser(user).then(results => {
+                if(typeof results !== 'string') {
+                    setChallenges(results)
+                } else {
+                    console.error(results)
+                }
+            }).catch(error => {
+                console.error(error.message)
+            })
+        } else {
+            props.navigation.navigate("Auth", {screen: "Login"})
+        }
+    }, [])
+
     const loginMyUser = () => {
-        navigation.navigate("Auth", "Login")
+        props.navigation.navigate("Auth", "Login")
     }
 
     const logoutMyUser = () => {
@@ -50,16 +70,11 @@ export default function AccountScreen({navigation}: NativeStackScreenProps<any>)
                     </View>
                     <View style={styles.historicContainer}>
                         <Text>Historique :</Text>
-                        <ParticipationCard />
-                        <ParticipationCard />
-                        <ParticipationCard />
-                        <ParticipationCard />
-                        <ParticipationCard />
-                        <ParticipationCard />
-                        <ParticipationCard />
-                        <ParticipationCard />
-                        <ParticipationCard />
-                        <ParticipationCard />
+                        {challenges.map((challenge, index) => {
+                            return (
+                                <ParticipationCard key={`challenge-${challenge.id}`} challenge={challenge} withoutBorder={index+1 >= challenges.length} />
+                            )
+                        })}
                     </View>
                 </View>
             </ScrollView>
