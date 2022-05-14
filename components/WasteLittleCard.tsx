@@ -1,14 +1,15 @@
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {GestureResponderEvent, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Waste} from "../models/Waste";
 import {Colors} from "../services/constants";
 
 interface WasteLittleCardProps {
-    waste: Waste
+    waste: Waste,
+    onPress: (event: GestureResponderEvent) => void
 }
 
 const WasteLittleCard = (props: WasteLittleCardProps) => {
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={props.onPress}>
             <View style={styles.container}>
                 <Text>{props.waste.name}</Text>
             </View>

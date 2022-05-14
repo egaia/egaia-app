@@ -14,9 +14,9 @@ const WasteCategoryScreen = (props: NativeStackScreenProps<any>) => {
     const wasteCategoryId: number = props.route.params?.wasteCategoryId
 
     useEffect(() => {
-        if(wasteCategoryId !== undefined) {
+        if (wasteCategoryId !== undefined) {
             findWasteCategory(wasteCategoryId).then(result => {
-                if(typeof(result) !== 'string') {
+                if (typeof (result) !== 'string') {
                     console.log(result)
                     setWasteCategory(result)
                 } else {
@@ -30,17 +30,21 @@ const WasteCategoryScreen = (props: NativeStackScreenProps<any>) => {
         }
     }, [])
 
+    const goToWaste = (wasteId: number) => {
+        props.navigation.navigate("Waste", {wasteId})
+    }
+
     return (
         <EgaiaContainer>
             <View style={styles.container}>
                 <View style={styles.categoryContainer}>
-                    <Image style={styles.image} source={{uri: wasteCategory?.image}} />
+                    <Image style={styles.image} source={{uri: wasteCategory?.image}}/>
                     <Text style={styles.categoryName}>{wasteCategory?.name}</Text>
                 </View>
                 <ScrollView style={styles.wastesContainer} showsVerticalScrollIndicator={false}>
                     {wasteCategory?.wastes?.map(waste => {
                         return (
-                            <WasteLittleCard key={`waste-${waste.id}`} waste={waste} />
+                            <WasteLittleCard key={`waste-${waste.id}`} waste={waste} onPress={() => goToWaste(waste.id)}/>
                         )
                     })}
                 </ScrollView>
