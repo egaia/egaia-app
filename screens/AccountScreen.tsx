@@ -1,16 +1,15 @@
 import {Button, StyleSheet, Text, View} from 'react-native';
 
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {useDispatch, useSelector} from "react-redux";
-import {User} from "../models/User";
-import {deleteStoreUser} from "../store/actions/user.actions";
 import EgaiaContainer from "../components/EgaiaContainer";
-import {deleteUserInLocalStorage} from "../store/reducers/user.reducer";
+import {deleteUserInLocalStorage} from "../services/local_storage";
+import {UserContext} from "../contexts/user";
+import {useContext} from "react";
+import {UserContextType} from "../services/types";
 
 export default function AccountScreen({navigation}: NativeStackScreenProps<any>) {
 
-    const user = useSelector((state: User | null) => state)
-    const dispatch = useDispatch()
+    const { user, setUser } = useContext<UserContextType>(UserContext)
 
     const loginMyUser = () => {
         navigation.navigate("Auth", "Login")
@@ -18,7 +17,7 @@ export default function AccountScreen({navigation}: NativeStackScreenProps<any>)
 
     const logoutMyUser = () => {
         deleteUserInLocalStorage().then(() => {
-            dispatch(deleteStoreUser())
+            setUser(undefined)
         })
     }
 
@@ -26,8 +25,8 @@ export default function AccountScreen({navigation}: NativeStackScreenProps<any>)
         <EgaiaContainer>
             <View style={styles.container}>
                 <Text style={styles.title}>Profil</Text>
-                {user !== null ? <Text>Bonjour {user.firstname} !</Text> : null}
-                {user !== null ? <Button title="Déconnexion" onPress={() => logoutMyUser()}/>
+                {user !== undefined ? <Text>Bonjour {user.firstname} !</Text> : null}
+                {user !== undefined ? <Button title="Déconnexion" onPress={() => logoutMyUser()}/>
                     : <Button title="Connexion" onPress={() => loginMyUser()}/>
                 }
             </View>

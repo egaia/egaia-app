@@ -1,16 +1,15 @@
 import {Image, StyleSheet, Text, View} from "react-native";
-import {useEffect} from "react";
+import {useContext, useEffect} from "react";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {useDispatch} from "react-redux";
-import {saveUser} from "../store/actions/user.actions";
-import EgaiaContainer from "../components/EgaiaContainer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {getByApiToken} from "../repositories/auth_repository";
 import {Colors} from "../services/constants";
+import {UserContextType} from "../services/types";
+import {UserContext} from "../contexts/user";
 
 export default function SplashScreen({navigation}: NativeStackScreenProps<any>) {
 
-    const dispatch = useDispatch()
+    const { setUser } = useContext<UserContextType>(UserContext)
 
     useEffect(() => {
         window.setTimeout(() => {
@@ -18,7 +17,7 @@ export default function SplashScreen({navigation}: NativeStackScreenProps<any>) 
                 if (value) {
                     getByApiToken(value).then(user => {
                         if (typeof (user) === 'object') {
-                            dispatch(saveUser(user))
+                            setUser(user)
                             navigation.navigate("Tabs")
                         } else {
                             console.error(user)

@@ -5,10 +5,11 @@ import {Formik} from "formik";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {formsStyle} from "../../assets/styles/forms.style";
 import * as yup from "yup";
-import {useDispatch} from "react-redux";
 import {loginUser} from "../../repositories/auth_repository";
-import {saveUserInLocalStorage} from "../../store/reducers/user.reducer";
-import {saveUser} from "../../store/actions/user.actions";
+import {saveUserInLocalStorage} from "../../services/local_storage";
+import {UserContext} from "../../contexts/user";
+import {useContext} from "react";
+import {UserContextType} from "../../services/types";
 
 type FormValues = {
     email: string,
@@ -25,7 +26,8 @@ const LoginSchema = yup.object({
 })
 
 export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
-    const dispatch = useDispatch()
+
+    const { setUser } = useContext<UserContextType>(UserContext)
 
     const tryLoginUser = (values: FormValues) => {
         console.log(values)
@@ -33,7 +35,7 @@ export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
             if (typeof (user) === 'object') {
                 console.log('loginUser', user)
                 saveUserInLocalStorage(user.apiToken).then(() => {
-                    dispatch(saveUser(user))
+                    setUser(user)
                     navigation.navigate("Tabs")
                 }).catch(error => {
                     console.error(error)

@@ -1,20 +1,20 @@
-import {Button, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import EgaiaContainer from "../components/EgaiaContainer";
-import {useSelector, useStore} from "react-redux";
-import {User} from "../models/User";
 import WasteCard from "../components/WasteCard";
 import WasteCategoryCard from "../components/WasteCategoryCard";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Waste} from "../models/Waste";
 import {WasteCategory} from "../models/WasteCategory";
 import {allWasteCategories} from "../repositories/waste_categories_repository";
 import {allWastes} from "../repositories/waste_repository";
+import {UserContextType} from "../services/types";
+import {UserContext} from "../contexts/user";
 
 export default function SearchScreen({navigation}: NativeStackScreenProps<any>) {
 
-    const user = useSelector((state: User | null) => state)
+    const { user, setUser } = useContext<UserContextType>(UserContext)
 
     const [wastes, setWastes] = useState<Waste[]>([])
     const [wasteCategories, setWasteCategories] = useState<WasteCategory[]>([])
@@ -56,7 +56,7 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
     return (
         <EgaiaContainer>
             <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-                {user !== null ? <Text style={styles.title}>Bonjour {user.firstname}</Text> : null}
+                {user !== undefined ? <Text style={styles.title}>Bonjour {user.firstname}</Text> : null}
                 <View>
                     <Text>Rechercher un déchet</Text>
                     <TextInput placeholder="Saisir un déchet" />

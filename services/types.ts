@@ -18,3 +18,10 @@ export type RootParamList = {
     Tabs: TabsParamList,
     Auth: AuthParamList
 }*/
+
+import {User} from "../models/User";
+
+export type UserContextType = {
+    user: User|undefined,
+    setUser: Function
+}

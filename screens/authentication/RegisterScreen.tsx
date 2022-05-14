@@ -12,12 +12,13 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import * as yup from 'yup';
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import EgaiaContainer from "../../components/EgaiaContainer";
-import {registerUser} from "../../repositories/auth_repository";
 import {UserDTO} from "../../models/DTO/UserDTO";
-import {saveUserInLocalStorage} from "../../store/reducers/user.reducer";
-import {useDispatch} from "react-redux";
-import {saveUser} from "../../store/actions/user.actions";
+import {saveUserInLocalStorage} from "../../services/local_storage";
 import {formsStyle} from "../../assets/styles/forms.style";
+import {registerUser} from "../../repositories/auth_repository";
+import {useContext} from "react";
+import {UserContextType} from "../../services/types";
+import {UserContext} from "../../contexts/user";
 
 type FormValues = {
     firstname: string,
@@ -50,11 +51,11 @@ const RegisterSchema = yup.object({
 
 export default function RegisterScreen({navigation}: NativeStackScreenProps<any>) {
 
+    const { setUser } = useContext<UserContextType>(UserContext)
+
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
 
-    const dispatch = useDispatch()
-
-    const registerUser = (values: FormValues) => {
+    const tryRegisterUser = (values: FormValues) => {
         const userDTO: UserDTO = {
             firstname: values.firstname,
             lastname: values.lastname,
@@ -67,7 +68,7 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
             if (typeof (user) === 'object') {
                 console.log('registeredUser', user)
                 saveUserInLocalStorage(user.apiToken).then(() => {
-                    dispatch(saveUser(user))
+                    setUser(user)
                     navigation.navigate("Tabs")
                 }).catch(error => {
                     console.error(error)
@@ -97,7 +98,7 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
                     }}
                     onSubmit={(values, actions) => {
                         console.log(values)
-                        registerUser(values)
+                        tryRegisterUser(values)
                     }}
                 >
                     {(props) => {
