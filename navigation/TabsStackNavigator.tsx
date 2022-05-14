@@ -5,13 +5,19 @@ import CollectPointsScreen from "../screens/CollectPointsScreen";
 import SearchScreen from "../screens/SearchScreen";
 import ChallengesScreen from "../screens/ChallengesScreen";
 import AccountScreen from "../screens/AccountScreen";
-import React from "react";
+import React, {useContext} from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import SearchStackNavigator from "./SearchStackNavigator";
+import {UserContextType} from "../services/types";
+import {UserContext} from "../contexts/user";
+import LoginScreen from "../screens/authentication/LoginScreen";
 
 const TabsStack = createBottomTabNavigator();
 
 const TabsStackNavigator = () => {
+
+    const { user } = useContext<UserContextType>(UserContext)
+
     return (
         <TabsStack.Navigator
             screenOptions={{
@@ -101,8 +107,9 @@ const TabsStackNavigator = () => {
             />
             <TabsStack.Screen
                 name="Profile"
-                component={AccountScreen}
+                component={user !== undefined ? AccountScreen : LoginScreen}
                 options={{
+                    headerShown: false,
                     title: "Profil",
                     tabBarLabelStyle: {textTransform: 'uppercase'},
                     tabBarIcon: ({color, size}) => (
