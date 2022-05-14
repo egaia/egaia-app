@@ -25,3 +25,8 @@ export type UserContextType = {
     user: User|undefined,
     setUser: Function
 }
+
+export type LoaderContextType = {
+    loading: boolean,
+    setLoading: Function
+}

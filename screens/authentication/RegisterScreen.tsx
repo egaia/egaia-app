@@ -17,8 +17,9 @@ import {saveUserInLocalStorage} from "../../services/local_storage";
 import {formsStyle} from "../../assets/styles/forms.style";
 import {registerUser} from "../../repositories/auth_repository";
 import {useContext} from "react";
-import {UserContextType} from "../../services/types";
+import {LoaderContextType, UserContextType} from "../../services/types";
 import {UserContext} from "../../contexts/user";
+import {LoaderContext} from "../../contexts/loader";
 
 type FormValues = {
     firstname: string,
@@ -52,10 +53,12 @@ const RegisterSchema = yup.object({
 export default function RegisterScreen({navigation}: NativeStackScreenProps<any>) {
 
     const { setUser } = useContext<UserContextType>(UserContext)
+    const { setLoading } = useContext<LoaderContextType>(LoaderContext)
 
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
 
     const tryRegisterUser = (values: FormValues) => {
+        setLoading(true)
         const userDTO: UserDTO = {
             firstname: values.firstname,
             lastname: values.lastname,
@@ -63,8 +66,7 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
             email: values.email,
             password: values.password
         }
-        console.log(userDTO)
-        registerUser(userDTO).then(user => {
+        const getData = async () => await registerUser(userDTO).then(user => {
             if (typeof (user) === 'object') {
                 console.log('registeredUser', user)
                 saveUserInLocalStorage(user.apiToken).then(() => {
@@ -79,6 +81,8 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
         }).catch(error => {
             console.error(error)
         })
+
+        getData().then(() => setLoading(false))
     }
 
     return (

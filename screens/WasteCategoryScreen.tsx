@@ -1,21 +1,26 @@
 import EgaiaContainer from "../components/EgaiaContainer";
 import {Image, ScrollView, StyleSheet, Text, View} from "react-native";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {findWasteCategory} from "../repositories/waste_categories_repository";
 import {WasteCategory} from "../models/WasteCategory";
 import WasteLittleCard from "../components/WasteLittleCard";
 import {Colors} from "../services/constants";
+import {LoaderContextType} from "../services/types";
+import {LoaderContext} from "../contexts/loader";
 
 const WasteCategoryScreen = (props: NativeStackScreenProps<any>) => {
+
+    const { setLoading } = useContext<LoaderContextType>(LoaderContext)
 
     const [wasteCategory, setWasteCategory] = useState<WasteCategory>()
 
     const wasteCategoryId: number = props.route.params?.wasteCategoryId
 
     useEffect(() => {
+        setLoading(true)
         if (wasteCategoryId !== undefined) {
-            findWasteCategory(wasteCategoryId).then(result => {
+            const getData = async () => await findWasteCategory(wasteCategoryId).then(result => {
                 if (typeof (result) !== 'string') {
                     console.log(result)
                     setWasteCategory(result)
@@ -25,7 +30,10 @@ const WasteCategoryScreen = (props: NativeStackScreenProps<any>) => {
             }).catch(error => {
                 console.error(error.message)
             })
+
+            getData().then(() => setLoading(false))
         } else {
+            setLoading(false)
             props.navigation.goBack()
         }
     }, [])

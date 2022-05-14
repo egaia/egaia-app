@@ -9,18 +9,22 @@ import {Waste} from "../models/Waste";
 import {WasteCategory} from "../models/WasteCategory";
 import {allWasteCategories} from "../repositories/waste_categories_repository";
 import {allWastes} from "../repositories/waste_repository";
-import {UserContextType} from "../services/types";
+import {LoaderContextType, UserContextType} from "../services/types";
 import {UserContext} from "../contexts/user";
+import {LoaderContext} from "../contexts/loader";
 
 export default function SearchScreen({navigation}: NativeStackScreenProps<any>) {
 
     const { user, setUser } = useContext<UserContextType>(UserContext)
+    const { setLoading } = useContext<LoaderContextType>(LoaderContext)
 
     const [wastes, setWastes] = useState<Waste[]>([])
     const [wasteCategories, setWasteCategories] = useState<WasteCategory[]>([])
 
     useEffect(() => {
-        allWasteCategories().then(results => {
+        setLoading(true)
+
+        const getCategories = async () => await allWasteCategories().then(results => {
             if(typeof(results) !== 'string') {
                 setWasteCategories(results)
             } else {
@@ -30,7 +34,7 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
             console.error(error)
         })
 
-        allWastes().then(results => {
+        const getWastes = async () => await allWastes().then(results => {
             if(typeof(results) !== 'string') {
                 setWastes(results)
             } else {
@@ -38,6 +42,10 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
             }
         }).catch(error => {
             console.error(error)
+        })
+
+        getCategories().then(() => {
+            getWastes().then(() => setLoading(false))
         })
     }, [])
 

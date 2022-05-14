@@ -2,19 +2,24 @@ import EgaiaContainer from "../components/EgaiaContainer";
 import {Image, StyleSheet, Text, TextInput, View} from "react-native";
 import {Colors} from "../services/constants";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Waste} from "../models/Waste";
 import {findWaste} from "../repositories/waste_repository";
+import {LoaderContextType} from "../services/types";
+import {LoaderContext} from "../contexts/loader";
 
 const WasteScreen = (props: NativeStackScreenProps<any>) => {
+
+    const { setLoading } = useContext<LoaderContextType>(LoaderContext)
 
     const [waste, setWaste] = useState<Waste>()
 
     const wasteId: number = props.route.params?.wasteId
 
     useEffect(() => {
+        setLoading(true)
         if(wasteId !== undefined) {
-            findWaste(wasteId).then(result => {
+            const getData = async () => await findWaste(wasteId).then(result => {
                 if(typeof(result) !== 'string') {
                     setWaste(result)
                 } else {
@@ -23,7 +28,10 @@ const WasteScreen = (props: NativeStackScreenProps<any>) => {
             }).catch(error => {
                 console.error(error.message)
             })
+
+            getData().then(() => setLoading(false))
         } else {
+            setLoading(false)
             props.navigation.goBack()
         }
     }, [])

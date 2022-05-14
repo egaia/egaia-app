@@ -9,7 +9,8 @@ import {loginUser} from "../../repositories/auth_repository";
 import {saveUserInLocalStorage} from "../../services/local_storage";
 import {UserContext} from "../../contexts/user";
 import {useContext} from "react";
-import {UserContextType} from "../../services/types";
+import {LoaderContextType, UserContextType} from "../../services/types";
+import {LoaderContext} from "../../contexts/loader";
 
 type FormValues = {
     email: string,
@@ -28,12 +29,12 @@ const LoginSchema = yup.object({
 export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
 
     const { setUser } = useContext<UserContextType>(UserContext)
+    const { setLoading } = useContext<LoaderContextType>(LoaderContext)
 
     const tryLoginUser = (values: FormValues) => {
-        console.log(values)
-        loginUser(values.email, values.password).then(user => {
+        setLoading(true)
+        const getData = async () => await loginUser(values.email, values.password).then(user => {
             if (typeof (user) === 'object') {
-                console.log('loginUser', user)
                 saveUserInLocalStorage(user.apiToken).then(() => {
                     setUser(user)
                     navigation.navigate("Tabs")
@@ -46,6 +47,9 @@ export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
         }).catch(error => {
             console.error(error)
         })
+
+        getData().then(() => setLoading(false))
+
     }
 
     return (

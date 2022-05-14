@@ -5,23 +5,26 @@ import EgaiaContainer from "../components/EgaiaContainer";
 import {deleteUserInLocalStorage} from "../services/local_storage";
 import {UserContext} from "../contexts/user";
 import {useContext, useEffect, useState} from "react";
-import {UserContextType} from "../services/types";
+import {LoaderContextType, UserContextType} from "../services/types";
 import SecondaryButton from "../components/SecondaryButton";
 import PrimaryButton from "../components/PrimaryButton";
 import {Colors} from "../services/constants";
 import ParticipationCard from "../components/ParticipationCard";
 import {Challenge} from "../models/Challenge";
 import {getChallengesByUser} from "../repositories/challenge_repository";
+import {LoaderContext} from "../contexts/loader";
 
 export default function AccountScreen(props: NativeStackScreenProps<any>) {
 
     const { user, setUser } = useContext<UserContextType>(UserContext)
+    const { loading, setLoading } = useContext<LoaderContextType>(LoaderContext)
 
     const [challenges, setChallenges] = useState<Challenge[]>([])
 
     useEffect(() => {
+        setLoading(true)
         if (user) {
-            getChallengesByUser(user).then(results => {
+            const getData = async () => await getChallengesByUser(user).then(results => {
                 if(typeof results !== 'string') {
                     setChallenges(results)
                 } else {
@@ -30,7 +33,11 @@ export default function AccountScreen(props: NativeStackScreenProps<any>) {
             }).catch(error => {
                 console.error(error.message)
             })
+
+            getData().then(() => setLoading(false))
+
         } else {
+            setLoading(false)
             props.navigation.navigate("Auth", {screen: "Login"})
         }
     }, [])
