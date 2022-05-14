@@ -1,5 +1,6 @@
 import {GestureResponderEvent, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {WasteCategory} from "../models/WasteCategory";
+import {Colors} from "../services/constants";
 
 interface WasteCategoryCardProps {
     category: WasteCategory,
@@ -24,9 +25,11 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: "space-around",
         alignItems: "center",
-        backgroundColor: "#216b1d",
+        backgroundColor: Colors.primary,
         marginVertical: 10,
-        padding: 20
+        padding: 20,
+        borderBottomLeftRadius: 15,
+        borderTopRightRadius: 15
     },
 
     image: {

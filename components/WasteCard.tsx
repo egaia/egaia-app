@@ -1,13 +1,15 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {GestureResponderEvent, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Waste} from "../models/Waste";
+import {Colors} from "../services/constants";
 
 interface WasteCardProps {
-    waste: Waste
+    waste: Waste,
+    onPress: (event: GestureResponderEvent) => void
 }
 
 const WasteCard = (props: WasteCardProps) => {
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={props.onPress}>
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
                     <Image style={styles.image} source={{uri: props.waste.image}} />
@@ -26,14 +28,15 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         width: 250,
         marginHorizontal: 10,
-        borderRadius: 15,
     },
 
     imageContainer: {
-        backgroundColor: '#216b1d',
+        backgroundColor: Colors.primary,
         justifyContent: "center",
         alignItems: "center",
-        padding: 10
+        padding: 10,
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
     },
 
     image: {
@@ -42,8 +45,10 @@ const styles = StyleSheet.create({
     },
 
     labelContainer: {
-        backgroundColor: '#b5de77',
-        padding: 10
+        backgroundColor: Colors.secondary,
+        padding: 10,
+        borderBottomLeftRadius: 15,
+        borderBottomRightRadius: 15,
     },
 
     name: {

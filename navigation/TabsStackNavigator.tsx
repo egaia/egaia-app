@@ -16,8 +16,8 @@ const TabsStackNavigator = () => {
         <TabsStack.Navigator
             screenOptions={{
                 //tabBarShowLabel: false,
-                tabBarActiveTintColor: Colors.secondary,
-                tabBarInactiveTintColor: Colors.primary,
+                tabBarActiveTintColor: Colors.primary,
+                tabBarInactiveTintColor: Colors.secondary,
             }}
             initialRouteName="SearchTab"
         >

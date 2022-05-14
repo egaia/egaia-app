@@ -5,16 +5,13 @@ import {useEffect, useState} from "react";
 import {findWasteCategory} from "../repositories/waste_categories_repository";
 import {WasteCategory} from "../models/WasteCategory";
 import WasteLittleCard from "../components/WasteLittleCard";
+import {Colors} from "../services/constants";
 
 const WasteCategoryScreen = (props: NativeStackScreenProps<any>) => {
 
     const [wasteCategory, setWasteCategory] = useState<WasteCategory>()
 
-    let wasteCategoryId: number
-
-    if (props.route.params !== undefined) {
-        wasteCategoryId = props.route.params.wasteCategoryId
-    }
+    const wasteCategoryId: number = props.route.params?.wasteCategoryId
 
     useEffect(() => {
         if(wasteCategoryId !== undefined) {
@@ -64,7 +61,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: 'green',
+        backgroundColor: Colors.primary,
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
         height: '18%',

@@ -47,6 +47,12 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
         })
     }
 
+    const goToWaste = (id: number) => {
+        navigation.navigate("Waste", {
+            wasteId: id
+        })
+    }
+
     return (
         <EgaiaContainer>
             <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -58,7 +64,7 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                     {wastes.map(waste => {
                         return (
-                            <WasteCard key={`waste-${waste.id}`} waste={waste} />
+                            <WasteCard key={`waste-${waste.id}`} waste={waste} onPress={() => goToWaste(waste.id)} />
                         )
                     })}
                 </ScrollView>

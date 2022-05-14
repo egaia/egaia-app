@@ -1,4 +1,4 @@
-import {Text} from "react-native";
+import {Image, StyleSheet, Text, View} from "react-native";
 import {useEffect} from "react";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {useDispatch} from "react-redux";
@@ -35,8 +35,31 @@ export default function SplashScreen({navigation}: NativeStackScreenProps<any>) 
     }, [])
 
     return (
-        <EgaiaContainer backgroundColor={Colors.primary}>
-            <Text style={{textAlign: 'center'}}>EGAIA</Text>
-        </EgaiaContainer>
+        <View style={styles.container}>
+            <View style={styles.logoContainer}>
+                <Image style={styles.logo} source={require("../assets/icons/flamme.png")}/>
+            </View>
+        </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        height: '100%',
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: Colors.background
+    },
+
+    logoContainer: {
+        height: '80%',
+        width: '100%',
+        justifyContent: "center",
+        alignItems: "center"
+    },
+
+    logo: {
+        width: 200,
+        height: 200
+    },
+})

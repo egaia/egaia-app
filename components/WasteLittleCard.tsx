@@ -1,5 +1,6 @@
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Waste} from "../models/Waste";
+import {Colors} from "../services/constants";
 
 interface WasteLittleCardProps {
     waste: Waste
@@ -17,7 +18,7 @@ const WasteLittleCard = (props: WasteLittleCardProps) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#96ea94',
+        backgroundColor: Colors.secondary,
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 10

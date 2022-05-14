@@ -1,6 +1,7 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import SearchScreen from "../screens/SearchScreen";
 import WasteCategoryScreen from "../screens/WasteCategoryScreen";
+import WasteScreen from "../screens/WasteScreen";
 
 const SearchStack = createNativeStackNavigator()
 
@@ -11,6 +12,11 @@ const SearchStackNavigator = () => {
                 headerShown: false
             }} />
             <SearchStack.Screen name="WasteCategory" component={WasteCategoryScreen} options={{
+                headerTransparent: true,
+                headerTitle: '',
+                headerBackTitleVisible: false
+            }} />
+            <SearchStack.Screen name="Waste" component={WasteScreen} options={{
                 headerTransparent: true,
                 headerTitle: '',
                 headerBackTitleVisible: false
