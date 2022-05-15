@@ -40,6 +40,7 @@ const TabsStackNavigator = () => {
                                 resizeMode='contain'
                                 style={{
                                     width: size,
+                                    height: size,
                                     tintColor: color,
                                 }}/>
                         </View>
@@ -50,6 +51,7 @@ const TabsStackNavigator = () => {
                 name="CollectPoints"
                 component={CollectPointsScreen}
                 options={{
+                    headerShown: false,
                     title: "Points de collecte",
                     tabBarLabelStyle: {textTransform: 'uppercase'},
                     tabBarLabel: 'Collecte',
@@ -60,6 +62,7 @@ const TabsStackNavigator = () => {
                                 resizeMode='contain'
                                 style={{
                                     width: size,
+                                    height: size,
                                     tintColor: color,
                                 }}/>
                         </View>
@@ -80,6 +83,7 @@ const TabsStackNavigator = () => {
                                 resizeMode='contain'
                                 style={{
                                     width: size,
+                                    height: size,
                                     tintColor: color,
                                 }}/>
                         </View>
@@ -99,6 +103,7 @@ const TabsStackNavigator = () => {
                                 resizeMode='contain'
                                 style={{
                                     width: size,
+                                    height: size,
                                     tintColor: color,
                                 }}/>
                         </View>
@@ -119,6 +124,7 @@ const TabsStackNavigator = () => {
                                 resizeMode='contain'
                                 style={{
                                     width: size,
+                                    height: size,
                                     tintColor: color,
                                 }}/>
                         </View>
