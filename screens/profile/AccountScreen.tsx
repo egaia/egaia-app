@@ -1,18 +1,18 @@
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import EgaiaContainer from "../components/EgaiaContainer";
-import {deleteUserInLocalStorage} from "../services/local_storage";
-import {UserContext} from "../contexts/user";
+import EgaiaContainer from "../../components/EgaiaContainer";
+import {deleteUserInLocalStorage} from "../../services/local_storage";
+import {UserContext} from "../../contexts/user";
 import {useContext, useEffect, useState} from "react";
-import {LoaderContextType, UserContextType} from "../services/types";
-import SecondaryButton from "../components/SecondaryButton";
-import PrimaryButton from "../components/PrimaryButton";
-import {Colors} from "../services/constants";
-import ParticipationCard from "../components/ParticipationCard";
-import {Challenge} from "../models/Challenge";
-import {getChallengesByUser} from "../repositories/challenge_repository";
-import {LoaderContext} from "../contexts/loader";
+import {LoaderContextType, UserContextType} from "../../services/types";
+import SecondaryButton from "../../components/SecondaryButton";
+import PrimaryButton from "../../components/PrimaryButton";
+import {Colors} from "../../services/constants";
+import ParticipationCard from "../../components/ParticipationCard";
+import {Challenge} from "../../models/Challenge";
+import {getChallengesByUser} from "../../repositories/challenge_repository";
+import {LoaderContext} from "../../contexts/loader";
 
 export default function AccountScreen(props: NativeStackScreenProps<any>) {
 
@@ -52,18 +52,21 @@ export default function AccountScreen(props: NativeStackScreenProps<any>) {
         })
     }
 
+    const goToUpdate = () => {
+        props.navigation.navigate("UpdateProfile")
+    }
+
     return (
         <EgaiaContainer>
             <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
                 <View style={styles.profileContainer}>
                     <View style={styles.profileInfoContainer}>
-                        <Image style={styles.profilePicture} source={require("../assets/icons/utilisateur.png")} />
+                        <Image style={styles.profilePicture} source={require("../../assets/icons/utilisateur.png")} />
                         <Text>{user?.firstname} {user?.lastname}</Text>
-                        <Text>username</Text>
                     </View>
                     <View style={styles.buttonsContainer}>
                         <View style={styles.button}>
-                            <SecondaryButton text="Modifier mon profil" onPress={() => {}} />
+                            <SecondaryButton text="Modifier mon profil" onPress={goToUpdate} />
                         </View>
                         <View style={styles.button}>
                             <PrimaryButton text="Me deconnecter" onPress={logoutMyUser} />

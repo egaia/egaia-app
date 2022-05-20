@@ -70,7 +70,7 @@ export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
                 >
                     {(props) => {
                         return (
-                            <SafeAreaView>
+                            <View>
                                 <TextInput
                                     style={formsStyle.input}
                                     placeholder="Email"
@@ -93,7 +93,7 @@ export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
                                 <TouchableOpacity style={formsStyle.button} onPress={() => props.handleSubmit()}>
                                     <Text style={{color: "white", textAlign: "center"}}>Continuer</Text>
                                 </TouchableOpacity>
-                            </SafeAreaView>
+                            </View>
                         );
                     }}
                 </Formik>

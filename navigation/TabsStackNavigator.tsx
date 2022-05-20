@@ -2,21 +2,15 @@ import {Colors} from "../services/constants";
 import GoodPlansScreen from "../screens/GoodPlansScreen";
 import {Image, View} from "react-native";
 import CollectPointsScreen from "../screens/CollectPointsScreen";
-import SearchScreen from "../screens/SearchScreen";
 import ChallengesScreen from "../screens/ChallengesScreen";
-import AccountScreen from "../screens/AccountScreen";
-import React, {useContext} from "react";
+import React from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import SearchStackNavigator from "./SearchStackNavigator";
-import {UserContextType} from "../services/types";
-import {UserContext} from "../contexts/user";
-import LoginScreen from "../screens/authentication/LoginScreen";
+import ProfileStackNavigator from "./ProfileStackNavigator";
 
 const TabsStack = createBottomTabNavigator();
 
 const TabsStackNavigator = () => {
-
-    const { user } = useContext<UserContextType>(UserContext)
 
     return (
         <TabsStack.Navigator
@@ -112,7 +106,7 @@ const TabsStackNavigator = () => {
             />
             <TabsStack.Screen
                 name="Profile"
-                component={user !== undefined ? AccountScreen : LoginScreen}
+                component={ProfileStackNavigator}
                 options={{
                     headerShown: false,
                     title: "Profil",

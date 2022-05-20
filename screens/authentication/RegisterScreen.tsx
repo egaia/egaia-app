@@ -3,7 +3,7 @@ import {
     StyleSheet,
     Text,
     TextInput,
-    TouchableOpacity,
+    TouchableOpacity, View,
 } from "react-native";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {useState} from "react";
@@ -107,7 +107,7 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
                 >
                     {(props) => {
                         return (
-                            <SafeAreaView>
+                            <View>
                                 <TextInput
                                     style={formsStyle.input}
                                     placeholder="Prénom"
@@ -166,7 +166,7 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
                                 <TouchableOpacity style={formsStyle.button} onPress={() => props.handleSubmit()}>
                                     <Text style={{color: "white", textAlign: "center"}}>Continuer</Text>
                                 </TouchableOpacity>
-                            </SafeAreaView>
+                            </View>
                         );
                     }}
                 </Formik>
