@@ -2,11 +2,12 @@ import {Colors} from "../services/constants";
 import GoodPlansScreen from "../screens/GoodPlansScreen";
 import {Image, View} from "react-native";
 import CollectPointsScreen from "../screens/CollectPointsScreen";
-import ChallengesScreen from "../screens/ChallengesScreen";
+import ChallengesScreen from "../screens/challenges/ChallengesScreen";
 import React from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import SearchStackNavigator from "./SearchStackNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
+import ChallengesStackNavigator from "./ChallengesStackNavigator";
 
 const TabsStack = createBottomTabNavigator();
 
@@ -85,9 +86,10 @@ const TabsStackNavigator = () => {
                 }}
             />
             <TabsStack.Screen
-                name="Challenges"
-                component={ChallengesScreen}
+                name="ChallengesStack"
+                component={ChallengesStackNavigator}
                 options={{
+                    headerShown: false,
                     title: "Défis",
                     tabBarLabelStyle: {textTransform: 'uppercase'},
                     tabBarIcon: ({color, size}) => (
