@@ -4,5 +4,9 @@ export interface Challenge {
     content: string,
     points: number,
     startedAt: Date,
-    endedAt: Date
+    endedAt: Date,
+    participation?: {
+        picture: string,
+        valid: boolean
+    }
 }

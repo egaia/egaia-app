@@ -2,8 +2,12 @@ import EgaiaContainer from "../../components/EgaiaContainer";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Colors} from "../../services/constants";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
+import {Challenge} from "../../models/Challenge";
 
-const ChallengeScreen = ({navigation}: NativeStackScreenProps<any>) => {
+const ChallengeScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
+
+    const challenge: Challenge = route.params?.challenge
+
     const clickOnParticipate = () => {
         navigation.navigate("Camera")
     }
@@ -16,7 +20,8 @@ const ChallengeScreen = ({navigation}: NativeStackScreenProps<any>) => {
                 </View>
                 <View style={styles.challengeContainer}>
                     <View>
-                        <Text style={styles.challengeTitle}>Utiliser une gourde</Text>
+                        <Text style={styles.challengeTitle}>{challenge.title}</Text>
+                        <Text style={styles.description}>{challenge.content.replace(/(<([^>]+)>)/gi, "")}</Text>
                         <Text style={styles.description}>Pour réussir ton défi, prends une photo et gagne des gaïas</Text>
                     </View>
                     <TouchableOpacity style={styles.button} onPress={clickOnParticipate}>

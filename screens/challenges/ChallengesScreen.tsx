@@ -4,51 +4,70 @@ import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import EgaiaContainer from "../../components/EgaiaContainer";
 import {Colors} from "../../services/constants";
 import ChallengeCard from "../../components/ChallengeCard";
+import {useContext, useEffect, useState} from "react";
+import {Challenge} from "../../models/Challenge";
+import {AllChallengesApiResponse, getAllChallenges} from "../../repositories/challenge_repository";
+import {UserContext} from "../../contexts/user";
+import {UserContextType} from "../../services/types";
 
 export default function ChallengesScreen({navigation}: NativeStackScreenProps<any>) {
 
+    const { user } = useContext<UserContextType>(UserContext)
+
+    const [challengesApi, setChallengesApi] = useState<AllChallengesApiResponse|undefined>(undefined)
+
+    useEffect(() => {
+        getAllChallenges(user?.apiToken!).then(response => {
+            if(typeof response !== 'string') {
+                setChallengesApi(response)
+            } else {
+                console.error(response)
+            }
+        }).catch(error => {
+            console.error(error.message)
+        })
+    }, [])
+
+
     const goToChallengeOfTheWeek = () => {
-        navigation.navigate("Challenge")
+        navigation.navigate("Challenge", {challenge: challengesApi?.currentChallenge})
+    }
+
+    const getMonthFullName = (date: Date): string => {
+        const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+            "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+        ];
+
+        return monthNames[date.getMonth()]+' '+date.getFullYear()
     }
 
     return (
         <EgaiaContainer>
             <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.globalContainer}>
-                    <TouchableOpacity style={styles.challengeOfTheDayContainer} onPress={goToChallengeOfTheWeek}>
-                        <View style={styles.challengeOfTheDay}>
-                            <Text style={styles.challengeOfTheDayText}>Découvre le défi de la semaine</Text>
-                        </View>
-                    </TouchableOpacity>
+                    {challengesApi?.currentChallenge && <TouchableOpacity style={styles.challengeOfTheDayContainer} onPress={goToChallengeOfTheWeek}>
+                      <View style={styles.challengeOfTheDay}>
+                        <Text style={styles.challengeOfTheDayText}>Découvre le défi de la semaine</Text>
+                      </View>
+                    </TouchableOpacity>}
                     <View style={styles.participationsContainer}>
                         <Text style={styles.participationsTitle}>Tes défis au fil du temps</Text>
-                        <View style={styles.monthContainer}>
-                            <Text style={styles.month}>Avril 2022</Text>
-                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                                <ChallengeCard />
-                                <ChallengeCard />
-                                <ChallengeCard />
-                                <ChallengeCard />
-                            </ScrollView>
-                        </View>
-                        <View style={styles.monthContainer}>
-                            <Text style={styles.month}>Avril 2022</Text>
-                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                                <ChallengeCard />
-                                <ChallengeCard />
-                                <ChallengeCard />
-                                <ChallengeCard />
-                            </ScrollView>
-                        </View>
-                        <View style={styles.monthContainer}>
-                            <Text style={styles.month}>Avril 2022</Text>
-                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                                <ChallengeCard />
-                                <ChallengeCard />
-                                <ChallengeCard />
-                                <ChallengeCard />
-                            </ScrollView>
-                        </View>
+                        {
+                            challengesApi && challengesApi.challenges.map(challengeApi => {
+                                return (
+                                    <View key={challengeApi.date_month} style={styles.monthContainer}>
+                                        <Text style={styles.month}>{getMonthFullName(new Date(challengeApi.carbon_date))}</Text>
+                                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                                            { challengeApi.results.map(result => {
+                                                return (
+                                                    <ChallengeCard key={`challenge-${result.id}`} challenge={result} />
+                                                )
+                                            }) }
+                                        </ScrollView>
+                                    </View>
+                                )
+                            })
+                        }
                     </View>
                 </View>
             </ScrollView>
