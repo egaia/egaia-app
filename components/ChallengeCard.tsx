@@ -7,7 +7,6 @@ interface ChallengeCardProps {
 }
 
 const ChallengeCard = (props: ChallengeCardProps) => {
-    console.log(props.challenge)
     return (
         <View style={styles.singleParticipationContainer}>
             {props.challenge.participation ?

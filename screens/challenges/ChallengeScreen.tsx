@@ -1,5 +1,5 @@
 import EgaiaContainer from "../../components/EgaiaContainer";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Colors} from "../../services/constants";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {Challenge} from "../../models/Challenge";
@@ -9,7 +9,7 @@ const ChallengeScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
     const challenge: Challenge = route.params?.challenge
 
     const clickOnParticipate = () => {
-        navigation.navigate("Camera")
+        navigation.replace("Camera", {challenge})
     }
 
     return (
@@ -24,10 +24,21 @@ const ChallengeScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
                         <Text style={styles.description}>{challenge.content.replace(/(<([^>]+)>)/gi, "")}</Text>
                         <Text style={styles.description}>Pour réussir ton défi, prends une photo et gagne des gaïas</Text>
                     </View>
-                    <TouchableOpacity style={styles.button} onPress={clickOnParticipate}>
-                        <Text>Réaliser le défi</Text>
-                        <Text>{'-->'}</Text>
-                    </TouchableOpacity>
+                    {
+                        challenge.participation ?
+                            <View>
+                                <Image resizeMode="center" style={{width: 300, height: 300}} source={{uri: challenge.participation.picture}} />
+                                <Text>Tu as participé à ce défi</Text>
+                                {challenge.participation.valid ?
+                                    <Text>Celui-ci a été validé félicitations</Text>
+                                    : <Text>Celui-ci est en attente de validation</Text>}
+                            </View>
+                            :
+                            <TouchableOpacity style={styles.button} onPress={clickOnParticipate}>
+                                <Text>Réaliser le défi</Text>
+                                <Text>{'-->'}</Text>
+                            </TouchableOpacity>
+                    }
                 </View>
             </View>
         </EgaiaContainer>

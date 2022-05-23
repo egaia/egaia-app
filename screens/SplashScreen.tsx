@@ -18,17 +18,17 @@ export default function SplashScreen({navigation}: NativeStackScreenProps<any>) 
                     getByApiToken(value).then(user => {
                         if (typeof (user) === 'object') {
                             setUser(user)
-                            navigation.navigate("Tabs")
+                            navigation.replace("Tabs")
                         } else {
                             console.error(user)
                         }
                     })
                 } else {
-                    navigation.navigate("Landing")
+                    navigation.replace("Landing")
                 }
             }).catch(error => {
                 console.error(error)
-                navigation.navigate("Landing")
+                navigation.replace("Landing")
             })
         }, 1000)
     }, [])

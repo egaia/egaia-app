@@ -2,6 +2,8 @@ import {endpointUrl} from "./api";
 import {User} from "../models/User";
 import axios, {AxiosResponse} from "axios";
 import {Challenge} from "../models/Challenge";
+import {ChallengeParticipationDTO} from "../models/DTO/ChallengeParticipationDTO";
+import {Platform} from "react-native";
 
 const baseUrl: string = `${endpointUrl}/challenges`
 
@@ -42,6 +44,36 @@ export const getAllChallenges = async (token: string): Promise<AllChallengesApiR
     })
 }
 
+export const participateToChallenge = async (challengeParticipationDTO: ChallengeParticipationDTO, token: string): Promise<ParticipateChallengeApiResponse|string> => {
+
+    let uriParts = challengeParticipationDTO.picture.uri.split('.');
+    let fileType = uriParts[uriParts.length - 1];
+
+    let formData = new FormData();
+    formData.append('challenge_id', challengeParticipationDTO.challenge_id.toString())
+    formData.append('picture', {
+        uri: challengeParticipationDTO.picture.uri,
+        name: `photo.${fileType}`,
+        type: `image/${fileType}`,
+    });
+    console.log(formData)
+
+    return await axios.post(`${baseUrl}/participate`, formData, {
+        headers: {
+            'Content-type': 'multipart/form-data',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((response: AxiosResponse) => {
+        const data: ParticipateChallengeApiResponse = response.data
+        if(data.success) return data
+    }).catch(error => {
+        console.error(error.body)
+        console.error(error)
+        return error.message
+    })
+}
+
 type ChallengesApiResponse = {
     success: boolean,
     challenges?: Challenge[],
@@ -62,4 +94,8 @@ export type AllChallengesApiResponse = {
         carbon_date: string,
         results: Challenge[]
     }[]
+}
+
+export type ParticipateChallengeApiResponse = {
+    success: boolean
 }
