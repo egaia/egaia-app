@@ -3,12 +3,27 @@ import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import EgaiaContainer from "../../components/EgaiaContainer";
 import {Colors} from "../../services/constants";
-import PartnerCard from "../../components/PartnerCard";
+import PromotionCard from "../../components/PromotionCard";
+import {useContext, useEffect, useState} from "react";
+import {UserContext} from "../../contexts/user";
+import {UserContextType} from "../../services/types";
+import {Promotion} from "../../models/Promotion";
+import {getAllPromotions} from "../../repositories/promotion_repository";
 
 export default function GoodPlansScreen({navigation}: NativeStackScreenProps<any>) {
 
-    const goToPartner = () => {
-        navigation.navigate("GoodPlan")
+    const { user } = useContext<UserContextType>(UserContext)
+
+    const [promotions, setPromotions] = useState<Promotion[]>([])
+
+    useEffect(() => {
+        getAllPromotions(user?.apiToken!)
+            .then(promotions => setPromotions(promotions))
+            .catch(error => console.error(error))
+    }, [])
+
+    const goToPromotion = (promotion: Promotion) => {
+        navigation.navigate("GoodPlan", {promotion})
     }
 
     return (
@@ -19,12 +34,13 @@ export default function GoodPlansScreen({navigation}: NativeStackScreenProps<any
                 </View>
                 <ScrollView style={styles.partnersScrollContainer} showsVerticalScrollIndicator={false}>
                     <View style={styles.partnersContainer}>
-                        <PartnerCard onPress={goToPartner} />
-                        <PartnerCard onPress={goToPartner} />
-                        <PartnerCard onPress={goToPartner} />
-                        <PartnerCard onPress={goToPartner} />
-                        <PartnerCard onPress={goToPartner} />
-                        <PartnerCard onPress={goToPartner} />
+                        {
+                            promotions.map(promotion => {
+                                return (
+                                    <PromotionCard key={`promotion-${promotion.id}`} promotion={promotion} onPress={() => goToPromotion(promotion)} />
+                                )
+                            })
+                        }
                     </View>
                 </ScrollView>
             </View>

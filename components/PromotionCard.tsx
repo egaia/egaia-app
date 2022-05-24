@@ -1,17 +1,19 @@
 import {GestureResponderEvent, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Colors} from "../services/constants";
+import {Promotion} from "../models/Promotion";
 
 interface PartnerCardProps {
+    promotion: Promotion,
     onPress: (event: GestureResponderEvent) => void
 }
 
-const PartnerCard = (props: PartnerCardProps) => {
+const PromotionCard = (props: PartnerCardProps) => {
     return (
         <TouchableOpacity style={styles.partnerContainer} onPress={props.onPress}>
-            <Image style={styles.partnerImage} resizeMode="cover" source={require("../assets/icons/flamme.png")} />
+            <Image style={styles.partnerImage} resizeMode="cover" source={{uri: props.promotion.partner?.image}} />
             <View style={styles.partnerTextContainer}>
-                <Text style={styles.partnerText}>YaBio: Un dessert offert</Text>
-                <Text style={styles.partnerText}>250 G</Text>
+                <Text style={styles.partnerText}>{props.promotion.partner?.name}: {props.promotion.label}</Text>
+                <Text style={styles.partnerText}>{props.promotion.cost} G</Text>
             </View>
         </TouchableOpacity>
     )
@@ -50,4 +52,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default PartnerCard
+export default PromotionCard

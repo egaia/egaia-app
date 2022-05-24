@@ -21,6 +21,7 @@ export default function SplashScreen({navigation}: NativeStackScreenProps<any>) 
                             navigation.replace("Tabs")
                         } else {
                             console.error(user)
+                            AsyncStorage.removeItem('api_token').then()
                         }
                     })
                 } else {

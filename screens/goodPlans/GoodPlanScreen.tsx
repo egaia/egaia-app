@@ -1,31 +1,44 @@
 import EgaiaContainer from "../../components/EgaiaContainer";
 import {Image, ScrollView, StyleSheet, Text, View} from "react-native";
 import OtherButton from "../../components/OtherButton";
+import {NativeStackScreenProps} from "@react-navigation/native-stack";
+import {useContext, useEffect, useState} from "react";
+import {Promotion} from "../../models/Promotion";
+import {findPromotion} from "../../repositories/promotion_repository";
+import {UserContextType} from "../../services/types";
+import {UserContext} from "../../contexts/user";
 
-const GoodPlanScreen = () => {
+const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
+
+    const { user } = useContext<UserContextType>(UserContext)
+
+    const [promotion, setPromotion] = useState<Promotion>(route.params?.promotion)
+
+    useEffect(() => {
+        findPromotion(route.params?.promotion.id!, user?.apiToken!)
+            .then(response => setPromotion(response))
+            .catch(error => console.error(error))
+    }, [])
+
     return (
         <EgaiaContainer>
             <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.globalContainer}>
-                    <Image style={styles.image} resizeMode="cover" source={require("../../assets/icons/flamme.png")} />
+                    <Image style={styles.image} resizeMode="cover" source={{uri: promotion.partner?.image}} />
                     <View style={styles.infoContainer}>
                         <View style={styles.titleContainer}>
-                            <Text style={styles.titleText}>YaBio: Un dessert offert</Text>
-                            <Text style={styles.titleText}>250 G</Text>
+                            <Text style={styles.titleText}>{promotion.partner?.name}: {promotion.label}</Text>
+                            <Text style={styles.titleText}>{promotion.cost} G</Text>
                         </View>
                         <View>
-                            <Text>
-                                Raptim igitur properantes ut motus sui rumores celeritate nimia praevenirent,
-                                vigore corporum ac levitate confisi per flexuosas semitas ad summitates collium tardius evadebant.
-                                et cum superatis difficultatibus arduis ad supercilia venissent fluvii Melanis alti et verticosi, q
-                                ui pro muro tuetur accolas circumfusus, augente nocte adulta terrorem quievere paulisper lucem opperientes.
-                                arbitrabantur enim nullo inpediente transgressi inopino adcursu adposita quaeque vastare,
-                                sed in cassum labores pertulere gravissimos.
-                            </Text>
+                            <Text>{promotion.description}</Text>
                         </View>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <OtherButton text="Utiliser cette offre" onPress={() => {}} />
+                        <OtherButton
+                            text="Utiliser cette offre"
+                            disabled={user?.points! < promotion.cost}
+                            onPress={() => {}} />
                     </View>
                 </View>
             </ScrollView>
