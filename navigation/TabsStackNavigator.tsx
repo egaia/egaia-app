@@ -1,5 +1,5 @@
 import {Colors} from "../services/constants";
-import GoodPlansScreen from "../screens/GoodPlansScreen";
+import GoodPlansScreen from "../screens/goodPlans/GoodPlansScreen";
 import {Image, View} from "react-native";
 import CollectPointsScreen from "../screens/CollectPointsScreen";
 import ChallengesScreen from "../screens/challenges/ChallengesScreen";
@@ -8,6 +8,7 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import SearchStackNavigator from "./SearchStackNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
 import ChallengesStackNavigator from "./ChallengesStackNavigator";
+import GoodPlansStackNavigator from "./GoodPlansStackNavigator";
 
 const TabsStack = createBottomTabNavigator();
 
@@ -23,9 +24,10 @@ const TabsStackNavigator = () => {
             initialRouteName="SearchTab"
         >
             <TabsStack.Screen
-                name="GoodPlans"
-                component={GoodPlansScreen}
+                name="GoodPlansStack"
+                component={GoodPlansStackNavigator}
                 options={{
+                    headerShown: false,
                     title: "Bons plans",
                     tabBarLabelStyle: {textTransform: 'uppercase'},
                     tabBarIcon: ({color, size}) => (
