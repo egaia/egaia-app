@@ -1,3 +1,6 @@
+import {Challenge} from "./Challenge";
+import {Promotion} from "./Promotion";
+
 export interface User {
     id: number,
     firstname: string,
@@ -5,5 +8,14 @@ export interface User {
     birthdate: Date,
     email: string,
     points: number,
-    apiToken: string
+    apiToken: string,
+    historic: UserHistoricItem[]
+}
+
+export type UserHistoricItem = {
+    id: number,
+    label: string,
+    type: string,
+    points: number,
+    date: Date
 }

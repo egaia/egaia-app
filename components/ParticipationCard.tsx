@@ -1,12 +1,12 @@
 import {StyleSheet, Text, View} from "react-native";
-import {Challenge} from "../models/Challenge";
+import {UserHistoricItem} from "../models/User";
 
 interface ParticipationCardProps {
-    challenge: Challenge,
+    historicItem: UserHistoricItem,
     withoutBorder ?: boolean
 }
 
-const ParticipationCard = ({challenge, withoutBorder}: ParticipationCardProps) => {
+const ParticipationCard = ({historicItem, withoutBorder}: ParticipationCardProps) => {
     const styles = StyleSheet.create({
         participationContainer: {
             width: '100%',
@@ -18,8 +18,13 @@ const ParticipationCard = ({challenge, withoutBorder}: ParticipationCardProps) =
 
     return (
         <View style={styles.participationContainer}>
-            <Text>Participation à un défi : {challenge.points} G</Text>
-            <Text>{challenge.title}</Text>
+            {
+                historicItem.type === 'challenge' && <Text>Participation à un défi : + {historicItem.points} G</Text>
+            }
+            {
+                historicItem.type === 'promotion' && <Text>Utilisation d'une promotion : - {historicItem.points} G</Text>
+            }
+            <Text>{historicItem.label}</Text>
         </View>
     )
 }

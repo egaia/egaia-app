@@ -4,47 +4,16 @@ import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import EgaiaContainer from "../../components/EgaiaContainer";
 import {deleteUserInLocalStorage} from "../../services/local_storage";
 import {UserContext} from "../../contexts/user";
-import {useContext, useEffect, useState} from "react";
-import {LoaderContextType, UserContextType} from "../../services/types";
+import {useContext} from "react";
+import {UserContextType} from "../../services/types";
 import SecondaryButton from "../../components/SecondaryButton";
 import PrimaryButton from "../../components/PrimaryButton";
 import {Colors} from "../../services/constants";
 import ParticipationCard from "../../components/ParticipationCard";
-import {Challenge} from "../../models/Challenge";
-import {getChallengesByUser} from "../../repositories/challenge_repository";
-import {LoaderContext} from "../../contexts/loader";
 
 export default function AccountScreen(props: NativeStackScreenProps<any>) {
 
     const { user, setUser } = useContext<UserContextType>(UserContext)
-    const { loading, setLoading } = useContext<LoaderContextType>(LoaderContext)
-
-    const [challenges, setChallenges] = useState<Challenge[]>([])
-
-    useEffect(() => {
-        setLoading(true)
-        if (user) {
-            const getData = async () => await getChallengesByUser(user).then(results => {
-                if(typeof results !== 'string') {
-                    setChallenges(results)
-                } else {
-                    console.error(results)
-                }
-            }).catch(error => {
-                console.error(error.message)
-            })
-
-            getData().then(() => setLoading(false))
-
-        } else {
-            setLoading(false)
-            props.navigation.navigate("Auth", {screen: "Login"})
-        }
-    }, [])
-
-    const loginMyUser = () => {
-        props.navigation.navigate("Auth", "Login")
-    }
 
     const logoutMyUser = () => {
         deleteUserInLocalStorage().then(() => {
@@ -80,9 +49,9 @@ export default function AccountScreen(props: NativeStackScreenProps<any>) {
                     </View>
                     <View style={styles.historicContainer}>
                         <Text>Historique :</Text>
-                        {challenges.map((challenge, index) => {
+                        {user?.historic.map((historicItem, index) => {
                             return (
-                                <ParticipationCard key={`challenge-${challenge.id}`} challenge={challenge} withoutBorder={index+1 >= challenges.length} />
+                                <ParticipationCard key={`historic-${historicItem.type}-${historicItem.id}`} historicItem={historicItem} withoutBorder={index+1 >= user?.historic.length} />
                             )
                         })}
                     </View>

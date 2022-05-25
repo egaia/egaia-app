@@ -7,12 +7,13 @@ import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {Challenge} from "../../models/Challenge";
 import {UserContext} from "../../contexts/user";
 import {UserContextType} from "../../services/types";
+import {getByApiToken} from "../../repositories/auth_repository";
 
 const CameraScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
 
     const challenge: Challenge = route.params?.challenge
 
-    const { user } = useContext<UserContextType>(UserContext)
+    const { user, setUser } = useContext<UserContextType>(UserContext)
 
     const [hasPermission, setHasPermission] = useState<boolean|null>(null)
     const [type, setType] = useState<CameraType>(CameraType.back)
@@ -43,7 +44,14 @@ const CameraScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
     const send = () => {
         if(capturedImage) {
             participateToChallenge({challenge_id: challenge.id, picture: capturedImage}, user?.apiToken!).then(response => {
-                navigation.replace("Challenges")
+                getByApiToken(user?.apiToken!).then(response => {
+                    if(typeof response !== 'string') {
+                        setUser(response)
+                        navigation.replace("Challenges")
+                    } else {
+                        console.error(response)
+                    }
+                })
             }).catch(error => {
                 console.error(error.message)
             })

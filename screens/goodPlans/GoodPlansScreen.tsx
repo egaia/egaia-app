@@ -30,7 +30,7 @@ export default function GoodPlansScreen({navigation}: NativeStackScreenProps<any
         <EgaiaContainer>
             <View style={styles.container}>
                 <View style={styles.pointsContainer}>
-                    <Text style={styles.pointsText}>250 G</Text>
+                    <Text style={styles.pointsText}>{user?.points} G</Text>
                 </View>
                 <ScrollView style={styles.partnersScrollContainer} showsVerticalScrollIndicator={false}>
                     <View style={styles.partnersContainer}>

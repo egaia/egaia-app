@@ -4,13 +4,14 @@ import OtherButton from "../../components/OtherButton";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {useContext, useEffect, useState} from "react";
 import {Promotion} from "../../models/Promotion";
-import {findPromotion} from "../../repositories/promotion_repository";
+import {findPromotion, usePromotion} from "../../repositories/promotion_repository";
 import {UserContextType} from "../../services/types";
 import {UserContext} from "../../contexts/user";
+import {getByApiToken} from "../../repositories/auth_repository";
 
 const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
 
-    const { user } = useContext<UserContextType>(UserContext)
+    const { user, setUser } = useContext<UserContextType>(UserContext)
 
     const [promotion, setPromotion] = useState<Promotion>(route.params?.promotion)
 
@@ -19,6 +20,23 @@ const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
             .then(response => setPromotion(response))
             .catch(error => console.error(error))
     }, [])
+
+    const clickOnUse = () => {
+        usePromotion(promotion, user?.apiToken!).then(response => {
+            if(response === true) {
+                getByApiToken(user?.apiToken!).then(response => {
+                    if(typeof response !== 'string') {
+                        setUser(response)
+                        navigation.replace("GoodPlans")
+                    } else {
+                        console.error(response)
+                    }
+                })
+            } else {
+                console.error(response)
+            }
+        })
+    }
 
     return (
         <EgaiaContainer>
@@ -35,10 +53,24 @@ const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
                         </View>
                     </View>
                     <View style={styles.buttonContainer}>
+                        {
+                            user?.historic.find(historicItem => (historicItem.id === promotion.id && historicItem.type === 'promotion')) !== undefined
+                                &&
+                            <Text style={styles.hintText}>
+                                Vous avez déjà profité de cette offre !
+                            </Text>
+                        }
+                        {
+                            (user?.points! < promotion.cost && user?.historic.find(historicItem => (historicItem.id === promotion.id && historicItem.type === 'promotion')) === undefined)
+                            &&
+                            <Text style={styles.hintText}>
+                              Il vous manque {promotion.cost - user?.points!} gaïas pour profiter de cette offre
+                            </Text>
+                        }
                         <OtherButton
                             text="Utiliser cette offre"
-                            disabled={user?.points! < promotion.cost}
-                            onPress={() => {}} />
+                            disabled={user?.points! < promotion.cost || user?.historic.find(historicItem => (historicItem.id === promotion.id && historicItem.type === 'promotion')) !== undefined}
+                            onPress={clickOnUse} />
                     </View>
                 </View>
             </ScrollView>
@@ -85,6 +117,13 @@ const styles = StyleSheet.create({
 
     buttonContainer: {
         width: "80%"
+    },
+
+    hintText: {
+        textAlign: "center",
+        fontSize: 12,
+        fontStyle: "italic",
+        marginVertical: 20
     }
 })
 

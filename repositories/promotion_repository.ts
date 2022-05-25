@@ -33,3 +33,20 @@ export const findPromotion = async (id: number, token: string): Promise<Promotio
         return error.message
     })
 }
+
+export const usePromotion = async (promotion: Promotion, token: string): Promise<boolean|string> => {
+    return await axios.post(baseUrl, {
+        promotion_id: promotion.id
+    }, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    }).then(response => {
+        return true
+    }).catch(error => {
+        console.error(error.message)
+        return error.message
+    })
+}
