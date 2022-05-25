@@ -8,12 +8,14 @@ import {findPromotion, usePromotion} from "../../repositories/promotion_reposito
 import {UserContextType} from "../../services/types";
 import {UserContext} from "../../contexts/user";
 import {getByApiToken} from "../../repositories/auth_repository";
+import AlertUsePromotionModal from "../../components/AlertUsePromotionModal";
 
 const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
 
     const { user, setUser } = useContext<UserContextType>(UserContext)
 
     const [promotion, setPromotion] = useState<Promotion>(route.params?.promotion)
+    const [alertModalVisible, setAlertModalVisible] = useState<boolean>(false)
 
     useEffect(() => {
         findPromotion(route.params?.promotion.id!, user?.apiToken!)
@@ -27,6 +29,7 @@ const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
                 getByApiToken(user?.apiToken!).then(response => {
                     if(typeof response !== 'string') {
                         setUser(response)
+                        setAlertModalVisible(false)
                         navigation.replace("GoodPlans")
                     } else {
                         console.error(response)
@@ -70,9 +73,15 @@ const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
                         <OtherButton
                             text="Utiliser cette offre"
                             disabled={user?.points! < promotion.cost || user?.historic.find(historicItem => (historicItem.id === promotion.id && historicItem.type === 'promotion')) !== undefined}
-                            onPress={clickOnUse} />
+                            onPress={() => setAlertModalVisible(true)} />
                     </View>
                 </View>
+                <AlertUsePromotionModal
+                    promotion={promotion}
+                    visible={alertModalVisible}
+                    onClose={() => setAlertModalVisible(false)}
+                    onPressYes={clickOnUse}
+                />
             </ScrollView>
         </EgaiaContainer>
     )
@@ -93,7 +102,6 @@ const styles = StyleSheet.create({
     image: {
         width: "100%",
         height: 250,
-        backgroundColor: 'red'
     },
 
     infoContainer: {
