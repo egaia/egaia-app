@@ -3,8 +3,13 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Colors} from "../../services/constants";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {Challenge} from "../../models/Challenge";
+import {useContext} from "react";
+import {UserContext} from "../../contexts/user";
+import {UserContextType} from "../../services/types";
 
 const ChallengeScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
+
+    const { user } = useContext<UserContextType>(UserContext)
 
     const challenge: Challenge = route.params?.challenge
 
@@ -25,6 +30,7 @@ const ChallengeScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
                         <Text style={styles.description}>Pour réussir ton défi, prends une photo et gagne des gaïas</Text>
                     </View>
                     {
+                        user !== undefined ?
                         challenge.participation ?
                             <View>
                                 <Image resizeMode="center" style={{width: 300, height: 300}} source={{uri: challenge.participation.picture}} />
@@ -38,6 +44,8 @@ const ChallengeScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
                                 <Text>Réaliser le défi</Text>
                                 <Text>{'-->'}</Text>
                             </TouchableOpacity>
+                            :
+                            <Text>Connectez-vous pour participer à ce défi</Text>
                     }
                 </View>
             </View>

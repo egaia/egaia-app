@@ -28,7 +28,7 @@ export const getChallengesByUser = async (user: User): Promise<Challenge[]|strin
     })
 }
 
-export const getAllChallenges = async (token: string): Promise<AllChallengesApiResponse|string> => {
+export const getAllChallenges = async (token: string|undefined): Promise<AllChallengesApiResponse|string> => {
     return await axios.get(baseUrl, {
         headers: {
             'Content-Type': 'application/json',

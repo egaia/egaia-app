@@ -17,7 +17,7 @@ export default function ChallengesScreen({navigation}: NativeStackScreenProps<an
     const [challengesApi, setChallengesApi] = useState<AllChallengesApiResponse|undefined>(undefined)
 
     useEffect(() => {
-        getAllChallenges(user?.apiToken!).then(response => {
+        getAllChallenges(user?.apiToken).then(response => {
             if(typeof response !== 'string') {
                 setChallengesApi(response)
             } else {

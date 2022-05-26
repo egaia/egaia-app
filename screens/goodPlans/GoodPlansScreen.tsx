@@ -17,7 +17,7 @@ export default function GoodPlansScreen({navigation}: NativeStackScreenProps<any
     const [promotions, setPromotions] = useState<Promotion[]>([])
 
     useEffect(() => {
-        getAllPromotions(user?.apiToken!)
+        getAllPromotions(user?.apiToken)
             .then(promotions => setPromotions(promotions))
             .catch(error => console.error(error))
     }, [])
@@ -29,9 +29,11 @@ export default function GoodPlansScreen({navigation}: NativeStackScreenProps<any
     return (
         <EgaiaContainer>
             <View style={styles.container}>
-                <View style={styles.pointsContainer}>
+                { user !== undefined &&
+                  <View style={styles.pointsContainer}>
                     <Text style={styles.pointsText}>{user?.points} G</Text>
-                </View>
+                  </View>
+                }
                 <ScrollView style={styles.partnersScrollContainer} showsVerticalScrollIndicator={false}>
                     <View style={styles.partnersContainer}>
                         {

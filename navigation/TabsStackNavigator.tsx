@@ -3,16 +3,20 @@ import GoodPlansScreen from "../screens/goodPlans/GoodPlansScreen";
 import {Image, View} from "react-native";
 import CollectPointsScreen from "../screens/CollectPointsScreen";
 import ChallengesScreen from "../screens/challenges/ChallengesScreen";
-import React from "react";
+import React, {useContext} from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import SearchStackNavigator from "./SearchStackNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
 import ChallengesStackNavigator from "./ChallengesStackNavigator";
 import GoodPlansStackNavigator from "./GoodPlansStackNavigator";
+import {UserContext} from "../contexts/user";
+import {UserContextType} from "../services/types";
 
 const TabsStack = createBottomTabNavigator();
 
 const TabsStackNavigator = () => {
+
+    const { user } = useContext<UserContextType>(UserContext)
 
     return (
         <TabsStack.Navigator
@@ -87,7 +91,8 @@ const TabsStackNavigator = () => {
                     )
                 }}
             />
-            <TabsStack.Screen
+            { user !== undefined &&
+              <TabsStack.Screen
                 name="ChallengesStack"
                 component={ChallengesStackNavigator}
                 options={{
@@ -107,7 +112,8 @@ const TabsStackNavigator = () => {
                         </View>
                     )
                 }}
-            />
+              />
+            }
             <TabsStack.Screen
                 name="Profile"
                 component={ProfileStackNavigator}

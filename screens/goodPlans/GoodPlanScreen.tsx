@@ -18,27 +18,29 @@ const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
     const [alertModalVisible, setAlertModalVisible] = useState<boolean>(false)
 
     useEffect(() => {
-        findPromotion(route.params?.promotion.id!, user?.apiToken!)
+        findPromotion(route.params?.promotion.id!, user?.apiToken)
             .then(response => setPromotion(response))
             .catch(error => console.error(error))
     }, [])
 
     const clickOnUse = () => {
-        usePromotion(promotion, user?.apiToken!).then(response => {
-            if(response === true) {
-                getByApiToken(user?.apiToken!).then(response => {
-                    if(typeof response !== 'string') {
-                        setUser(response)
-                        setAlertModalVisible(false)
-                        navigation.replace("GoodPlans")
-                    } else {
-                        console.error(response)
-                    }
-                })
-            } else {
-                console.error(response)
-            }
-        })
+        if(user !== undefined) {
+            usePromotion(promotion, user?.apiToken!).then(response => {
+                if(response === true) {
+                    getByApiToken(user?.apiToken!).then(response => {
+                        if(typeof response !== 'string') {
+                            setUser(response)
+                            setAlertModalVisible(false)
+                            navigation.replace("GoodPlans")
+                        } else {
+                            console.error(response)
+                        }
+                    })
+                } else {
+                    console.error(response)
+                }
+            })
+        }
     }
 
     return (
@@ -57,6 +59,12 @@ const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
                     </View>
                     <View style={styles.buttonContainer}>
                         {
+                            user === undefined &&
+                          <Text style={styles.hintText}>
+                            Connectez-vous pour profiter de l'offre
+                          </Text>
+                        }
+                        {
                             user?.historic.find(historicItem => (historicItem.id === promotion.id && historicItem.type === 'promotion')) !== undefined
                                 &&
                             <Text style={styles.hintText}>
@@ -72,7 +80,7 @@ const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
                         }
                         <OtherButton
                             text="Utiliser cette offre"
-                            disabled={user?.points! < promotion.cost || user?.historic.find(historicItem => (historicItem.id === promotion.id && historicItem.type === 'promotion')) !== undefined}
+                            disabled={user === undefined || user?.points! < promotion.cost || user?.historic.find(historicItem => (historicItem.id === promotion.id && historicItem.type === 'promotion')) !== undefined}
                             onPress={() => setAlertModalVisible(true)} />
                     </View>
                 </View>
