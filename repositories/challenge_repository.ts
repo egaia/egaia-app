@@ -56,7 +56,6 @@ export const participateToChallenge = async (challengeParticipationDTO: Challeng
         name: `photo.${fileType}`,
         type: `image/${fileType}`,
     });
-    console.log(formData)
 
     return await axios.post(`${baseUrl}/participate`, formData, {
         headers: {

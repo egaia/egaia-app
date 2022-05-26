@@ -30,7 +30,7 @@ export default function AccountScreen(props: NativeStackScreenProps<any>) {
             <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
                 <View style={styles.profileContainer}>
                     <View style={styles.profileInfoContainer}>
-                        <Image style={styles.profilePicture} source={require("../../assets/icons/utilisateur.png")} />
+                        <Image style={styles.profilePicture} source={{uri: user?.image}} />
                         <Text>{user?.firstname} {user?.lastname}</Text>
                     </View>
                     <View style={styles.buttonsContainer}>

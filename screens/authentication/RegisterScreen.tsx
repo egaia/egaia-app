@@ -20,6 +20,7 @@ import {useContext} from "react";
 import {LoaderContextType, UserContextType} from "../../services/types";
 import {UserContext} from "../../contexts/user";
 import {LoaderContext} from "../../contexts/loader";
+import DatePicker from "react-native-date-picker";
 
 type FormValues = {
     firstname: string,
@@ -55,7 +56,7 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
     const { setUser } = useContext<UserContextType>(UserContext)
     const { setLoading } = useContext<LoaderContextType>(LoaderContext)
 
-    const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
+    const [openDate, setOpenDate] = useState<boolean>(false)
 
     const tryRegisterUser = (values: FormValues) => {
         setLoading(true)
@@ -127,13 +128,24 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
                                 <Text
                                     style={formsStyle.inputError}>{props.touched.lastname && props.errors.lastname}</Text>
                                 <Text>Date de naissance</Text>
-                                <RNDateTimePicker
+                                <TouchableOpacity onPress={() => setOpenDate(true)}>
+                                    <Text>{props.values.birthdate.toLocaleDateString()}</Text>
+                                </TouchableOpacity>
+                                <DatePicker
+                                    modal
                                     mode="date"
-                                    value={props.values.birthdate}
-                                    onChange={(event, date) => props.setFieldValue('birthdate', date)}
-                                    dateFormat="day month year"
+                                    locale="fr"
+                                    title="Date de naissance"
+                                    confirmText="Confirmer"
+                                    cancelText="Annuler"
+                                    open={openDate}
+                                    onConfirm={(date) => {
+                                        props.setFieldValue('birthdate', date)
+                                        setOpenDate(false)
+                                    }}
+                                    onCancel={() => setOpenDate(false)}
+                                    date={props.values.birthdate}
                                 />
-                                <ErrorMessage name="birthdate"/>
                                 <TextInput
                                     style={formsStyle.input}
                                     placeholder="Email"

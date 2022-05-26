@@ -92,9 +92,31 @@ export const checkPassword = async (password: string, token: string): Promise<Au
 }
 
 export const updateUser = async (data: UpdateUserData, token: string): Promise<User | string> => {
-    return await axios.put(`${baseUrl}/update`, data, {
+
+    if(data.image) {
+        let uriParts = data.image.split('.');
+        let fileType = uriParts[uriParts.length - 1];
+    }
+
+    let formData = new FormData();
+    data.firstname && formData.append('firstname', data.firstname)
+    data.lastname && formData.append('lastname', data.lastname)
+    data.birthdate && formData.append('birthdate', data.birthdate)
+    data.email && formData.append('email', data.email)
+    data.password && formData.append('password', data.password)
+
+    let uriParts = data.image && data.image.split('.');
+    let fileType = uriParts && uriParts[uriParts.length - 1];
+
+    data.image && formData.append('image', {
+        uri: data.image,
+        name: `photo.${fileType}`,
+        type: `image/${fileType}`,
+    });
+
+    return await axios.post(`${baseUrl}/update`, formData, {
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
             'Accept': 'application/json',
             'Authorization': `Bearer ${token}`,
         }
@@ -121,6 +143,7 @@ export type UpdateUserData = {
     firstname: string|null,
     lastname: string|null,
     birthdate: string|null,
+    image: string|null,
     email: string|null,
     password: string|null
 }

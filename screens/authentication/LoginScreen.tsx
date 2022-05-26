@@ -64,7 +64,6 @@ export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
                         password: '',
                     }}
                     onSubmit={(values, actions) => {
-                        console.log(values)
                         tryLoginUser(values)
                     }}
                 >

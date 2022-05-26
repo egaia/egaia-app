@@ -6,6 +6,7 @@ export interface User {
     firstname: string,
     lastname: string,
     birthdate: Date,
+    image: string,
     email: string,
     points: number,
     apiToken: string,

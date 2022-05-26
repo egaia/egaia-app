@@ -1,15 +1,17 @@
 import EgaiaContainer from "../../components/EgaiaContainer";
-import {Image, ScrollView, StyleSheet, Text, TextInput, View} from "react-native";
+import {Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import PrimaryButton from "../../components/PrimaryButton";
 import {formsStyle} from "../../assets/styles/forms.style";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import {ErrorMessage, Formik} from "formik";
 import * as yup from "yup";
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../contexts/user";
 import {UserContextType} from "../../services/types";
 import {checkPassword, updateUser, UpdateUserData} from "../../repositories/auth_repository";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
+import * as ImagePicker from 'expo-image-picker';
+import DatePicker from 'react-native-date-picker'
 
 const UpdateProfileSchema = yup.object().shape({
     firstname: yup.string()
@@ -51,6 +53,25 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
 
     const { user, setUser } = useContext<UserContextType>(UserContext)
 
+    const [image, setImage] = useState<string|null>(null)
+    const [openDate, setOpenDate] = useState<boolean>(false)
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [16,9],
+            quality: 1,
+        })
+
+        console.log(result)
+
+        if (!result.cancelled) {
+            setImage(result.uri)
+        }
+    }
+
     const tryCheckPassword = (values: FormDataType) => {
         if(values.password.trim() !== '' && values.newPassword.trim() !== '') {
             checkPassword(values.password, user?.apiToken!).then(response => {
@@ -77,6 +98,7 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
             firstname: values.firstname !== user?.firstname ? values.firstname : null,
             lastname: values.lastname !== user?.lastname ? values.lastname : null,
             birthdate: values.birthdate.toISOString() !== new Date(user?.birthdate!).toISOString() ? new Date(values.birthdate.setDate(values.birthdate.getDate())).toISOString() : null,
+            image,
             email: values.email !== user?.email ? values.email : null,
             password: values.newPassword.trim() !== '' ? values.newPassword : null
         }
@@ -84,6 +106,7 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
         if(data.firstname === null
             && data.lastname === null
             && data.birthdate === null
+            && data.image === null
             && data.email === null
             && data.password === null) return;
 
@@ -105,8 +128,10 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.globalContainer}>
                     <View style={styles.profileInfoContainer}>
-                        <Image style={styles.profilePicture} source={require("../../assets/icons/utilisateur.png")} />
-                        <Text>Changer la photo de profil</Text>
+                        <Image style={styles.profilePicture} source={{uri: image ?? user?.image}} />
+                        <TouchableOpacity onPress={pickImage}>
+                            <Text>Changer la photo de profil</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.formContainer}>
                         <Formik
@@ -146,16 +171,24 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
                                         <Text
                                             style={formsStyle.inputError}>{props.touched.lastname && props.errors.lastname}</Text>
                                         <Text>Date de naissance</Text>
-                                        <RNDateTimePicker
+                                        <TouchableOpacity onPress={() => setOpenDate(true)}>
+                                            <Text>{props.values.birthdate.toLocaleDateString()}</Text>
+                                        </TouchableOpacity>
+                                        <DatePicker
+                                            modal
                                             mode="date"
-                                            value={props.values.birthdate!}
-                                            onChange={(event, date) => {
-                                                const correctDate = date && new Date(date?.toLocaleDateString())
+                                            locale="fr"
+                                            title="Date de naissance"
+                                            confirmText="Confirmer"
+                                            cancelText="Annuler"
+                                            open={openDate}
+                                            onConfirm={(date) => {
                                                 props.setFieldValue('birthdate', date)
+                                                setOpenDate(false)
                                             }}
-                                            dateFormat="day month year"
+                                            onCancel={() => setOpenDate(false)}
+                                            date={props.values.birthdate}
                                         />
-                                        <ErrorMessage name="birthdate"/>
                                         <TextInput
                                             style={formsStyle.input}
                                             placeholder="Email"
