@@ -3,7 +3,7 @@ import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import EgaiaContainer from "../components/EgaiaContainer";
 import MapView, {Marker, Region} from 'react-native-maps';
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {LoaderContextType} from "../services/types";
 import {LoaderContext} from "../contexts/loader";
 import {getAllCollectPoints} from "../repositories/collect_point_repository";
@@ -17,6 +17,8 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
 
     const [location, setLocation] = useState<Location.LocationObject | undefined>(undefined);
     const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined);
+
+    const mapRef = React.createRef<MapView>()
 
     const [collectPoints, setCollectPoints] = useState<CollectPoint[]>([])
     const [selectedCollectPoint, setSelectedCollectPoint] = useState<CollectPoint|undefined>(undefined)
@@ -64,8 +66,9 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
         <EgaiaContainer>
             <View style={styles.container}>
                 <MapView
+                    ref={mapRef}
                     style={{width: '100%', height: '100%'}}
-                    region={region}
+                    initialRegion={region}
                     onRegionChangeComplete={(value) => refreshMarkers(value)}
                     onMarkerDeselect={() => setSelectedCollectPoint(undefined)}
                 >
@@ -88,8 +91,7 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
                 {
                     location &&
                   <TouchableOpacity style={styles.locationButton} onPress={() => {
-                      console.log('pressed', location)
-                      location && setRegion({
+                      location && mapRef.current?.animateToRegion({
                           latitude: location.coords.latitude,
                           longitude: location.coords.longitude,
                           latitudeDelta: 0.05,
