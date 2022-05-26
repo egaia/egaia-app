@@ -26,20 +26,14 @@ const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
     const clickOnUse = () => {
         if(user !== undefined) {
             usePromotion(promotion, user?.apiToken!).then(response => {
-                if(response === true) {
+                if(response) {
                     getByApiToken(user?.apiToken!).then(response => {
-                        if(typeof response !== 'string') {
-                            setUser(response)
-                            setAlertModalVisible(false)
-                            navigation.replace("GoodPlans")
-                        } else {
-                            console.error(response)
-                        }
-                    })
-                } else {
-                    console.error(response)
+                        setUser(response)
+                        setAlertModalVisible(false)
+                        navigation.replace("GoodPlans")
+                    }).catch()
                 }
-            })
+            }).catch()
         }
     }
 

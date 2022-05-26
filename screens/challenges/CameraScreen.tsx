@@ -45,16 +45,10 @@ const CameraScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
         if(capturedImage) {
             participateToChallenge({challenge_id: challenge.id, picture: capturedImage}, user?.apiToken!).then(response => {
                 getByApiToken(user?.apiToken!).then(response => {
-                    if(typeof response !== 'string') {
-                        setUser(response)
-                        navigation.replace("Challenges")
-                    } else {
-                        console.error(response)
-                    }
-                })
-            }).catch(error => {
-                console.error(error.message)
-            })
+                    setUser(response)
+                    navigation.replace("Challenges")
+                }).catch()
+            }).catch()
         }
     }
 

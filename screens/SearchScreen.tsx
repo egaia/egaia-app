@@ -24,29 +24,25 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
     useEffect(() => {
         setLoading(true)
 
-        const getCategories = async () => await allWasteCategories().then(results => {
-            if(typeof(results) !== 'string') {
-                setWasteCategories(results)
-            } else {
-                console.error(results)
-            }
-        }).catch(error => {
-            console.error(error)
-        })
+        const allComplete = {
+            categories: false,
+            wastes: false
+        }
 
-        const getWastes = async () => await allWastes().then(results => {
-            if(typeof(results) !== 'string') {
-                setWastes(results)
-            } else {
-                console.error(results)
-            }
-        }).catch(error => {
-            console.error(error)
-        })
+        allWasteCategories().then(results => {
+            setWasteCategories(results)
+            allComplete.categories = true
+        }).catch()
 
-        getCategories().then(() => {
-            getWastes().then(() => setLoading(false))
-        })
+        allWastes().then(results => {
+            setWastes(results)
+            allComplete.wastes = true
+        }).catch()
+
+        while (!(allComplete.categories && allComplete.wastes)) {
+            //wait
+        }
+
     }, [])
 
     const goToWasteCategory = (id: number) => {

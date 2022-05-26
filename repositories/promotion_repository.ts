@@ -1,5 +1,5 @@
 import axios from "axios";
-import {endpointUrl} from "./api";
+import {displaySnackBarErrors, endpointUrl} from "./api";
 import {Promotion} from "../models/Promotion";
 
 const baseUrl: string = `${endpointUrl}/promotions`
@@ -14,8 +14,7 @@ export const getAllPromotions = async (token: string|undefined): Promise<Promoti
     }).then(response => {
         return response.data.promotions
     }).catch(error => {
-        console.error(error.message)
-        return error.message
+        displaySnackBarErrors(error.response.data)
     })
 }
 
@@ -29,12 +28,11 @@ export const findPromotion = async (id: number, token: string|undefined): Promis
     }).then(response => {
         return response.data.promotion
     }).catch(error => {
-        console.error(error.message)
-        return error.message
+        displaySnackBarErrors(error.response.data)
     })
 }
 
-export const usePromotion = async (promotion: Promotion, token: string): Promise<boolean|string> => {
+export const usePromotion = async (promotion: Promotion, token: string): Promise<boolean> => {
     return await axios.post(baseUrl, {
         promotion_id: promotion.id
     }, {
@@ -44,9 +42,8 @@ export const usePromotion = async (promotion: Promotion, token: string): Promise
             'Authorization': `Bearer ${token}`
         }
     }).then(response => {
-        return true
+        return response.data.success
     }).catch(error => {
-        console.error(error.message)
-        return error.message
+        displaySnackBarErrors(error.response.data)
     })
 }

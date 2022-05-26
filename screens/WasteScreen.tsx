@@ -19,17 +19,10 @@ const WasteScreen = (props: NativeStackScreenProps<any>) => {
     useEffect(() => {
         setLoading(true)
         if(wasteId !== undefined) {
-            const getData = async () => await findWaste(wasteId).then(result => {
-                if(typeof(result) !== 'string') {
-                    setWaste(result)
-                } else {
-                    console.error(result)
-                }
-            }).catch(error => {
-                console.error(error.message)
-            })
-
-            getData().then(() => setLoading(false))
+            findWaste(wasteId).then(result => {
+                setWaste(result)
+                setLoading(false)
+            }).catch(() => setLoading(false))
         } else {
             setLoading(false)
             props.navigation.goBack()

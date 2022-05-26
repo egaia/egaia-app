@@ -20,18 +20,10 @@ const WasteCategoryScreen = (props: NativeStackScreenProps<any>) => {
     useEffect(() => {
         setLoading(true)
         if (wasteCategoryId !== undefined) {
-            const getData = async () => await findWasteCategory(wasteCategoryId).then(result => {
-                if (typeof (result) !== 'string') {
-                    console.log(result)
-                    setWasteCategory(result)
-                } else {
-                    console.error(result)
-                }
-            }).catch(error => {
-                console.error(error.message)
-            })
-
-            getData().then(() => setLoading(false))
+            findWasteCategory(wasteCategoryId).then(result => {
+                setWasteCategory(result)
+                setLoading(false)
+            }).catch(() => setLoading(false))
         } else {
             setLoading(false)
             props.navigation.goBack()

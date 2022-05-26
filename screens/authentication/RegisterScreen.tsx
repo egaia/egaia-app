@@ -7,10 +7,8 @@ import {
 } from "react-native";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {useState} from "react";
-import {ErrorMessage, Formik} from "formik";
-import {SafeAreaView} from "react-native-safe-area-context";
+import {Formik} from "formik";
 import * as yup from 'yup';
-import RNDateTimePicker from "@react-native-community/datetimepicker";
 import EgaiaContainer from "../../components/EgaiaContainer";
 import {UserDTO} from "../../models/DTO/UserDTO";
 import {saveUserInLocalStorage} from "../../services/local_storage";
@@ -67,23 +65,13 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
             email: values.email,
             password: values.password
         }
-        const getData = async () => await registerUser(userDTO).then(user => {
-            if (typeof (user) === 'object') {
-                console.log('registeredUser', user)
-                saveUserInLocalStorage(user.apiToken).then(() => {
-                    setUser(user)
-                    navigation.navigate("Tabs")
-                }).catch(error => {
-                    console.error(error)
-                })
-            } else {
-                console.error(user)
-            }
-        }).catch(error => {
-            console.error(error)
-        })
-
-        getData().then(() => setLoading(false))
+        registerUser(userDTO).then(user => {
+            saveUserInLocalStorage(user.apiToken).then(() => {
+                setUser(user)
+                setLoading(false)
+                navigation.navigate("Tabs")
+            })
+        }).catch(() => setLoading(false))
     }
 
     return (

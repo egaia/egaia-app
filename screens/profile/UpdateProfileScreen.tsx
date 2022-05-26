@@ -112,15 +112,9 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
 
 
         updateUser(data, user?.apiToken!).then(result => {
-            if(typeof result !== 'string') {
-                setUser(result)
-                navigation.replace("Account")
-            } else {
-                console.error(result)
-            }
-        }).catch(error => {
-            console.error(error.message)
-        })
+            setUser(result)
+            navigation.replace("Account")
+        }).catch()
     }
 
     return (
