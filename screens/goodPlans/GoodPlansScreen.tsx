@@ -19,7 +19,7 @@ export default function GoodPlansScreen({navigation}: NativeStackScreenProps<any
     useEffect(() => {
         getAllPromotions(user?.apiToken)
             .then(promotions => setPromotions(promotions))
-            .catch(error => console.error(error))
+            .catch()
     }, [])
 
     const goToPromotion = (promotion: Promotion) => {

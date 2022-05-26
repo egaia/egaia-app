@@ -4,6 +4,7 @@ import {useState} from "react";
 import {User} from "./models/User";
 import {UserContext} from "./contexts/user";
 import {LoaderContext} from "./contexts/loader";
+import {RootSiblingParent} from 'react-native-root-siblings';
 
 export default function App() {
 
@@ -11,15 +12,17 @@ export default function App() {
     const [loading, setLoading] = useState<boolean>(false)
 
     return (
-        <NavigationContainer>
-            <UserContext.Provider value={{
-                user,
-                setUser
-            }}>
-                <LoaderContext.Provider value={{loading, setLoading}}>
-                    <RootStackNavigator/>
-                </LoaderContext.Provider>
-            </UserContext.Provider>
-        </NavigationContainer>
+        <RootSiblingParent>
+            <NavigationContainer>
+                <UserContext.Provider value={{
+                    user,
+                    setUser
+                }}>
+                    <LoaderContext.Provider value={{loading, setLoading}}>
+                        <RootStackNavigator/>
+                    </LoaderContext.Provider>
+                </UserContext.Provider>
+            </NavigationContainer>
+        </RootSiblingParent>
     );
 }

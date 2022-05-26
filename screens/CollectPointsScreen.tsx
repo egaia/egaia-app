@@ -47,32 +47,17 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
                 longitudeDelta: 0.05
             })
         })().then(() => {
-            const getData = async () => await getAllCollectPoints(region.latitude, region.longitude).then(results => {
-                if(typeof results !== 'string') {
-                    setCollectPoints(results)
-                } else {
-                    console.error(results)
-                }
-            }).catch(error => {
-                console.error(error.message)
-            })
-
-            getData().then(() => setLoading(false))
-        })
+            getAllCollectPoints(region.latitude, region.longitude).then(results => {
+                setCollectPoints(results)
+                setLoading(false)
+            }).catch(() => setLoading(false))
+        }).catch(() => setLoading(false))
     }, [])
 
     const refreshMarkers = (value: Region) => {
-        const getData = async () => await getAllCollectPoints(value.latitude, value.longitude).then(results => {
-            if(typeof results !== 'string') {
-                setCollectPoints(results)
-            } else {
-                console.error(results)
-            }
-        }).catch(error => {
-            console.error(error.message)
-        })
-
-        getData().then(() => setRegion(value))
+        getAllCollectPoints(value.latitude, value.longitude).then(results => {
+            setCollectPoints(results)
+        }).catch()
     }
 
     return (

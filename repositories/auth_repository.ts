@@ -1,35 +1,24 @@
 import {UserDTO} from "../models/DTO/UserDTO";
 import axios, {AxiosError, AxiosResponse} from "axios";
 import {User} from "../models/User";
-import {endpointUrl} from "./api";
-import {useContext} from "react";
-import {UserContext} from "../contexts/user";
-import {UserContextType} from "../services/types";
+import {displaySnackBarErrors, endpointUrl} from "./api";
 
 const baseUrl: string = `${endpointUrl}/auth`
 
-export const registerUser = async (userDTO: UserDTO): Promise<User | string> => {
+export const registerUser = async (userDTO: UserDTO): Promise<User> => {
     return await axios.post(`${baseUrl}/register`, userDTO, {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         }
     }).then((response: AxiosResponse) => {
-        const data: AuthApiResponse = response.data
-
-        if (data.success && data.user) {
-            return data.user
-        } else {
-            return data.message
-        }
-
+        return response.data.user
     }).catch(error => {
-        console.error(error)
-        return error.message
+        displaySnackBarErrors(error.response.data)
     })
 }
 
-export const loginUser = async (email: string, password: string): Promise<User | string> => {
+export const loginUser = async (email: string, password: string): Promise<User> => {
     return await axios.post(`${baseUrl}/login`, {
             email,
             password
@@ -39,22 +28,15 @@ export const loginUser = async (email: string, password: string): Promise<User |
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             }
-        }).then((response: AxiosResponse) => {
-        const data: AuthApiResponse = response.data
-
-        if (data.success && data.user) {
-            return data.user
-        } else {
-            return data.message
-        }
-
+        }).then((response) => {
+        console.log(response)
+        return response.data.user
     }).catch(error => {
-        console.error(error)
-        return error.message
+        displaySnackBarErrors(error.response.data)
     })
 }
 
-export const getByApiToken = async (token: string): Promise<User | string> => {
+export const getByApiToken = async (token: string): Promise<User> => {
     return await axios.get(`${baseUrl}/user`, {
         headers: {
             'Content-Type': 'application/json',
@@ -62,15 +44,9 @@ export const getByApiToken = async (token: string): Promise<User | string> => {
             'Authorization': `Bearer ${token}`,
         }
     }).then((response: AxiosResponse) => {
-        const data: AuthApiResponse = response.data
-        if (data.success && data.user) {
-            return data.user
-        } else {
-            return data.message
-        }
+        return response.data.user
     }).catch(error => {
-        console.error(error)
-        return error.message
+        displaySnackBarErrors(error.response.data)
     })
 }
 
@@ -86,14 +62,14 @@ export const checkPassword = async (password: string, token: string): Promise<Au
         }
     }).then((response: AxiosResponse) => {
         return response.data
-    }).catch((error: AxiosError) => {
-        console.error(error.message)
+    }).catch((error) => {
+        displaySnackBarErrors(error.response.data)
     })
 }
 
-export const updateUser = async (data: UpdateUserData, token: string): Promise<User | string> => {
+export const updateUser = async (data: UpdateUserData, token: string): Promise<User> => {
 
-    if(data.image) {
+    if (data.image) {
         let uriParts = data.image.split('.');
         let fileType = uriParts[uriParts.length - 1];
     }
@@ -121,15 +97,9 @@ export const updateUser = async (data: UpdateUserData, token: string): Promise<U
             'Authorization': `Bearer ${token}`,
         }
     }).then((response: AxiosResponse) => {
-        const data: AuthApiResponse = response.data
-        if (data.success && data.user) {
-            return data.user
-        } else {
-            return data.message
-        }
+        return response.data.user
     }).catch(error => {
-        console.error(error)
-        return error.message
+        displaySnackBarErrors(error.response.data)
     })
 }
 
@@ -140,10 +110,10 @@ type AuthApiResponse = {
 }
 
 export type UpdateUserData = {
-    firstname: string|null,
-    lastname: string|null,
-    birthdate: string|null,
-    image: string|null,
-    email: string|null,
-    password: string|null
+    firstname: string | null,
+    lastname: string | null,
+    birthdate: string | null,
+    image: string | null,
+    email: string | null,
+    password: string | null
 }

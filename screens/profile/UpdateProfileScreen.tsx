@@ -75,16 +75,9 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
     const tryCheckPassword = (values: FormDataType) => {
         if(values.password.trim() !== '' && values.newPassword.trim() !== '') {
             checkPassword(values.password, user?.apiToken!).then(response => {
-                if (response.success) {
-                    tryUpdateUser(values)
-                } else {
-                    console.error(response.message)
-                }
-            }).catch(error => {
-                console.error(error.message)
-            })
+                tryUpdateUser(values)
+            }).catch()
         } else {
-            console.log('tryCheck else')
             tryUpdateUser(values)
         }
     }
@@ -112,15 +105,9 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
 
 
         updateUser(data, user?.apiToken!).then(result => {
-            if(typeof result !== 'string') {
-                setUser(result)
-                navigation.replace("Account")
-            } else {
-                console.error(result)
-            }
-        }).catch(error => {
-            console.error(error.message)
-        })
+            setUser(result)
+            navigation.replace("Account")
+        }).catch()
     }
 
     return (

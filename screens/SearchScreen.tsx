@@ -25,28 +25,16 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
         setLoading(true)
 
         const getCategories = async () => await allWasteCategories().then(results => {
-            if(typeof(results) !== 'string') {
-                setWasteCategories(results)
-            } else {
-                console.error(results)
-            }
-        }).catch(error => {
-            console.error(error)
-        })
+            setWasteCategories(results)
+        }).catch()
 
         const getWastes = async () => await allWastes().then(results => {
-            if(typeof(results) !== 'string') {
-                setWastes(results)
-            } else {
-                console.error(results)
-            }
-        }).catch(error => {
-            console.error(error)
-        })
+            setWastes(results)
+        }).catch()
 
         getCategories().then(() => {
-            getWastes().then(() => setLoading(false))
-        })
+            getWastes().then(() => setLoading(false)).catch(() => setLoading(false))
+        }).catch(() => setLoading(false))
     }, [])
 
     const goToWasteCategory = (id: number) => {

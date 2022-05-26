@@ -33,23 +33,15 @@ export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
 
     const tryLoginUser = (values: FormValues) => {
         setLoading(true)
-        const getData = async () => await loginUser(values.email, values.password).then(user => {
-            if (typeof (user) === 'object') {
-                saveUserInLocalStorage(user.apiToken).then(() => {
-                    setUser(user)
-                    navigation.navigate("Tabs")
-                }).catch(error => {
-                    console.error(error)
-                })
+        loginUser(values.email, values.password).then(user => {
+            if(user) {
+                setUser(user)
+                setLoading(false)
+                navigation.navigate("Tabs")
             } else {
-                console.error(user)
+                setLoading(false)
             }
-        }).catch(error => {
-            console.error(error)
-        })
-
-        getData().then(() => setLoading(false))
-
+        }).catch(() => setLoading(false))
     }
 
     return (

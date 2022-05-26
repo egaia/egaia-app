@@ -67,23 +67,17 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
             email: values.email,
             password: values.password
         }
-        const getData = async () => await registerUser(userDTO).then(user => {
-            if (typeof (user) === 'object') {
-                console.log('registeredUser', user)
+        registerUser(userDTO).then(user => {
+            if(user) {
                 saveUserInLocalStorage(user.apiToken).then(() => {
                     setUser(user)
+                    setLoading(false)
                     navigation.navigate("Tabs")
-                }).catch(error => {
-                    console.error(error)
-                })
+                }).catch(() => setLoading(false))
             } else {
-                console.error(user)
+                setLoading(false)
             }
-        }).catch(error => {
-            console.error(error)
-        })
-
-        getData().then(() => setLoading(false))
+        }).catch(() => setLoading(false))
     }
 
     return (
