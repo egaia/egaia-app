@@ -21,6 +21,8 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
     const [wastes, setWastes] = useState<Waste[]>([])
     const [wasteCategories, setWasteCategories] = useState<WasteCategory[]>([])
 
+    const [query, setQuery] = useState<string>('')
+
     useEffect(() => {
         setLoading(true)
 
@@ -49,16 +51,19 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
         })
     }
 
+    const wastesFiltered = wastes.filter(waste => waste.name.toLowerCase().includes(query.toLowerCase()))
+    const wasteCategoriesFiltered = wasteCategories.filter(wasteCategory => wasteCategory.name.toLowerCase().includes(query.toLowerCase()))
+
     return (
         <EgaiaContainer>
             <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
                 {user !== undefined ? <Text style={styles.title}>Bonjour {user.firstname}</Text> : null}
                 <View>
                     <Text>Rechercher un déchet</Text>
-                    <TextInput placeholder="Saisir un déchet" />
+                    <TextInput placeholder="Saisir un déchet" onChangeText={(value) => setQuery(value)} />
                 </View>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                    {wastes.map(waste => {
+                    {wastesFiltered.map(waste => {
                         return (
                             <WasteCard key={`waste-${waste.id}`} waste={waste} onPress={() => goToWaste(waste.id)} />
                         )
@@ -67,7 +72,7 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
                 <View>
                     <Text>Catégories de déchets</Text>
                     <View>
-                        {wasteCategories.map(wasteCategory => {
+                        {wasteCategoriesFiltered.map(wasteCategory => {
                             return (
                                 <WasteCategoryCard key={`waste-category-${wasteCategory.id}`} category={wasteCategory} onPress={() => goToWasteCategory(wasteCategory.id)} />
                             )
