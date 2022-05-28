@@ -2,7 +2,6 @@ import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import EgaiaContainer from "../../components/EgaiaContainer";
-import {deleteUserInLocalStorage} from "../../services/local_storage";
 import {UserContext} from "../../contexts/user";
 import {useContext} from "react";
 import {UserContextType} from "../../services/types";
@@ -10,13 +9,14 @@ import SecondaryButton from "../../components/SecondaryButton";
 import PrimaryButton from "../../components/PrimaryButton";
 import {Colors} from "../../services/constants";
 import ParticipationCard from "../../components/ParticipationCard";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function AccountScreen(props: NativeStackScreenProps<any>) {
 
     const { user, setUser } = useContext<UserContextType>(UserContext)
 
     const logoutMyUser = () => {
-        deleteUserInLocalStorage().then(() => {
+        AsyncStorage.removeItem('api_token').then(() => {
             setUser(undefined)
         })
     }

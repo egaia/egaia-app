@@ -16,19 +16,19 @@ export default function SplashScreen({navigation}: NativeStackScreenProps<any>) 
             AsyncStorage.getItem('api_token').then(value => {
                 if (value) {
                     getByApiToken(value).then(user => {
-                        if (typeof (user) === 'object') {
-                            setUser(user)
-                            navigation.replace("Tabs")
+                        if (user) {
+                            AsyncStorage.setItem('api_token', user.apiToken).then(() => {
+                                setUser(user)
+                                navigation.replace("Tabs")
+                            }).catch()
                         } else {
-                            console.error(user)
                             AsyncStorage.removeItem('api_token').then()
                         }
-                    })
+                    }).catch()
                 } else {
                     navigation.replace("Landing")
                 }
             }).catch(error => {
-                console.error(error)
                 navigation.replace("Landing")
             })
         }, 1000)

@@ -2,15 +2,14 @@ import {ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native"
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import EgaiaContainer from "../../components/EgaiaContainer";
 import {Formik} from "formik";
-import {SafeAreaView} from "react-native-safe-area-context";
 import {formsStyle} from "../../assets/styles/forms.style";
 import * as yup from "yup";
 import {loginUser} from "../../repositories/auth_repository";
-import {saveUserInLocalStorage} from "../../services/local_storage";
 import {UserContext} from "../../contexts/user";
 import {useContext} from "react";
 import {LoaderContextType, UserContextType} from "../../services/types";
 import {LoaderContext} from "../../contexts/loader";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type FormValues = {
     email: string,
@@ -35,9 +34,11 @@ export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
         setLoading(true)
         loginUser(values.email, values.password).then(user => {
             if(user) {
-                setUser(user)
-                setLoading(false)
-                navigation.navigate("Tabs")
+                AsyncStorage.setItem('api_token', user.apiToken).then(() => {
+                    setUser(user)
+                    setLoading(false)
+                    navigation.navigate("Tabs")
+                }).catch(() => setLoading(false))
             } else {
                 setLoading(false)
             }

@@ -7,13 +7,10 @@ import {
 } from "react-native";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {useState} from "react";
-import {ErrorMessage, Formik} from "formik";
-import {SafeAreaView} from "react-native-safe-area-context";
+import {Formik} from "formik";
 import * as yup from 'yup';
-import RNDateTimePicker from "@react-native-community/datetimepicker";
 import EgaiaContainer from "../../components/EgaiaContainer";
 import {UserDTO} from "../../models/DTO/UserDTO";
-import {saveUserInLocalStorage} from "../../services/local_storage";
 import {formsStyle} from "../../assets/styles/forms.style";
 import {registerUser} from "../../repositories/auth_repository";
 import {useContext} from "react";
@@ -21,6 +18,7 @@ import {LoaderContextType, UserContextType} from "../../services/types";
 import {UserContext} from "../../contexts/user";
 import {LoaderContext} from "../../contexts/loader";
 import DatePicker from "react-native-date-picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type FormValues = {
     firstname: string,
@@ -69,7 +67,7 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
         }
         registerUser(userDTO).then(user => {
             if(user) {
-                saveUserInLocalStorage(user.apiToken).then(() => {
+                AsyncStorage.setItem('api_token', user.apiToken).then(() => {
                     setUser(user)
                     setLoading(false)
                     navigation.navigate("Tabs")
