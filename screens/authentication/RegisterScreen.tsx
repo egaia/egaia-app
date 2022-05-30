@@ -60,10 +60,15 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
 
     const tryRegisterUser = (values: FormValues) => {
         setLoading(true)
+
+        const [day, month, year] = values.birthdate.toLocaleDateString().split('/')
+        const dateString = year+'-'+month+'-'+day
+        const newDate = new Date(dateString)
+
         const userDTO: UserDTO = {
             firstname: values.firstname,
             lastname: values.lastname,
-            birthdate: values.birthdate.toISOString(),
+            birthdate: newDate.toISOString(),
             email: values.email,
             password: values.password
         }

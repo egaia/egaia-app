@@ -99,10 +99,15 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
 
         setLoading(true)
 
+
+        const [day, month, year] = values.birthdate.toLocaleDateString().split('/')
+        const dateString = year+'-'+month+'-'+day
+        const newDate = new Date(dateString)
+
         const data: UpdateUserData = {
             firstname: values.firstname !== user?.firstname ? values.firstname : null,
             lastname: values.lastname !== user?.lastname ? values.lastname : null,
-            birthdate: values.birthdate.toISOString() !== new Date(user?.birthdate!).toISOString() ? new Date(values.birthdate.setDate(values.birthdate.getDate())).toISOString() : null,
+            birthdate: newDate.toISOString() !== new Date(user?.birthdate!).toISOString() ? newDate.toISOString() : null,
             image,
             email: values.email !== user?.email ? values.email : null,
             password: values.newPassword.trim() !== '' ? values.newPassword : null,
