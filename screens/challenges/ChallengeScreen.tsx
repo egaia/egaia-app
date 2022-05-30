@@ -26,7 +26,6 @@ const ChallengeScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
                 <View style={styles.challengeContainer}>
                     <View>
                         <Text style={styles.challengeTitle}>{challenge.title}</Text>
-                        <Text style={styles.description}>{challenge.content.replace(/(<([^>]+)>)/gi, "")}</Text>
                         <Text style={styles.description}>Pour réussir ton défi, prends une photo et gagne des gaïas</Text>
                     </View>
                     {
