@@ -62,7 +62,7 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
         setLoading(true)
 
         const [day, month, year] = values.birthdate.toLocaleDateString().split('/')
-        const dateString = year+'-'+month+'-'+day
+        const dateString = year + '-' + month + '-' + day
         const newDate = new Date(dateString)
 
         const userDTO: UserDTO = {
@@ -87,7 +87,7 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
 
     return (
         <EgaiaContainer>
-            {loading && <Loader />}
+            {loading && <Loader/>}
             <KeyboardAvoidingView behavior="padding" enabled keyboardVerticalOffset={10}>
                 <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
                     <Text style={{fontSize: 40, marginBottom: 15}}>S'enregistrer</Text>
@@ -137,8 +137,10 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
 
                                     <View style={[formsStyle.inputContainer, {marginBottom: 15}]}>
                                         <Text style={formsStyle.inputText}>Date de naissance</Text>
-                                        <TouchableOpacity style={[formsStyle.input, {justifyContent: "center"}]} onPress={() => setOpenDate(true)}>
-                                            <Text style={{textAlignVertical: "center"}}>{props.values.birthdate.toLocaleDateString()}</Text>
+                                        <TouchableOpacity style={[formsStyle.input, {justifyContent: "center"}]}
+                                                          onPress={() => setOpenDate(true)}>
+                                            <Text
+                                                style={{textAlignVertical: "center"}}>{props.values.birthdate.toLocaleDateString()}</Text>
                                         </TouchableOpacity>
                                         {/*@ts-ignore*/}
                                         <DateTimePickerModal
@@ -198,7 +200,7 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
                                         </Text>
                                     </View>
 
-                                    <PrimaryButton text="Continuer" onPress={() => props.handleSubmit()} />
+                                    <PrimaryButton text="Continuer" onPress={() => props.handleSubmit()}/>
                                 </View>
                             );
                         }}

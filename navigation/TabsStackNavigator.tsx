@@ -1,8 +1,6 @@
 import {Colors} from "../services/constants";
-import GoodPlansScreen from "../screens/goodPlans/GoodPlansScreen";
 import {Image, View} from "react-native";
 import CollectPointsScreen from "../screens/CollectPointsScreen";
-import ChallengesScreen from "../screens/challenges/ChallengesScreen";
 import React, {useContext} from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import SearchStackNavigator from "./SearchStackNavigator";
@@ -16,7 +14,7 @@ const TabsStack = createBottomTabNavigator();
 
 const TabsStackNavigator = () => {
 
-    const { user } = useContext<UserContextType>(UserContext)
+    const {user} = useContext<UserContextType>(UserContext)
 
     return (
         <TabsStack.Navigator
@@ -91,7 +89,7 @@ const TabsStackNavigator = () => {
                     )
                 }}
             />
-            { user !== undefined &&
+            {user !== undefined &&
               <TabsStack.Screen
                 name="ChallengesStack"
                 component={ChallengesStackNavigator}

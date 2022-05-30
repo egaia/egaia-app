@@ -14,19 +14,19 @@ const CameraScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
 
     const challenge: Challenge = route.params?.challenge
 
-    const { user, setUser } = useContext<UserContextType>(UserContext)
+    const {user, setUser} = useContext<UserContextType>(UserContext)
 
     const [loading, setLoading] = useState<boolean>(false)
-    const [hasPermission, setHasPermission] = useState<boolean|null>(null)
+    const [hasPermission, setHasPermission] = useState<boolean | null>(null)
     const [type, setType] = useState<CameraType>(CameraType.back)
     const [flash, setFlash] = useState<boolean>(false)
-    const [camera, setCamera] = useState<Camera|null>(null)
+    const [camera, setCamera] = useState<Camera | null>(null)
     const [previewVisible, setPreviewVisible] = useState(false)
-    const [capturedImage, setCapturedImage] = useState<CameraCapturedPicture|null>(null)
+    const [capturedImage, setCapturedImage] = useState<CameraCapturedPicture | null>(null)
 
     useEffect(() => {
         (async () => {
-            const { status } = await Camera.requestCameraPermissionsAsync();
+            const {status} = await Camera.requestCameraPermissionsAsync();
             setHasPermission(status === 'granted');
         })()
     }, [])
@@ -46,8 +46,11 @@ const CameraScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
 
     const send = () => {
         setLoading(true)
-        if(capturedImage) {
-            participateToChallenge({challenge_id: challenge.id, picture: capturedImage}, user?.apiToken!).then(response => {
+        if (capturedImage) {
+            participateToChallenge({
+                challenge_id: challenge.id,
+                picture: capturedImage
+            }, user?.apiToken!).then(response => {
                 getByApiToken(user?.apiToken!).then(response => {
                     setUser(response)
                     setLoading(false)
@@ -58,12 +61,12 @@ const CameraScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
     }
 
     if (hasPermission === null) {
-        return <View />;
+        return <View/>;
     }
     if (!hasPermission) {
         return <Text>No access to camera</Text>;
     }
-    if(previewVisible && capturedImage) {
+    if (previewVisible && capturedImage) {
         return (
             <View
                 style={{
@@ -73,7 +76,7 @@ const CameraScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
                     height: '100%'
                 }}
             >
-                {loading && <Loader />}
+                {loading && <Loader/>}
                 <ImageBackground
                     source={{uri: capturedImage && capturedImage.uri}}
                     style={{
@@ -115,17 +118,21 @@ const CameraScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
     }
     return (
         <View style={styles.container}>
-            <Camera style={styles.camera} type={type} ref={(ref) => setCamera(ref)} flashMode={flash ? FlashMode.on : FlashMode.off}  />
-            <TouchableOpacity style={[styles.buttonFlash, flash ? styles.flashActive : styles.flashInactive]} onPress={() => setFlash(!flash)}>
-                <Image style={[styles.icon, flash ? styles.iconFlashActive : styles.iconFlashInactive]} source={require("../../assets/icons/bolt.png")} />
+            <Camera style={styles.camera} type={type} ref={(ref) => setCamera(ref)}
+                    flashMode={flash ? FlashMode.on : FlashMode.off}/>
+            <TouchableOpacity style={[styles.buttonFlash, flash ? styles.flashActive : styles.flashInactive]}
+                              onPress={() => setFlash(!flash)}>
+                <Image style={[styles.icon, flash ? styles.iconFlashActive : styles.iconFlashInactive]}
+                       source={require("../../assets/icons/bolt.png")}/>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonTakePicture} onPress={takePicture}>
-                <View style={styles.buttonTakePictureInterior} />
+                <View style={styles.buttonTakePictureInterior}/>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonChangeView} onPress={() => setType(type === CameraType.back ? CameraType.front : CameraType.back)}>
-                <Image style={styles.icon} source={require("../../assets/icons/refresh.png")} />
+            <TouchableOpacity style={styles.buttonChangeView}
+                              onPress={() => setType(type === CameraType.back ? CameraType.front : CameraType.back)}>
+                <Image style={styles.icon} source={require("../../assets/icons/refresh.png")}/>
             </TouchableOpacity>
-            <View style={styles.bottomView} />
+            <View style={styles.bottomView}/>
         </View>
     );
 }
@@ -144,7 +151,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         zIndex: 10,
         bottom: 15,
-        left: (Dimensions.get("window").width-65)/2,
+        left: (Dimensions.get("window").width - 65) / 2,
         backgroundColor: 'white',
         borderRadius: 100,
         justifyContent: "center",
@@ -164,7 +171,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         position: "absolute",
         zIndex: 10,
-        bottom: 15+(65-40)/2,
+        bottom: 15 + (65 - 40) / 2,
         right: 20,
         backgroundColor: 'white',
         borderRadius: 100
@@ -197,7 +204,7 @@ const styles = StyleSheet.create({
     },
     bottomView: {
         width: '100%',
-        height: 15+65+15,
+        height: 15 + 65 + 15,
         position: "absolute",
         zIndex: 0,
         bottom: 0,

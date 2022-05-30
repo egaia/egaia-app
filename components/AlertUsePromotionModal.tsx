@@ -15,7 +15,7 @@ const PlaceModal = ({promotion, visible, onClose, onPressYes}: PlaceModalProps) 
             <View style={styles.modalContainer}>
                 <View style={styles.globalContainer}>
                     <TouchableOpacity style={styles.close} onPress={onClose}>
-                        <Image style={styles.icon} source={require("../assets/icons/cross.png")} />
+                        <Image style={styles.icon} source={require("../assets/icons/cross.png")}/>
                     </TouchableOpacity>
                     <View style={styles.bodyContainer}>
                         <Text>Voulez-vous profitez de cette offre ?</Text>
@@ -71,12 +71,12 @@ const styles = StyleSheet.create({
         tintColor: Colors.white
     },
 
-    btn:{
-        borderWidth:1,
-        borderRadius:5,
-        paddingHorizontal:10,
-        paddingVertical:5,
-        marginTop:5,
+    btn: {
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        marginTop: 5,
         fontWeight: "500"
     },
 })

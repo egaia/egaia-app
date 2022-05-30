@@ -1,5 +1,5 @@
 import {UserDTO} from "../models/DTO/UserDTO";
-import axios, {AxiosError, AxiosResponse} from "axios";
+import axios, {AxiosResponse} from "axios";
 import {User} from "../models/User";
 import {displaySnackBarErrors, endpointUrl} from "./api";
 

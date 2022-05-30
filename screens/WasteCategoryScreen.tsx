@@ -1,7 +1,7 @@
 import EgaiaContainer from "../components/EgaiaContainer";
 import {Image, ScrollView, StyleSheet, Text, View} from "react-native";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {findWasteCategory} from "../repositories/waste_categories_repository";
 import {WasteCategory} from "../models/WasteCategory";
 import WasteLittleCard from "../components/WasteLittleCard";
@@ -35,7 +35,7 @@ const WasteCategoryScreen = (props: NativeStackScreenProps<any>) => {
     return (
         <EgaiaContainer>
             <View style={styles.container}>
-                {loading && <Loader />}
+                {loading && <Loader/>}
                 <View style={styles.categoryContainer}>
                     <Image style={styles.image} source={{uri: wasteCategory?.image}}/>
                     <Text style={styles.categoryName}>{wasteCategory?.name}</Text>
@@ -43,7 +43,8 @@ const WasteCategoryScreen = (props: NativeStackScreenProps<any>) => {
                 <ScrollView style={styles.wastesContainer} showsVerticalScrollIndicator={false}>
                     {wasteCategory?.wastes?.map(waste => {
                         return (
-                            <WasteLittleCard key={`waste-${waste.id}`} waste={waste} onPress={() => goToWaste(waste.id)}/>
+                            <WasteLittleCard key={`waste-${waste.id}`} waste={waste}
+                                             onPress={() => goToWaste(waste.id)}/>
                         )
                     })}
                 </ScrollView>

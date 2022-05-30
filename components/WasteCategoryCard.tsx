@@ -4,14 +4,14 @@ import {Colors} from "../services/constants";
 
 interface WasteCategoryCardProps {
     category: WasteCategory,
-    onPress ?: (event: GestureResponderEvent) => void
+    onPress?: (event: GestureResponderEvent) => void
 }
 
 const WasteCategoryCard = (props: WasteCategoryCardProps) => {
     return (
         <TouchableOpacity onPress={props.onPress}>
             <View style={styles.category}>
-                <Image style={styles.image} source={{uri: props.category.image}} />
+                <Image style={styles.image} source={{uri: props.category.image}}/>
                 <Text style={styles.text}>{props.category.name}</Text>
                 <View style={styles.arrowContainer}>
                     <Image style={styles.arrow} source={require("../assets/img/right-arrow.png")}/>
@@ -30,33 +30,32 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primary,
         marginVertical: 10,
         paddingHorizontal: 20,
-        paddingVertical:30,
+        paddingVertical: 30,
         borderBottomLeftRadius: 15,
         borderTopRightRadius: 15,
-        
+
     },
 
-    text:{
-        color:Colors.white,
-        fontSize:18,
-        fontWeight:"800",
-        width:"50%"
+    text: {
+        color: Colors.white,
+        fontSize: 18,
+        fontWeight: "800",
+        width: "50%"
     },
 
     image: {
         width: 75,
         height: 75,
-        marginRight:15
+        marginRight: 15
     },
 
-    arrowContainer:{
+    arrowContainer: {
         height: 70,
         flexDirection: "column",
-        justifyContent:"flex-end",
+        justifyContent: "flex-end",
     },
-    
-    arrow:{
-    }
+
+    arrow: {}
 })
 
 export default WasteCategoryCard

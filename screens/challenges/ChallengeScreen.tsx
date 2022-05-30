@@ -39,7 +39,8 @@ const ChallengeScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
                                         <Text style={styles.participationText}>Tu as participé à ce défi</Text>
                                         {challenge.participation.valid ?
                                             <Text style={styles.validText}>Celui-ci a été validé félicitations !</Text>
-                                            : <Text style={styles.waitText}>Celui-ci est en attente de validation</Text>}
+                                            :
+                                            <Text style={styles.waitText}>Celui-ci est en attente de validation</Text>}
                                     </View>
                                     :
                                     <TouchableOpacity style={styles.button} onPress={clickOnParticipate}>

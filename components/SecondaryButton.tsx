@@ -1,4 +1,4 @@
-import {GestureResponderEvent, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {GestureResponderEvent, StyleSheet, Text, TouchableOpacity} from "react-native";
 import {Colors} from "../services/constants";
 
 interface SecondaryButtonProps {
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: Colors.white,
         paddingVertical: 20,
-        paddingHorizontal:10,
+        paddingHorizontal: 10,
         borderRadius: 10,
         borderWidth: 2,
         borderStyle: "solid",

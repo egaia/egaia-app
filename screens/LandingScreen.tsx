@@ -1,6 +1,5 @@
-import {Button, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import EgaiaContainer from "../components/EgaiaContainer";
 import {Colors} from "../services/constants";
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
@@ -27,7 +26,7 @@ export default function LandingScreen(props: NativeStackScreenProps<any>) {
             <View style={styles.bottomContainer}>
                 <View style={styles.buttonsContainer}>
                     <View style={styles.button}>
-                        <SecondaryButton text="Se connecter" onPress={goToLogin} />
+                        <SecondaryButton text="Se connecter" onPress={goToLogin}/>
                     </View>
                     <View style={styles.button}>
                         <PrimaryButton text="Creer un compte" onPress={goToRegister}/>

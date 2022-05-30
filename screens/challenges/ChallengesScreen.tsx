@@ -13,10 +13,10 @@ import Loader from "../../components/Loader";
 
 export default function ChallengesScreen({navigation}: NativeStackScreenProps<any>) {
 
-    const { user } = useContext<UserContextType>(UserContext)
+    const {user} = useContext<UserContextType>(UserContext)
 
     const [loading, setLoading] = useState<boolean>(false)
-    const [challengesApi, setChallengesApi] = useState<AllChallengesApiResponse|undefined>(undefined)
+    const [challengesApi, setChallengesApi] = useState<AllChallengesApiResponse | undefined>(undefined)
 
     useEffect(() => {
         setLoading(true)
@@ -36,32 +36,36 @@ export default function ChallengesScreen({navigation}: NativeStackScreenProps<an
             "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
         ];
 
-        return monthNames[date.getMonth()]+' '+date.getFullYear()
+        return monthNames[date.getMonth()] + ' ' + date.getFullYear()
     }
 
     return (
         <EgaiaContainer>
-            {loading && <Loader />}
+            {loading && <Loader/>}
             <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.globalContainer}>
-                    {challengesApi?.currentChallenge && <TouchableOpacity style={styles.challengeOfTheDayContainer} onPress={goToChallengeOfTheWeek}>
-                      <View style={styles.challengeOfTheDay}>
-                        <Text style={styles.challengeOfTheDayText}>Découvre le défi de la semaine</Text>
-                      </View>
-                    </TouchableOpacity>}
+                    {challengesApi?.currentChallenge &&
+                      <TouchableOpacity style={styles.challengeOfTheDayContainer} onPress={goToChallengeOfTheWeek}>
+                        <View style={styles.challengeOfTheDay}>
+                          <Text style={styles.challengeOfTheDayText}>Découvre le défi de la semaine</Text>
+                        </View>
+                      </TouchableOpacity>}
                     <View style={styles.participationsContainer}>
                         <Text style={styles.participationsTitle}>Historique des défis</Text>
                         {
                             challengesApi && challengesApi.challenges.map(challengeApi => {
                                 return (
                                     <View key={challengeApi.date_month} style={styles.monthContainer}>
-                                        <Text style={styles.month}>{getMonthFullName(new Date(challengeApi.carbon_date))}</Text>
+                                        <Text
+                                            style={styles.month}>{getMonthFullName(new Date(challengeApi.carbon_date))}</Text>
                                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                                            { challengeApi.results.map((result, index) => {
+                                            {challengeApi.results.map((result, index) => {
                                                 return (
-                                                    <ChallengeCard key={`challenge-${result.id}`} challenge={result} first={index === 0} last={index === challengeApi.results.length-1} />
+                                                    <ChallengeCard key={`challenge-${result.id}`} challenge={result}
+                                                                   first={index === 0}
+                                                                   last={index === challengeApi.results.length - 1}/>
                                                 )
-                                            }) }
+                                            })}
                                         </ScrollView>
                                     </View>
                                 )
@@ -97,7 +101,7 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: "center",
         alignItems: "center",
-        height: Dimensions.get("window").height*0.17,
+        height: Dimensions.get("window").height * 0.17,
         backgroundColor: Colors.primary,
         borderTopRightRadius: 25,
         borderBottomLeftRadius: 25

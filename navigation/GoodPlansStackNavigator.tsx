@@ -8,13 +8,13 @@ const GoodPlansStack = createNativeStackNavigator()
 const GoodPlansStackNavigator = () => {
     return (
         <GoodPlansStack.Navigator initialRouteName="GoodPlans">
-            <GoodPlansStack.Screen name="GoodPlans" component={GoodPlansScreen} options={{headerShown: false}} />
+            <GoodPlansStack.Screen name="GoodPlans" component={GoodPlansScreen} options={{headerShown: false}}/>
             <GoodPlansStack.Screen name="GoodPlan" component={GoodPlanScreen} options={{
                 headerTransparent: true,
                 headerTitle: '',
                 headerBackTitleVisible: false,
                 headerTintColor: Colors.primary
-            }} />
+            }}/>
         </GoodPlansStack.Navigator>
     )
 }

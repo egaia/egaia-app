@@ -9,12 +9,12 @@ import {UserContextType} from "../../services/types";
 import {UserContext} from "../../contexts/user";
 import {getByApiToken} from "../../repositories/auth_repository";
 import AlertUsePromotionModal from "../../components/AlertUsePromotionModal";
-import { Colors } from "../../services/constants";
+import {Colors} from "../../services/constants";
 import Loader from "../../components/Loader";
 
 const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
 
-    const { user, setUser } = useContext<UserContextType>(UserContext)
+    const {user, setUser} = useContext<UserContextType>(UserContext)
 
     const [loading, setLoading] = useState<boolean>(false)
     const [promotion, setPromotion] = useState<Promotion>(route.params?.promotion)
@@ -31,10 +31,10 @@ const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
     }, [])
 
     const clickOnUse = () => {
-        if(user !== undefined) {
+        if (user !== undefined) {
             setLoading(true)
             usePromotion(promotion, user?.apiToken!).then(response => {
-                if(response) {
+                if (response) {
                     getByApiToken(user?.apiToken!).then(response => {
                         setUser(response)
                         setAlertModalVisible(false)
@@ -49,16 +49,16 @@ const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
 
     return (
         <EgaiaContainer>
-            {loading && <Loader />}
+            {loading && <Loader/>}
             <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.globalContainer}>
-                    <Image style={styles.image} resizeMode="cover" source={{uri: promotion.partner?.image}} />
+                    <Image style={styles.image} resizeMode="cover" source={{uri: promotion.partner?.image}}/>
                     <View style={styles.infoContainer}>
                         <View style={styles.titleContainer}>
                             <Text style={styles.titleText}>{promotion.partner?.name}: {promotion.label}</Text>
-                            <View  style={styles.numberGaiaContainer}>
+                            <View style={styles.numberGaiaContainer}>
                                 <Text style={styles.gaiaText}>{promotion.cost} </Text>
-                                <Image style={styles.gaia} source={require("../../assets/img/gaia.png")} />
+                                <Image style={styles.gaia} source={require("../../assets/img/gaia.png")}/>
                             </View>
                         </View>
                         <View>
@@ -74,22 +74,22 @@ const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
                         }
                         {
                             user?.historic.find(historicItem => (historicItem.id === promotion.id && historicItem.type === 'promotion')) !== undefined
-                                &&
-                            <Text style={styles.hintText}>
-                                Vous avez déjà profité de cette offre !
-                            </Text>
+                            &&
+                          <Text style={styles.hintText}>
+                            Vous avez déjà profité de cette offre !
+                          </Text>
                         }
                         {
                             (user?.points! < promotion.cost && user?.historic.find(historicItem => (historicItem.id === promotion.id && historicItem.type === 'promotion')) === undefined)
                             &&
-                            <Text style={styles.hintText}>
-                              Il vous manque {promotion.cost - user?.points!} gaïas pour profiter de cette offre
-                            </Text>
+                          <Text style={styles.hintText}>
+                            Il vous manque {promotion.cost - user?.points!} gaïas pour profiter de cette offre
+                          </Text>
                         }
                         <OtherButton
                             text="Utiliser cette offre"
                             disabled={user === undefined || user?.points! < promotion.cost || user?.historic.find(historicItem => (historicItem.id === promotion.id && historicItem.type === 'promotion')) !== undefined}
-                            onPress={() => setAlertModalVisible(true)} />
+                            onPress={() => setAlertModalVisible(true)}/>
                     </View>
                 </View>
                 <AlertUsePromotionModal
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     titleText: {
         fontSize: 20,
         fontWeight: "800",
-        width:"75%"
+        width: "75%"
     },
 
     buttonContainer: {
@@ -152,21 +152,21 @@ const styles = StyleSheet.create({
         marginVertical: 20
     },
 
-    numberGaiaContainer:{
+    numberGaiaContainer: {
         flexDirection: "row",
-        alignItems:"center",
+        alignItems: "center",
         justifyContent: "space-between",
     },
 
     gaiaText: {
-        fontSize: 20,fontWeight: "bold",
-        color:Colors.background,
+        fontSize: 20, fontWeight: "bold",
+        color: Colors.background,
     },
 
-    gaia:{
-        width:20,
-        height:20,
-        tintColor:Colors.background,
+    gaia: {
+        width: 20,
+        height: 20,
+        tintColor: Colors.background,
     },
 })
 

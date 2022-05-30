@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View} from "react-native";
+import {Image, StyleSheet, View} from "react-native";
 import {useContext, useEffect} from "react";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -9,7 +9,7 @@ import {UserContext} from "../contexts/user";
 
 export default function SplashScreen({navigation}: NativeStackScreenProps<any>) {
 
-    const { setUser } = useContext<UserContextType>(UserContext)
+    const {setUser} = useContext<UserContextType>(UserContext)
 
     useEffect(() => {
         window.setTimeout(() => {

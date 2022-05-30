@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import {Colors} from "../services/constants";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Waste} from "../models/Waste";
 import {allWastes, findWaste} from "../repositories/waste_repository";
 import Autocomplete from 'react-native-autocomplete-input';
@@ -52,7 +52,7 @@ const WasteScreen = (props: NativeStackScreenProps<any>) => {
     // @ts-ignore
     return (
         <SafeAreaView style={styles.globalContainer}>
-            {loading && <Loader />}
+            {loading && <Loader/>}
             <KeyboardAvoidingView style={{height: '100%'}} behavior="padding" enabled>
                 <ScrollView style={{backgroundColor: Colors.primary}} bounces={false}
                             showsVerticalScrollIndicator={false}>

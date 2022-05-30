@@ -1,4 +1,3 @@
-import {Challenge} from "../Challenge";
 import {CameraCapturedPicture} from "expo-camera";
 
 export interface ChallengeParticipationDTO {

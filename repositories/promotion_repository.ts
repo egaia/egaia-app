@@ -4,7 +4,7 @@ import {Promotion} from "../models/Promotion";
 
 const baseUrl: string = `${endpointUrl}/promotions`
 
-export const getAllPromotions = async (token: string|undefined): Promise<Promotion[]> => {
+export const getAllPromotions = async (token: string | undefined): Promise<Promotion[]> => {
     return await axios.get(baseUrl, {
         headers: {
             'Content-Type': 'application/json',
@@ -18,7 +18,7 @@ export const getAllPromotions = async (token: string|undefined): Promise<Promoti
     })
 }
 
-export const findPromotion = async (id: number, token: string|undefined): Promise<Promotion> => {
+export const findPromotion = async (id: number, token: string | undefined): Promise<Promotion> => {
     return await axios.get(`${baseUrl}/${id}`, {
         headers: {
             'Content-Type': 'application/json',

@@ -1,4 +1,4 @@
-import {GestureResponderEvent, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {GestureResponderEvent, StyleSheet, Text, TouchableOpacity} from "react-native";
 import {Colors} from "../services/constants";
 
 interface OtherButtonProps {

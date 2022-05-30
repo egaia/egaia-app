@@ -101,7 +101,7 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
 
 
         const [day, month, year] = values.birthdate.toLocaleDateString().split('/')
-        const dateString = year+'-'+month+'-'+day
+        const dateString = year + '-' + month + '-' + day
         const newDate = new Date(dateString)
 
         const data: UpdateUserData = {
@@ -132,12 +132,13 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
 
     return (
         <EgaiaContainer>
-            {loading && <Loader />}
+            {loading && <Loader/>}
             <KeyboardAvoidingView behavior="padding" enabled>
                 <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                     <View style={styles.globalContainer}>
                         <View style={styles.profileInfoContainer}>
-                            <Image style={styles.profilePicture} source={removeImage ? require("../../assets/img/profil.png") : {uri: image ?? user?.image}}/>
+                            <Image style={styles.profilePicture}
+                                   source={removeImage ? require("../../assets/img/profil.png") : {uri: image ?? user?.image}}/>
                             <TouchableOpacity onPress={pickImage}>
                                 <Text style={styles.changeProfilePictureText}>Changer la photo de profil</Text>
                             </TouchableOpacity>

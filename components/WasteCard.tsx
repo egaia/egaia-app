@@ -49,7 +49,7 @@ const WasteCard = (props: WasteCardProps) => {
         <TouchableOpacity onPress={props.onPress}>
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={{uri: props.waste.image}} />
+                    <Image style={styles.image} source={{uri: props.waste.image}}/>
                 </View>
                 <View style={styles.labelContainer}>
                     <Text style={styles.name}>{props.waste.name}</Text>

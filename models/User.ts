@@ -1,6 +1,3 @@
-import {Challenge} from "./Challenge";
-import {Promotion} from "./Promotion";
-
 export interface User {
     id: number,
     firstname: string,

@@ -13,7 +13,7 @@ import Loader from "../../components/Loader";
 
 export default function GoodPlansScreen({navigation}: NativeStackScreenProps<any>) {
 
-    const { user } = useContext<UserContextType>(UserContext)
+    const {user} = useContext<UserContextType>(UserContext)
 
     const [loading, setLoading] = useState<boolean>(false)
     const [promotions, setPromotions] = useState<Promotion[]>([])
@@ -34,12 +34,12 @@ export default function GoodPlansScreen({navigation}: NativeStackScreenProps<any
 
     return (
         <EgaiaContainer>
-            {loading && <Loader />}
+            {loading && <Loader/>}
             <View style={styles.container}>
-                { user !== undefined &&
+                {user !== undefined &&
                   <View style={styles.pointsContainer}>
                     <Text style={styles.pointsText}>{user?.points} </Text>
-                    <Image style={styles.gaia} source={require("../../assets/img/gaia.png")} />
+                    <Image style={styles.gaia} source={require("../../assets/img/gaia.png")}/>
                   </View>
                 }
                 <ScrollView style={styles.partnersScrollContainer} showsVerticalScrollIndicator={false}>
@@ -47,7 +47,8 @@ export default function GoodPlansScreen({navigation}: NativeStackScreenProps<any
                         {
                             promotions.map(promotion => {
                                 return (
-                                    <PromotionCard key={`promotion-${promotion.id}`} promotion={promotion} onPress={() => goToPromotion(promotion)} />
+                                    <PromotionCard key={`promotion-${promotion.id}`} promotion={promotion}
+                                                   onPress={() => goToPromotion(promotion)}/>
                                 )
                             })
                         }
@@ -68,14 +69,14 @@ const styles = StyleSheet.create({
     pointsContainer: {
         width: '100%',
         height: 130,
-        flexDirection:"row",
+        flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: Colors.primary,
         borderBottomLeftRadius: 28,
         borderBottomRightRadius: 28,
-        shadowOffset: { width: 1, height: 5 },
-        shadowOpacity:  0.4,
+        shadowOffset: {width: 1, height: 5},
+        shadowOpacity: 0.4,
         shadowRadius: 3,
 
     },
@@ -99,9 +100,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15
     },
 
-    gaia:{
+    gaia: {
         tintColor: Colors.white,
-        width:50,
-        height:50
+        width: 50,
+        height: 50
     },
 });

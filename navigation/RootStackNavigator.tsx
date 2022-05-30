@@ -2,10 +2,8 @@ import React from "react";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import SplashScreen from "../screens/SplashScreen";
 import LandingScreen from "../screens/LandingScreen";
-import EgaiaHeaderBackButton from "../components/EgaiaHeaderBackButton";
 import TabsStackNavigator from "./TabsStackNavigator";
 import AuthStackNavigator from "./AuthStackNavigator";
-import {NavigationContainer} from "@react-navigation/native";
 import {Colors} from "../services/constants";
 
 const RootStack = createNativeStackNavigator();

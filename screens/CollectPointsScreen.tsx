@@ -3,9 +3,8 @@ import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from 'react
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import EgaiaContainer from "../components/EgaiaContainer";
 import MapView, {Marker, Region} from 'react-native-maps';
-import React, {useContext, useEffect, useState} from "react";
-import {LoaderContextType, WasteType} from "../services/types";
-import {LoaderContext} from "../contexts/loader";
+import React, {useEffect, useState} from "react";
+import {WasteType} from "../services/types";
 import {getAllCollectPoints} from "../repositories/collect_point_repository";
 import {CollectPoint} from "../models/CollectPoint";
 import {Colors} from "../services/constants";
@@ -22,7 +21,7 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
     const mapRef = React.createRef<MapView>()
 
     const [collectPoints, setCollectPoints] = useState<CollectPoint[]>([])
-    const [selectedCollectPoint, setSelectedCollectPoint] = useState<CollectPoint|undefined>(undefined)
+    const [selectedCollectPoint, setSelectedCollectPoint] = useState<CollectPoint | undefined>(undefined)
 
     const [region, setRegion] = useState<Region>({
         latitude: 45.782443169021704,
@@ -94,18 +93,18 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
 
     const markerStyle = StyleSheet.create({
         pointMarker: {
-            width: Dimensions.get("window").width*0.05,
-            height: Dimensions.get("window").height*0.05,
+            width: Dimensions.get("window").width * 0.05,
+            height: Dimensions.get("window").height * 0.05,
         },
         pointMarkerSelected: {
-            width: Dimensions.get("window").width*0.1,
-            height: Dimensions.get("window").height*0.1,
+            width: Dimensions.get("window").width * 0.1,
+            height: Dimensions.get("window").height * 0.1,
         }
     })
 
     return (
         <EgaiaContainer>
-            {loading && <Loader />}
+            {loading && <Loader/>}
             <View style={styles.container}>
                 <MapView
                     ref={mapRef}
@@ -126,13 +125,13 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
                         return (
                             <Marker
                                 key={`collect-point-${collectPoint.id}`}
-                                coordinate={{latitude: collectPoint.latitude, longitude:  collectPoint.longitude}}
+                                coordinate={{latitude: collectPoint.latitude, longitude: collectPoint.longitude}}
                                 onSelect={() => clickOnMarker(collectPoint)}
                             >
                                 <Image
                                     resizeMode="contain"
                                     style={[selectedCollectPoint?.id === collectPoint.id ? markerStyle.pointMarkerSelected : markerStyle.pointMarker]}
-                                    source={collectPoint.type === WasteType.Glass ? require("../assets/img/marker-verre.png") : require("../assets/icons/marqueur2.png")} />
+                                    source={collectPoint.type === WasteType.Glass ? require("../assets/img/marker-verre.png") : require("../assets/icons/marqueur2.png")}/>
                             </Marker>
                         )
                     })}
@@ -157,7 +156,7 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
                                 style={[
                                     styles.trashCanPoint,
                                     {
-                                        backgroundColor: selectedCollectPoint.type === WasteType.Glass ? '#01AE54': 'gray'
+                                        backgroundColor: selectedCollectPoint.type === WasteType.Glass ? '#01AE54' : 'gray'
                                     }
                                 ]}
                             />

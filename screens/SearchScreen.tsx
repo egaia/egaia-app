@@ -9,9 +9,8 @@ import {Waste} from "../models/Waste";
 import {WasteCategory} from "../models/WasteCategory";
 import {allWasteCategories} from "../repositories/waste_categories_repository";
 import {allWastes} from "../repositories/waste_repository";
-import {LoaderContextType, UserContextType} from "../services/types";
+import {UserContextType} from "../services/types";
 import {UserContext} from "../contexts/user";
-import {LoaderContext} from "../contexts/loader";
 import {Colors} from '../services/constants';
 import Loader from "../components/Loader";
 
@@ -58,7 +57,7 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
 
     return (
         <EgaiaContainer>
-            {loading && <Loader />}
+            {loading && <Loader/>}
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled keyboardVerticalOffset={10}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{paddingTop: 40}}>

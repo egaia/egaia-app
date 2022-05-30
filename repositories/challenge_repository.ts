@@ -1,13 +1,11 @@
 import {displaySnackBarErrors, endpointUrl} from "./api";
-import {User} from "../models/User";
 import axios, {AxiosResponse} from "axios";
 import {Challenge} from "../models/Challenge";
 import {ChallengeParticipationDTO} from "../models/DTO/ChallengeParticipationDTO";
-import {Platform} from "react-native";
 
 const baseUrl: string = `${endpointUrl}/challenges`
 
-export const getAllChallenges = async (token: string|undefined): Promise<AllChallengesApiResponse> => {
+export const getAllChallenges = async (token: string | undefined): Promise<AllChallengesApiResponse> => {
     return await axios.get(baseUrl, {
         headers: {
             'Content-Type': 'application/json',

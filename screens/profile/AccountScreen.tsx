@@ -1,7 +1,6 @@
 import {Image, Platform, ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
 
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
-import EgaiaContainer from "../../components/EgaiaContainer";
 import {UserContext} from "../../contexts/user";
 import {useContext} from "react";
 import {UserContextType} from "../../services/types";
@@ -10,11 +9,11 @@ import PrimaryButton from "../../components/PrimaryButton";
 import {Colors} from "../../services/constants";
 import ParticipationCard from "../../components/ParticipationCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export default function AccountScreen(props: NativeStackScreenProps<any>) {
 
-    const { user, setUser } = useContext<UserContextType>(UserContext)
+    const {user, setUser} = useContext<UserContextType>(UserContext)
 
     const logoutMyUser = () => {
         AsyncStorage.removeItem('api_token').then(() => {
@@ -27,42 +26,48 @@ export default function AccountScreen(props: NativeStackScreenProps<any>) {
     }
 
     return (
-        <SafeAreaView style={{flex: 1, backgroundColor: Colors.white, paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0}}>
+        <SafeAreaView style={{
+            flex: 1,
+            backgroundColor: Colors.white,
+            paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
+        }}>
             <ScrollView>
                 <View style={styles.profileContainer}>
                     <View style={styles.profileInfoContainer}>
-                        <Image style={styles.profilePicture} source={{uri: user?.image}} />
+                        <Image style={styles.profilePicture} source={{uri: user?.image}}/>
                         <Text style={styles.username}>{user?.firstname} {user?.lastname}</Text>
                     </View>
                     <View style={styles.buttonsContainer}>
                         <View style={styles.button}>
-                            <SecondaryButton text="Modifier mon profil" onPress={goToUpdate} />
+                            <SecondaryButton text="Modifier mon profil" onPress={goToUpdate}/>
                         </View>
                         <View style={styles.button}>
-                            <PrimaryButton text="Me deconnecter" onPress={logoutMyUser} />
+                            <PrimaryButton text="Me deconnecter" onPress={logoutMyUser}/>
                         </View>
                     </View>
                 </View>
                 <View style={styles.pointsContainer}>
                     <View style={styles.gaiaContainer}>
                         <Text style={styles.TextNbGaia}>Nombre de gaïa :</Text>
-                        <View  style={styles.numberGaiaContainer}>
+                        <View style={styles.numberGaiaContainer}>
                             <Text style={styles.NbGaia}>{user?.points} </Text>
-                            <Image style={styles.gaia} source={require("../../assets/img/gaia.png")} />
+                            <Image style={styles.gaia} source={require("../../assets/img/gaia.png")}/>
                         </View>
-                        
+
                     </View>
                     <View style={styles.historicContainer}>
                         <Text style={styles.textHistoric}>Historique :</Text>
                         {user?.historic.map((historicItem, index) => {
                             return (
-                                <ParticipationCard key={`historic-${historicItem.type}-${historicItem.id}`} historicItem={historicItem} withoutBorder={index+1 >= user?.historic.length} />
+                                <ParticipationCard key={`historic-${historicItem.type}-${historicItem.id}`}
+                                                   historicItem={historicItem}
+                                                   withoutBorder={index + 1 >= user?.historic.length}/>
                             )
                         })}
                     </View>
                 </View>
             </ScrollView>
-            </SafeAreaView>
+        </SafeAreaView>
     );
 }
 
@@ -71,8 +76,8 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: Colors.white,
         shadowColor: Colors.black,
-        shadowOffset: { width: 1, height: 4 },
-        shadowOpacity:  0.1,
+        shadowOffset: {width: 1, height: 4},
+        shadowOpacity: 0.1,
         shadowRadius: 0,
     },
 
@@ -89,9 +94,9 @@ const styles = StyleSheet.create({
         borderRadius: 50
     },
 
-    username:{
-        fontSize:28,
-        marginTop:10,
+    username: {
+        fontSize: 28,
+        marginTop: 10,
     },
 
     buttonsContainer: {
@@ -100,9 +105,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         paddingBottom: 20,
-        paddingHorizontal:15
+        paddingHorizontal: 15
 
-        
+
     },
 
     button: {
@@ -127,29 +132,29 @@ const styles = StyleSheet.create({
         borderRadius: 15
     },
 
-    TextNbGaia:{
-        color:Colors.white,
-        fontSize:22,
-        fontWeight:"800",
+    TextNbGaia: {
+        color: Colors.white,
+        fontSize: 22,
+        fontWeight: "800",
     },
 
-    NbGaia:{
-        color:Colors.white,
-        fontSize:30,
-        fontWeight:"500"
+    NbGaia: {
+        color: Colors.white,
+        fontSize: 30,
+        fontWeight: "500"
     },
 
-    numberGaiaContainer:{
+    numberGaiaContainer: {
         flexDirection: "row",
-        alignItems:"center",
+        alignItems: "center",
         justifyContent: "space-between",
     },
 
 
-    gaia:{
-        width:30,
-        height:30,
-        tintColor:Colors.white,
+    gaia: {
+        width: 30,
+        height: 30,
+        tintColor: Colors.white,
     },
 
 
@@ -158,9 +163,9 @@ const styles = StyleSheet.create({
         alignItems: "flex-start"
     },
 
-    textHistoric:{
-        fontWeight:"900",
-        textTransform:"uppercase",
-        fontSize:15
+    textHistoric: {
+        fontWeight: "900",
+        textTransform: "uppercase",
+        fontSize: 15
     }
 });

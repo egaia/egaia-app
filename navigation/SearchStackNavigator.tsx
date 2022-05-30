@@ -11,19 +11,19 @@ const SearchStackNavigator = () => {
         <SearchStack.Navigator initialRouteName="Search">
             <SearchStack.Screen name="Search" component={SearchScreen} options={{
                 headerShown: false
-            }} />
+            }}/>
             <SearchStack.Screen name="WasteCategory" component={WasteCategoryScreen} options={{
                 headerTransparent: true,
                 headerTitle: '',
                 headerBackTitleVisible: false,
                 headerTintColor: Colors.primary
-            }} />
+            }}/>
             <SearchStack.Screen name="Waste" component={WasteScreen} options={{
                 headerTransparent: true,
                 headerTitle: '',
                 headerBackTitleVisible: false,
                 headerTintColor: Colors.primary
-            }} />
+            }}/>
         </SearchStack.Navigator>
     )
 }

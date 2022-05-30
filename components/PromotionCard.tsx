@@ -10,12 +10,12 @@ interface PartnerCardProps {
 const PromotionCard = (props: PartnerCardProps) => {
     return (
         <TouchableOpacity style={styles.partnerContainer} onPress={props.onPress}>
-            <Image style={styles.partnerImage} resizeMode="cover" source={{uri: props.promotion.partner?.image}} />
+            <Image style={styles.partnerImage} resizeMode="cover" source={{uri: props.promotion.partner?.image}}/>
             <View style={styles.partnerTextContainer}>
                 <Text style={styles.partnerText}>{props.promotion.partner?.name}: {props.promotion.label}</Text>
                 <View style={styles.numberGaiaContainer}>
-                <Text style={styles.gaiaText}>{props.promotion.cost} </Text>
-                <Image style={styles.gaia} source={require("../assets/img/gaia.png")} />
+                    <Text style={styles.gaiaText}>{props.promotion.cost} </Text>
+                    <Image style={styles.gaia} source={require("../assets/img/gaia.png")}/>
                 </View>
             </View>
         </TouchableOpacity>
@@ -51,24 +51,24 @@ const styles = StyleSheet.create({
 
     partnerText: {
         color: Colors.white,
-        fontSize: 18,fontWeight: "bold",
-        width:"70%"
+        fontSize: 18, fontWeight: "bold",
+        width: "70%"
     },
-    numberGaiaContainer:{
+    numberGaiaContainer: {
         flexDirection: "row",
-        alignItems:"center",
+        alignItems: "center",
         justifyContent: "space-between",
     },
 
     gaiaText: {
         color: Colors.secondary,
-        fontSize: 22,fontWeight: "bold",
+        fontSize: 22, fontWeight: "bold",
     },
 
-    gaia:{
+    gaia: {
         tintColor: Colors.secondary,
-        width:22,
-        height:22,
+        width: 22,
+        height: 22,
     },
 })
 

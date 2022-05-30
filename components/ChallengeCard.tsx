@@ -44,11 +44,19 @@ const ChallengeCard = (props: ChallengeCardProps) => {
     return (
         <View style={styles.singleParticipationContainer}>
             {props.challenge.participation ?
-                <ImageBackground resizeMode="cover" style={styles.image} imageStyle={{borderRadius: 15, opacity: 0.5}} source={{uri: props.challenge.participation.picture}}>
-                    <Text style={styles.singleParticipationText}>{props.challenge.title}</Text>
-                    { props.challenge.participation.valid ?
-                      <Image style={styles.checkIcon} source={require("../assets/icons/check.png")} />
-                        : null
+                <ImageBackground
+                    resizeMode="cover"
+                    style={styles.image}
+                    imageStyle={{borderRadius: 15, opacity: 0.5}}
+                    source={{uri: props.challenge.participation.picture}}
+                >
+                    <Text style={styles.singleParticipationText}>
+                        {props.challenge.title}
+                    </Text>
+                    {props.challenge.participation.valid ?
+                        <Image style={styles.checkIcon} source={require("../assets/icons/check.png")}/>
+                        :
+                        null
                     }
                 </ImageBackground>
                 :
