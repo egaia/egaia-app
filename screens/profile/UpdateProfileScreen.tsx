@@ -11,8 +11,7 @@ import {
 } from "react-native";
 import PrimaryButton from "../../components/PrimaryButton";
 import {formsStyle} from "../../assets/styles/forms.style";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
-import {ErrorMessage, Formik} from "formik";
+import {Formik} from "formik";
 import * as yup from "yup";
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../contexts/user";
@@ -20,9 +19,9 @@ import {UserContextType} from "../../services/types";
 import {checkPassword, updateUser, UpdateUserData} from "../../repositories/auth_repository";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import * as ImagePicker from 'expo-image-picker';
-import DatePicker from 'react-native-date-picker'
 import {Colors} from "../../services/constants";
 import Loader from "../../components/Loader";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const UpdateProfileSchema = yup.object().shape({
     firstname: yup.string()
@@ -198,20 +197,20 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
                                                                   onPress={() => setOpenDate(true)}>
                                                     <Text>{props.values.birthdate.toLocaleDateString()}</Text>
                                                 </TouchableOpacity>
-                                                <DatePicker
-                                                    modal
+
+                                                {/*@ts-ignore*/}
+                                                <DateTimePickerModal
                                                     mode="date"
-                                                    locale="fr"
-                                                    title="Date de naissance"
-                                                    confirmText="Confirmer"
-                                                    cancelText="Annuler"
-                                                    open={openDate}
+                                                    isVisible={openDate}
                                                     onConfirm={(date) => {
                                                         props.setFieldValue('birthdate', date)
                                                         setOpenDate(false)
                                                     }}
                                                     onCancel={() => setOpenDate(false)}
                                                     date={props.values.birthdate}
+                                                    locale={"fr_FR"}
+                                                    confirmTextIOS="Confirmer"
+                                                    cancelTextIOS="Annuler"
                                                 />
                                             </View>
 

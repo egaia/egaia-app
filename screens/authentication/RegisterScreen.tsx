@@ -15,13 +15,12 @@ import {UserDTO} from "../../models/DTO/UserDTO";
 import {formsStyle} from "../../assets/styles/forms.style";
 import {registerUser} from "../../repositories/auth_repository";
 import {useContext} from "react";
-import {LoaderContextType, UserContextType} from "../../services/types";
+import {UserContextType} from "../../services/types";
 import {UserContext} from "../../contexts/user";
-import {LoaderContext} from "../../contexts/loader";
-import DatePicker from "react-native-date-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import PrimaryButton from "../../components/PrimaryButton";
 import Loader from "../../components/Loader";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 type FormValues = {
     firstname: string,
@@ -137,20 +136,19 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
                                         <TouchableOpacity style={[formsStyle.input, {justifyContent: "center"}]} onPress={() => setOpenDate(true)}>
                                             <Text style={{textAlignVertical: "center"}}>{props.values.birthdate.toLocaleDateString()}</Text>
                                         </TouchableOpacity>
-                                        <DatePicker
-                                            modal
+                                        {/*@ts-ignore*/}
+                                        <DateTimePickerModal
                                             mode="date"
-                                            locale="fr"
-                                            title="Date de naissance"
-                                            confirmText="Confirmer"
-                                            cancelText="Annuler"
-                                            open={openDate}
+                                            isVisible={openDate}
                                             onConfirm={(date) => {
                                                 props.setFieldValue('birthdate', date)
                                                 setOpenDate(false)
                                             }}
                                             onCancel={() => setOpenDate(false)}
                                             date={props.values.birthdate}
+                                            locale={"fr_FR"}
+                                            confirmTextIOS="Confirmer"
+                                            cancelTextIOS="Annuler"
                                         />
                                     </View>
 
