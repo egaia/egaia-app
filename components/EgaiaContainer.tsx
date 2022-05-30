@@ -21,7 +21,7 @@ interface EgaiaContainerProps {
 
 const EgaiaContainer = ({children, backgroundColor}: EgaiaContainerProps) => {
 
-    const { loading } = useContext<LoaderContextType>(LoaderContext)
+    const {loading} = useContext<LoaderContextType>(LoaderContext)
 
     const styles = StyleSheet.create({
         container: {
@@ -49,12 +49,14 @@ const EgaiaContainer = ({children, backgroundColor}: EgaiaContainerProps) => {
 
     return (
         <View style={styles.container}>
-            <SafeAreaProvider>
-                <SafeAreaView style={styles.safeContainer}>
-                    {loading ? <View style={styles.loading}><ActivityIndicator /></View> : null}
-                    {children}
-                </SafeAreaView>
-            </SafeAreaProvider>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <SafeAreaProvider>
+                    <SafeAreaView style={styles.safeContainer}>
+                        {loading ? <View style={styles.loading}><ActivityIndicator/></View> : null}
+                        {children}
+                    </SafeAreaView>
+                </SafeAreaProvider>
+            </TouchableWithoutFeedback>
         </View>
     );
 }

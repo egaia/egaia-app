@@ -1,4 +1,4 @@
-import {ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import EgaiaContainer from "../../components/EgaiaContainer";
 import {Formik} from "formik";
@@ -10,6 +10,7 @@ import {useContext} from "react";
 import {LoaderContextType, UserContextType} from "../../services/types";
 import {LoaderContext} from "../../contexts/loader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import PrimaryButton from "../../components/PrimaryButton";
 
 type FormValues = {
     email: string,
@@ -47,8 +48,8 @@ export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
 
     return (
         <EgaiaContainer>
-            <ScrollView>
-                <Text style={{fontSize: 40}}>Se connecter</Text>
+            <ScrollView style={styles.container}>
+                <Text style={{fontSize: 40, marginBottom: 15}}>Se connecter</Text>
 
                 <Formik
                     validationSchema={LoginSchema}
@@ -62,29 +63,36 @@ export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
                 >
                     {(props) => {
                         return (
-                            <View>
-                                <TextInput
-                                    style={formsStyle.input}
-                                    placeholder="Email"
-                                    onChangeText={props.handleChange('email')}
-                                    value={props.values.email}
-                                    keyboardType={"email-address"}
-                                    onBlur={props.handleBlur('email')}
-                                />
-                                <Text style={formsStyle.inputError}>{props.touched.email && props.errors.email}</Text>
-                                <TextInput
-                                    style={formsStyle.input}
-                                    placeholder="Mot de passe"
-                                    secureTextEntry={true}
-                                    onChangeText={props.handleChange('password')}
-                                    value={props.values.password}
-                                    onBlur={props.handleBlur('password')}
-                                />
-                                <Text
-                                    style={formsStyle.inputError}>{props.touched.password && props.errors.password}</Text>
-                                <TouchableOpacity style={formsStyle.button} onPress={() => props.handleSubmit()}>
-                                    <Text style={{color: "white", textAlign: "center"}}>Continuer</Text>
-                                </TouchableOpacity>
+                            <View style={styles.formContainer}>
+                                <View style={formsStyle.inputContainer}>
+                                    <Text style={formsStyle.inputText}>Email</Text>
+                                    <TextInput
+                                        style={formsStyle.input}
+                                        onChangeText={props.handleChange('email')}
+                                        value={props.values.email}
+                                        keyboardType={"email-address"}
+                                        onBlur={props.handleBlur('email')}
+                                    />
+                                    <Text style={formsStyle.inputError}>
+                                        {props.touched.email && props.errors.email}
+                                    </Text>
+                                </View>
+
+                                <View style={formsStyle.inputContainer}>
+                                    <Text style={formsStyle.inputText}>Mot de passe</Text>
+                                    <TextInput
+                                        style={formsStyle.input}
+                                        secureTextEntry={true}
+                                        onChangeText={props.handleChange('password')}
+                                        value={props.values.password}
+                                        onBlur={props.handleBlur('password')}
+                                    />
+                                    <Text style={formsStyle.inputError}>
+                                        {props.touched.password && props.errors.password}
+                                    </Text>
+                                </View>
+
+                                <PrimaryButton text="Se connecter" onPress={() => props.handleSubmit()} />
                             </View>
                         );
                     }}
@@ -93,3 +101,11 @@ export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
         </EgaiaContainer>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        paddingHorizontal: 20,
+    },
+    formContainer: {
+    }
+})

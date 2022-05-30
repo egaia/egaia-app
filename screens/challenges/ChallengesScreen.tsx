@@ -45,16 +45,16 @@ export default function ChallengesScreen({navigation}: NativeStackScreenProps<an
                       </View>
                     </TouchableOpacity>}
                     <View style={styles.participationsContainer}>
-                        <Text style={styles.participationsTitle}>Tes défis au fil du temps</Text>
+                        <Text style={styles.participationsTitle}>Historique des défis</Text>
                         {
                             challengesApi && challengesApi.challenges.map(challengeApi => {
                                 return (
                                     <View key={challengeApi.date_month} style={styles.monthContainer}>
                                         <Text style={styles.month}>{getMonthFullName(new Date(challengeApi.carbon_date))}</Text>
                                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                                            { challengeApi.results.map(result => {
+                                            { challengeApi.results.map((result, index) => {
                                                 return (
-                                                    <ChallengeCard key={`challenge-${result.id}`} challenge={result} />
+                                                    <ChallengeCard key={`challenge-${result.id}`} challenge={result} first={index === 0} last={index === challengeApi.results.length-1} />
                                                 )
                                             }) }
                                         </ScrollView>

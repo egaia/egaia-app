@@ -30,3 +30,12 @@ export type LoaderContextType = {
     loading: boolean,
     setLoading: Function
 }
+
+export enum WasteType {
+    HouseholdWaste,
+    Plastic,
+    Glass,
+    Metal,
+    Cardboard,
+    Paper
+}

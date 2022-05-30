@@ -22,7 +22,7 @@ export default function LandingScreen(props: NativeStackScreenProps<any>) {
     return (
         <View style={styles.container}>
             <View style={styles.logoContainer}>
-                <Image style={styles.logo} source={require("../assets/icons/flamme.png")}/>
+                <Image style={styles.logo} source={require("../assets/img/logo-egaia.png")}/>
             </View>
             <View style={styles.bottomContainer}>
                 <View style={styles.buttonsContainer}>
@@ -35,7 +35,7 @@ export default function LandingScreen(props: NativeStackScreenProps<any>) {
                 </View>
                 <View style={styles.textContainer}>
                     <TouchableOpacity onPress={goToHomeWithoutAccount}>
-                        <Text>Continuer sans créer de compte</Text>
+                        <Text style={styles.alternativeText}>Continuer sans créer de compte</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
 
     logo: {
         width: 200,
-        height: 200
+        height: 200,
+        tintColor: Colors.white
     },
 
     bottomContainer: {
@@ -87,5 +88,12 @@ const styles = StyleSheet.create({
         height: '30%',
         justifyContent: "flex-start",
         alignItems: "center"
+    },
+
+    alternativeText: {
+        fontSize: 12,
+        textDecorationLine: "underline",
+        textTransform: "uppercase",
+        fontWeight: "600"
     }
 })

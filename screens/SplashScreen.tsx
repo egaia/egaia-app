@@ -37,7 +37,7 @@ export default function SplashScreen({navigation}: NativeStackScreenProps<any>) 
     return (
         <View style={styles.container}>
             <View style={styles.logoContainer}>
-                <Image style={styles.logo} source={require("../assets/icons/flamme.png")}/>
+                <Image style={styles.logo} source={require("../assets/img/logo-egaia.png")}/>
             </View>
         </View>
     );
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
 
     logo: {
         width: 200,
-        height: 200
+        height: 200,
+        tintColor: Colors.white
     },
 })

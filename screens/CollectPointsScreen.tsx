@@ -1,10 +1,10 @@
-import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
+import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import EgaiaContainer from "../components/EgaiaContainer";
 import MapView, {Marker, Region} from 'react-native-maps';
 import React, {useContext, useEffect, useState} from "react";
-import {LoaderContextType} from "../services/types";
+import {LoaderContextType, WasteType} from "../services/types";
 import {LoaderContext} from "../contexts/loader";
 import {getAllCollectPoints} from "../repositories/collect_point_repository";
 import {CollectPoint} from "../models/CollectPoint";
@@ -56,11 +56,51 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
         }).catch(() => setLoading(false))
     }, [])
 
+    useEffect(() => {
+        if (selectedCollectPoint) {
+            setRegion({
+                latitude: selectedCollectPoint.latitude,
+                longitude: selectedCollectPoint.longitude,
+                latitudeDelta: 0.02,
+                longitudeDelta: 0.02
+            })
+            mapRef.current?.animateToRegion({
+                latitude: selectedCollectPoint.latitude,
+                longitude: selectedCollectPoint.longitude,
+                latitudeDelta: 0.005,
+                longitudeDelta: 0.005
+            })
+        } else {
+            mapRef.current?.animateToRegion(region)
+        }
+    }, [selectedCollectPoint])
+
     const refreshMarkers = (value: Region) => {
         getAllCollectPoints(value.latitude, value.longitude).then(results => {
             setCollectPoints(results)
         }).catch()
     }
+
+    const clickOnMarker = (collectPoint: CollectPoint) => {
+        setSelectedCollectPoint(collectPoint)
+        mapRef.current?.animateToRegion({
+            latitude: collectPoint.latitude,
+            longitude: collectPoint.longitude,
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005
+        })
+    }
+
+    const markerStyle = StyleSheet.create({
+        pointMarker: {
+            width: Dimensions.get("window").width*0.05,
+            height: Dimensions.get("window").height*0.05,
+        },
+        pointMarkerSelected: {
+            width: Dimensions.get("window").width*0.1,
+            height: Dimensions.get("window").height*0.1,
+        }
+    })
 
     return (
         <EgaiaContainer>
@@ -73,18 +113,25 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
                     onMarkerDeselect={() => setSelectedCollectPoint(undefined)}
                 >
                     {location &&
-                      <Marker coordinate={location.coords}>
+                      <Marker style={{
+                          position: "absolute",
+                          zIndex: 1000
+                      }} coordinate={location.coords}>
                         <View style={styles.userLocation}/>
                       </Marker>
                     }
-                    {collectPoints.map(collectPoint => {
+                    {collectPoints && collectPoints.map(collectPoint => {
                         return (
                             <Marker
                                 key={`collect-point-${collectPoint.id}`}
                                 coordinate={{latitude: collectPoint.latitude, longitude:  collectPoint.longitude}}
-                                image={require("../assets/icons/marqueur2.png")}
-                                onSelect={() => setSelectedCollectPoint(collectPoint)}
-                            />
+                                onSelect={() => clickOnMarker(collectPoint)}
+                            >
+                                <Image
+                                    resizeMode="contain"
+                                    style={[selectedCollectPoint?.id === collectPoint.id ? markerStyle.pointMarkerSelected : markerStyle.pointMarker]}
+                                    source={collectPoint.type === WasteType.Glass ? require("../assets/img/marker-verre.png") : require("../assets/icons/marqueur2.png")} />
+                            </Marker>
                         )
                     })}
                 </MapView>
@@ -104,10 +151,20 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
                 {selectedCollectPoint !== undefined ?
                     <View style={styles.addressGlobalContainer}>
                         <View style={styles.trashCansContainer}>
-                            <Text>{selectedCollectPoint.type === 2 ? "Verre" : "Autre"}</Text>
+                            <View
+                                style={[
+                                    styles.trashCanPoint,
+                                    {
+                                        backgroundColor: selectedCollectPoint.type === WasteType.Glass ? '#01AE54': 'gray'
+                                    }
+                                ]}
+                            />
+                            <Text style={styles.trashCanText}>
+                                {selectedCollectPoint.type === WasteType.Glass && "Poubelle verte (verre)"}
+                            </Text>
                         </View>
                         <View style={styles.addressContainer}>
-                            <Text>{selectedCollectPoint.address}</Text>
+                            <Text style={styles.addressText}>{selectedCollectPoint.address}</Text>
                         </View>
                     </View>
                     :
@@ -145,26 +202,41 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
     },
     addressGlobalContainer: {
-        height: '20%',
         width: '85%',
         position: "absolute",
         bottom: 15,
     },
     trashCansContainer: {
-        height: '70%',
         width: '100%',
         padding: 20,
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
         backgroundColor: Colors.primary,
-        borderTopRightRadius: 15,
-        borderTopLeftRadius: 15,
+        borderTopRightRadius: 28,
+        borderTopLeftRadius: 28,
+    },
+    trashCanPoint: {
+        width: 14,
+        height: 14,
+        borderRadius: 50,
+        marginRight: 10,
+    },
+    trashCanText: {
+        fontSize: 14,
+        color: Colors.white
     },
     addressContainer: {
-        height: '30%',
         width: '100%',
-        padding: 10,
+        padding: 20,
         backgroundColor: Colors.secondary,
-        borderBottomLeftRadius: 15,
-        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 28,
+        borderBottomRightRadius: 28,
+    },
+    addressText: {
+        fontSize: 14,
+        fontWeight: "500"
     },
     buttonIcon: {
         width: 30,

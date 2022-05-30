@@ -3,10 +3,38 @@ import {Colors} from "../services/constants";
 import {Challenge} from "../models/Challenge";
 
 interface ChallengeCardProps {
-    challenge: Challenge
+    challenge: Challenge,
+    first: boolean,
+    last: boolean
 }
 
 const ChallengeCard = (props: ChallengeCardProps) => {
+
+    const styles = StyleSheet.create({
+        singleParticipationContainer: {
+            width: 110,
+            height: 150,
+            marginLeft: !props.first ? 5 : 0,
+            marginRight: !props.last ? 5 : 0,
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: Colors.primary,
+            borderRadius: 15
+        },
+        singleParticipationText: {
+            color: Colors.white,
+            fontWeight: "bold",
+            textAlign: "center",
+        },
+        image: {
+            flex: 1,
+            justifyContent: "center",
+            width: '100%',
+            height: '100%'
+        },
+    })
+
     return (
         <View style={styles.singleParticipationContainer}>
             {props.challenge.participation ?
@@ -19,29 +47,5 @@ const ChallengeCard = (props: ChallengeCardProps) => {
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    singleParticipationContainer: {
-        width: 110,
-        height: 150,
-        marginHorizontal: 5,
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: Colors.primary,
-        borderRadius: 15
-    },
-    singleParticipationText: {
-        color: Colors.white,
-        fontWeight: "bold",
-        textAlign: "center",
-    },
-    image: {
-        flex: 1,
-        justifyContent: "center",
-        width: '100%',
-        height: '100%'
-    },
-})
 
 export default ChallengeCard

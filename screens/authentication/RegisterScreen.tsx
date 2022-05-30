@@ -1,4 +1,5 @@
 import {
+    KeyboardAvoidingView,
     ScrollView,
     StyleSheet,
     Text,
@@ -19,6 +20,7 @@ import {UserContext} from "../../contexts/user";
 import {LoaderContext} from "../../contexts/loader";
 import DatePicker from "react-native-date-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import PrimaryButton from "../../components/PrimaryButton";
 
 type FormValues = {
     firstname: string,
@@ -51,8 +53,8 @@ const RegisterSchema = yup.object({
 
 export default function RegisterScreen({navigation}: NativeStackScreenProps<any>) {
 
-    const { setUser } = useContext<UserContextType>(UserContext)
-    const { setLoading } = useContext<LoaderContextType>(LoaderContext)
+    const {setUser} = useContext<UserContextType>(UserContext)
+    const {setLoading} = useContext<LoaderContextType>(LoaderContext)
 
     const [openDate, setOpenDate] = useState<boolean>(false)
 
@@ -66,7 +68,7 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
             password: values.password
         }
         registerUser(userDTO).then(user => {
-            if(user) {
+            if (user) {
                 AsyncStorage.setItem('api_token', user.apiToken).then(() => {
                     setUser(user)
                     setLoading(false)
@@ -80,103 +82,136 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
 
     return (
         <EgaiaContainer>
-            <ScrollView>
-                <Text style={{fontSize: 40}}>S'enregistrer</Text>
+            <KeyboardAvoidingView behavior="padding" enabled keyboardVerticalOffset={10}>
+                <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+                    <Text style={{fontSize: 40, marginBottom: 15}}>S'enregistrer</Text>
 
-                <Formik
-                    validationSchema={RegisterSchema}
-                    initialValues={{
-                        firstname: '',
-                        lastname: '',
-                        birthdate: new Date(),
-                        email: '',
-                        password: '',
-                        confirmPassword: '',
-                    }}
-                    onSubmit={(values, actions) => {
-                        console.log(values)
-                        tryRegisterUser(values)
-                    }}
-                >
-                    {(props) => {
-                        return (
-                            <View>
-                                <TextInput
-                                    style={formsStyle.input}
-                                    placeholder="Prénom"
-                                    onChangeText={props.handleChange('firstname')}
-                                    value={props.values.firstname}
-                                    onBlur={props.handleBlur('firstname')}
-                                />
-                                <Text
-                                    style={formsStyle.inputError}>{props.touched.firstname && props.errors.firstname}</Text>
-                                <TextInput
-                                    style={formsStyle.input}
-                                    placeholder="Nom"
-                                    onChangeText={props.handleChange('lastname')}
-                                    value={props.values.lastname}
-                                    onBlur={props.handleBlur('lastname')}
-                                />
-                                <Text
-                                    style={formsStyle.inputError}>{props.touched.lastname && props.errors.lastname}</Text>
-                                <Text>Date de naissance</Text>
-                                <TouchableOpacity onPress={() => setOpenDate(true)}>
-                                    <Text>{props.values.birthdate.toLocaleDateString()}</Text>
-                                </TouchableOpacity>
-                                <DatePicker
-                                    modal
-                                    mode="date"
-                                    locale="fr"
-                                    title="Date de naissance"
-                                    confirmText="Confirmer"
-                                    cancelText="Annuler"
-                                    open={openDate}
-                                    onConfirm={(date) => {
-                                        props.setFieldValue('birthdate', date)
-                                        setOpenDate(false)
-                                    }}
-                                    onCancel={() => setOpenDate(false)}
-                                    date={props.values.birthdate}
-                                />
-                                <TextInput
-                                    style={formsStyle.input}
-                                    placeholder="Email"
-                                    onChangeText={props.handleChange('email')}
-                                    value={props.values.email}
-                                    keyboardType={"email-address"}
-                                    onBlur={props.handleBlur('email')}
-                                />
-                                <Text style={formsStyle.inputError}>{props.touched.email && props.errors.email}</Text>
-                                <TextInput
-                                    style={formsStyle.input}
-                                    placeholder="Mot de passe"
-                                    secureTextEntry={true}
-                                    onChangeText={props.handleChange('password')}
-                                    value={props.values.password}
-                                    onBlur={props.handleBlur('password')}
-                                />
-                                <Text
-                                    style={formsStyle.inputError}>{props.touched.password && props.errors.password}</Text>
-                                <TextInput
-                                    style={formsStyle.input}
-                                    placeholder="Confirmation Mot de passe"
-                                    secureTextEntry={true}
-                                    onChangeText={props.handleChange('confirmPassword')}
-                                    value={props.values.confirmPassword}
-                                    onBlur={props.handleBlur('confirmPassword')}
-                                />
-                                <Text
-                                    style={formsStyle.inputError}>{props.touched.confirmPassword && props.errors.confirmPassword}</Text>
-                                <TouchableOpacity style={formsStyle.button} onPress={() => props.handleSubmit()}>
-                                    <Text style={{color: "white", textAlign: "center"}}>Continuer</Text>
-                                </TouchableOpacity>
-                            </View>
-                        );
-                    }}
-                </Formik>
-            </ScrollView>
+                    <Formik
+                        validationSchema={RegisterSchema}
+                        initialValues={{
+                            firstname: '',
+                            lastname: '',
+                            birthdate: new Date(),
+                            email: '',
+                            password: '',
+                            confirmPassword: '',
+                        }}
+                        onSubmit={(values, actions) => {
+                            console.log(values)
+                            tryRegisterUser(values)
+                        }}
+                    >
+                        {(props) => {
+                            return (
+                                <View>
+                                    <View style={formsStyle.inputContainer}>
+                                        <Text style={formsStyle.inputText}>Prénom</Text>
+                                        <TextInput
+                                            style={formsStyle.input}
+                                            onChangeText={props.handleChange('firstname')}
+                                            value={props.values.firstname}
+                                            onBlur={props.handleBlur('firstname')}
+                                        />
+                                        <Text style={formsStyle.inputError}>
+                                            {props.touched.firstname && props.errors.firstname}
+                                        </Text>
+                                    </View>
+
+                                    <View style={formsStyle.inputContainer}>
+                                        <Text style={formsStyle.inputText}>Nom</Text>
+                                        <TextInput
+                                            style={formsStyle.input}
+                                            onChangeText={props.handleChange('lastname')}
+                                            value={props.values.lastname}
+                                            onBlur={props.handleBlur('lastname')}
+                                        />
+                                        <Text style={formsStyle.inputError}>
+                                            {props.touched.lastname && props.errors.lastname}
+                                        </Text>
+                                    </View>
+
+                                    <View style={[formsStyle.inputContainer, {marginBottom: 15}]}>
+                                        <Text style={formsStyle.inputText}>Date de naissance</Text>
+                                        <TouchableOpacity style={[formsStyle.input, {justifyContent: "center"}]} onPress={() => setOpenDate(true)}>
+                                            <Text style={{textAlignVertical: "center"}}>{props.values.birthdate.toLocaleDateString()}</Text>
+                                        </TouchableOpacity>
+                                        <DatePicker
+                                            modal
+                                            mode="date"
+                                            locale="fr"
+                                            title="Date de naissance"
+                                            confirmText="Confirmer"
+                                            cancelText="Annuler"
+                                            open={openDate}
+                                            onConfirm={(date) => {
+                                                props.setFieldValue('birthdate', date)
+                                                setOpenDate(false)
+                                            }}
+                                            onCancel={() => setOpenDate(false)}
+                                            date={props.values.birthdate}
+                                        />
+                                    </View>
+
+                                    <View style={formsStyle.inputContainer}>
+                                        <Text style={formsStyle.inputText}>Email</Text>
+                                        <TextInput
+                                            style={formsStyle.input}
+                                            onChangeText={props.handleChange('email')}
+                                            value={props.values.email}
+                                            keyboardType={"email-address"}
+                                            onBlur={props.handleBlur('email')}
+                                        />
+                                        <Text style={formsStyle.inputError}>
+                                            {props.touched.email && props.errors.email}
+                                        </Text>
+                                    </View>
+
+                                    <View style={formsStyle.inputContainer}>
+                                        <Text style={formsStyle.inputText}>Mot de passe</Text>
+                                        <TextInput
+                                            style={formsStyle.input}
+                                            secureTextEntry={true}
+                                            onChangeText={props.handleChange('password')}
+                                            value={props.values.password}
+                                            onBlur={props.handleBlur('password')}
+                                        />
+                                        <Text style={formsStyle.inputError}>
+                                            {props.touched.password && props.errors.password}
+                                        </Text>
+                                    </View>
+
+                                    <View style={formsStyle.inputContainer}>
+                                        <Text style={formsStyle.inputText}>Vérification du mot de passe</Text>
+                                        <TextInput
+                                            style={formsStyle.input}
+                                            secureTextEntry={true}
+                                            onChangeText={props.handleChange('confirmPassword')}
+                                            value={props.values.confirmPassword}
+                                            onBlur={props.handleBlur('confirmPassword')}
+                                        />
+                                        <Text style={formsStyle.inputError}>
+                                            {props.touched.confirmPassword && props.errors.confirmPassword}
+                                        </Text>
+                                    </View>
+
+                                    <PrimaryButton text="Continuer" onPress={() => props.handleSubmit()} />
+                                </View>
+                            );
+                        }}
+                    </Formik>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </EgaiaContainer>
     )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        paddingHorizontal: 20,
+    },
+    keyboardView: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center'
+    },
+})
