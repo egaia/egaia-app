@@ -57,7 +57,7 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
 
     return (
         <EgaiaContainer>
-            {loading && <Loader/>}
+            <>{loading && <Loader/>}</>
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled keyboardVerticalOffset={10}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{paddingTop: 40}}>

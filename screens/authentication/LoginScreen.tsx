@@ -49,7 +49,7 @@ export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
 
     return (
         <EgaiaContainer>
-            {loading && <Loader/>}
+            <>{loading && <Loader/>}</>
             <ScrollView style={styles.container}>
                 <Text style={{fontSize: 40, marginBottom: 15}}>Se connecter</Text>
 

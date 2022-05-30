@@ -41,7 +41,7 @@ export default function ChallengesScreen({navigation}: NativeStackScreenProps<an
 
     return (
         <EgaiaContainer>
-            {loading && <Loader/>}
+            <>{loading && <Loader/>}</>
             <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.globalContainer}>
                     {challengesApi?.currentChallenge &&

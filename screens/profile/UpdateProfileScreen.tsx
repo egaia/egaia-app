@@ -132,7 +132,7 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
 
     return (
         <EgaiaContainer>
-            {loading && <Loader/>}
+            <>{loading && <Loader/>}</>
             <KeyboardAvoidingView behavior="padding" enabled>
                 <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                     <View style={styles.globalContainer}>

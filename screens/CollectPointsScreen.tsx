@@ -104,7 +104,7 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
 
     return (
         <EgaiaContainer>
-            {loading && <Loader/>}
+            <>{loading && <Loader/>}</>
             <View style={styles.container}>
                 <MapView
                     ref={mapRef}

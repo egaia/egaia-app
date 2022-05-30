@@ -87,7 +87,7 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
 
     return (
         <EgaiaContainer>
-            {loading && <Loader/>}
+            <>{loading && <Loader/>}</>
             <KeyboardAvoidingView behavior="padding" enabled keyboardVerticalOffset={10}>
                 <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
                     <Text style={{fontSize: 40, marginBottom: 15}}>S'enregistrer</Text>

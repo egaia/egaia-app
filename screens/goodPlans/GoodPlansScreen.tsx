@@ -34,7 +34,7 @@ export default function GoodPlansScreen({navigation}: NativeStackScreenProps<any
 
     return (
         <EgaiaContainer>
-            {loading && <Loader/>}
+            <>{loading && <Loader/>}</>
             <View style={styles.container}>
                 {user !== undefined &&
                   <View style={styles.pointsContainer}>

@@ -49,7 +49,7 @@ const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
 
     return (
         <EgaiaContainer>
-            {loading && <Loader/>}
+            <>{loading && <Loader/>}</>
             <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.globalContainer}>
                     <Image style={styles.image} resizeMode="cover" source={{uri: promotion.partner?.image}}/>

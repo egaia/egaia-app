@@ -1,6 +1,7 @@
-import {Image, ImageBackground, StyleSheet, Text, View} from "react-native";
+import {Image, ImageBackground as DefaultImageBackground, StyleSheet, Text, View} from "react-native";
 import {Colors} from "../services/constants";
 import {Challenge} from "../models/Challenge";
+import React from "react";
 
 interface ChallengeCardProps {
     challenge: Challenge,
@@ -9,6 +10,14 @@ interface ChallengeCardProps {
 }
 
 const ChallengeCard = (props: ChallengeCardProps) => {
+
+    type ImageBackgroundProps = DefaultImageBackground["props"] & {
+        children: React.ReactNode;
+    };
+
+    function MyBackground(props: ImageBackgroundProps) {
+        return <DefaultImageBackground {...props} />;
+    }
 
     const styles = StyleSheet.create({
         singleParticipationContainer: {
@@ -44,7 +53,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
     return (
         <View style={styles.singleParticipationContainer}>
             {props.challenge.participation ?
-                <ImageBackground
+                <MyBackground
                     resizeMode="cover"
                     style={styles.image}
                     imageStyle={{borderRadius: 15, opacity: 0.5}}
@@ -58,7 +67,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
                         :
                         null
                     }
-                </ImageBackground>
+                </MyBackground>
                 :
                 <Text style={styles.singleParticipationText}>{props.challenge.title}</Text>
             }

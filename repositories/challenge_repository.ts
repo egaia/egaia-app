@@ -27,6 +27,7 @@ export const participateToChallenge = async (challengeParticipationDTO: Challeng
     let formData = new FormData();
     formData.append('challenge_id', challengeParticipationDTO.challenge_id.toString())
     formData.append('picture', {
+        // @ts-ignore
         uri: challengeParticipationDTO.picture.uri,
         name: `photo.${fileType}`,
         type: `image/${fileType}`,

@@ -85,6 +85,7 @@ export const updateUser = async (data: UpdateUserData, token: string): Promise<U
     let fileType = uriParts && uriParts[uriParts.length - 1];
 
     data.image && formData.append('image', {
+        // @ts-ignore
         uri: data.image,
         name: `photo.${fileType}`,
         type: `image/${fileType}`,
