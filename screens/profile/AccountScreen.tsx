@@ -1,4 +1,4 @@
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Image, Platform, ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
 
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import EgaiaContainer from "../../components/EgaiaContainer";
@@ -10,6 +10,7 @@ import PrimaryButton from "../../components/PrimaryButton";
 import {Colors} from "../../services/constants";
 import ParticipationCard from "../../components/ParticipationCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function AccountScreen(props: NativeStackScreenProps<any>) {
 
@@ -26,12 +27,12 @@ export default function AccountScreen(props: NativeStackScreenProps<any>) {
     }
 
     return (
-        <EgaiaContainer>
-            <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+        <SafeAreaView style={{flex: 1, backgroundColor: Colors.white, paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0}}>
+            <ScrollView>
                 <View style={styles.profileContainer}>
                     <View style={styles.profileInfoContainer}>
                         <Image style={styles.profilePicture} source={{uri: user?.image}} />
-                        <Text>{user?.firstname} {user?.lastname}</Text>
+                        <Text style={styles.username}>{user?.firstname} {user?.lastname}</Text>
                     </View>
                     <View style={styles.buttonsContainer}>
                         <View style={styles.button}>
@@ -45,7 +46,11 @@ export default function AccountScreen(props: NativeStackScreenProps<any>) {
                 <View style={styles.pointsContainer}>
                     <View style={styles.gaiaContainer}>
                         <Text style={styles.TextNbGaia}>Nombre de gaïa :</Text>
-                        <Text style={styles.NbGaia}>{user?.points} G</Text>
+                        <View  style={styles.numberGaiaContainer}>
+                            <Text style={styles.NbGaia}>{user?.points} </Text>
+                            <Image style={styles.gaia} source={require("../../assets/img/gaia.png")} />
+                        </View>
+                        
                     </View>
                     <View style={styles.historicContainer}>
                         <Text style={styles.textHistoric}>Historique :</Text>
@@ -57,16 +62,11 @@ export default function AccountScreen(props: NativeStackScreenProps<any>) {
                     </View>
                 </View>
             </ScrollView>
-        </EgaiaContainer>
+            </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    scroll: {
-        height: '100%',
-        width: '100%',
-    },
-
     profileContainer: {
         width: '100%',
         backgroundColor: Colors.white,
@@ -89,12 +89,17 @@ const styles = StyleSheet.create({
         borderRadius: 50
     },
 
+    username:{
+        fontSize:28,
+        marginTop:10,
+    },
+
     buttonsContainer: {
         width: '100%',
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: 20,
+        paddingBottom: 20,
         paddingHorizontal:15
 
         
@@ -109,6 +114,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingHorizontal: 20,
     },
+
 
     gaiaContainer: {
         width: '100%',
@@ -133,12 +139,28 @@ const styles = StyleSheet.create({
         fontWeight:"500"
     },
 
+    numberGaiaContainer:{
+        flexDirection: "row",
+        alignItems:"center",
+        justifyContent: "space-between",
+    },
+
+
+    gaia:{
+        width:30,
+        height:30,
+        tintColor:Colors.white,
+    },
+
+
     historicContainer: {
         width: '100%',
         alignItems: "flex-start"
     },
 
     textHistoric:{
-        fontWeight:"800",
+        fontWeight:"900",
+        textTransform:"uppercase",
+        fontSize:15
     }
 });

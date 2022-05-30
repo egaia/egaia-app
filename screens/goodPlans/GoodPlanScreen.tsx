@@ -47,8 +47,8 @@ const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
                         <View style={styles.titleContainer}>
                             <Text style={styles.titleText}>{promotion.partner?.name}: {promotion.label}</Text>
                             <View  style={styles.numberGaiaContainer}>
-                            <Text style={styles.gaiaText}>{promotion.cost} </Text>
-                            <Image style={styles.gaia} source={require("../../assets/img/gaia.png")} />
+                                <Text style={styles.gaiaText}>{promotion.cost} </Text>
+                                <Image style={styles.gaia} source={require("../../assets/img/gaia.png")} />
                             </View>
                         </View>
                         <View>

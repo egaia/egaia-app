@@ -25,10 +25,12 @@ const EgaiaContainer = ({children, backgroundColor}: EgaiaContainerProps) => {
 
     const styles = StyleSheet.create({
         container: {
+            flex: 1,
             backgroundColor: backgroundColor ?? '#ffffff',
             height: '100%'
         },
         safeContainer: {
+            flex: 1,
             height: '100%',
             paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
         },

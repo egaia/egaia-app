@@ -22,10 +22,10 @@ const PlaceModal = ({promotion, visible, onClose, onPressYes}: PlaceModalProps) 
                         <Text>{promotion.partner?.name} : {promotion.label}</Text>
                         <Text>Vous utiliserez {promotion.cost} de vos gaïas</Text>
                         <TouchableOpacity onPress={onClose}>
-                            <Text>Annuler</Text>
+                            <Text style={styles.btn}>Annuler</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={onPressYes}>
-                            <Text>Utiliser l'offre</Text>
+                            <Text style={styles.btn}>Utiliser l'offre</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -69,6 +69,15 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
         tintColor: Colors.white
+    },
+
+    btn:{
+        borderWidth:1,
+        borderRadius:5,
+        paddingHorizontal:10,
+        paddingVertical:5,
+        marginTop:5,
+        fontWeight: "500"
     },
 })
 
