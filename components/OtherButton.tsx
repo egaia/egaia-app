@@ -20,7 +20,7 @@ const OtherButton = (props: OtherButtonProps) => {
         text: {
             textTransform: "uppercase",
             textAlign: "center",
-            fontWeight: "bold",
+            fontWeight: "800",
             color: Colors.white
         }
     })

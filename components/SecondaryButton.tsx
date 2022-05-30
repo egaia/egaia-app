@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         backgroundColor: Colors.white,
-        padding: 20,
+        paddingVertical: 20,
+        paddingHorizontal:10,
         borderRadius: 10,
         borderWidth: 2,
         borderStyle: "solid",
@@ -28,8 +29,8 @@ const styles = StyleSheet.create({
     text: {
         textTransform: "uppercase",
         textAlign: "center",
-        fontWeight: "bold",
-        fontSize: 12,
+        fontWeight: "800",
+        fontSize: 11,
         color: Colors.black
     }
 })

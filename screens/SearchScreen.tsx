@@ -12,6 +12,7 @@ import {allWastes} from "../repositories/waste_repository";
 import {LoaderContextType, UserContextType} from "../services/types";
 import {UserContext} from "../contexts/user";
 import {LoaderContext} from "../contexts/loader";
+import { Colors } from '../services/constants';
 
 export default function SearchScreen({navigation}: NativeStackScreenProps<any>) {
 
@@ -59,8 +60,8 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
             <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
                 {user !== undefined ? <Text style={styles.title}>Bonjour {user.firstname}</Text> : null}
                 <View>
-                    <Text>Rechercher un déchet</Text>
-                    <TextInput placeholder="Saisir un déchet" onChangeText={(value) => setQuery(value)} />
+                    <Text style={styles.textFindWaste}>Rechercher un déchet</Text>
+                    <TextInput style={styles.textPlaceholder} placeholder="Saisir un déchet" onChangeText={(value) => setQuery(value)} />
                 </View>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                     {wastesFiltered.map(waste => {
@@ -70,7 +71,7 @@ export default function SearchScreen({navigation}: NativeStackScreenProps<any>) 
                     })}
                 </ScrollView>
                 <View>
-                    <Text>Catégories de déchets</Text>
+                    <Text style={styles.titleCategories}>Catégories de déchets</Text>
                     <View>
                         {wasteCategoriesFiltered.map(wasteCategory => {
                             return (
@@ -94,10 +95,30 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: 'bold',
+        marginVertical:20,
     },
+
+    textFindWaste:{
+        fontSize:22,
+    },
+
+    textPlaceholder:{
+        marginVertical:20,
+        borderWidth:2,
+        borderColor:Colors.black,
+        padding:10,
+    },
+
     separator: {
         marginVertical: 30,
         height: 1,
         width: '80%',
     },
+
+    titleCategories:{
+        marginTop:40,
+        marginBottom:10,
+        fontSize:21,
+        fontWeight:"800",
+    }
 });

@@ -33,13 +33,13 @@ const WasteScreen = (props: NativeStackScreenProps<any>) => {
         <EgaiaContainer>
             <View style={styles.globalContainer}>
                 <View style={styles.searchContainer}>
-                    <Text>Rechercher un déchet</Text>
-                    <TextInput placeholder="Saisir un déchet" />
+                    <Text style={styles.textFindWaste}>Rechercher un déchet</Text>
+                    <TextInput style={styles.textPlaceholder} placeholder="Saisir un déchet" />
                 </View>
                 <View style={styles.wasteContainer}>
                     <View style={styles.wasteTextContainer}>
-                        <Text>{waste?.name}</Text>
-                        <Text>{waste?.category.name}</Text>
+                        <Text style={styles.title}>{waste?.name}</Text>
+                        <Text style={styles.category}>{waste?.category.name}</Text>
                     </View>
                     <View style={styles.wasteImageContainer}>
                         <Image style={styles.wasteImage} source={{uri: waste?.image}} />
@@ -50,11 +50,11 @@ const WasteScreen = (props: NativeStackScreenProps<any>) => {
                         return (
                             <View key={`waste-part-${part.id}`} style={styles.singleWastePartContainer}>
                                 <View style={styles.wastePartTextContainer}>
-                                    <Text>{part.name}</Text>
-                                    <Text>{part.trashCan.name}</Text>
+                                    <Text style={styles.wastePartTitle}>{part.name}</Text>
+                                    <Text style={styles.wastePartTrash}>{part.trashCan.name}</Text>
                                 </View>
                                 <View style={styles.wastePartImageContainer}>
-                                    <Image style={styles.wastePartImage} source={require("../assets/icons/flamme.png")} />
+                                    <Image resizeMode="contain" style={styles.wastePartImage} source={{uri:part.trashCan.image}} />
                                 </View>
                             </View>
                         )
@@ -76,11 +76,33 @@ const styles = StyleSheet.create({
     searchContainer: {
         height: '20%',
         justifyContent: "space-evenly",
-        backgroundColor: Colors.white
+        backgroundColor: Colors.white,
+        paddingHorizontal:20
+    },
+
+    textFindWaste:{
+        fontSize:22,
+    },
+
+    textPlaceholder:{
+        marginVertical:20,
+        borderWidth:2,
+        borderColor:Colors.black,
+        padding:10,
+    },
+
+    title:{
+        fontSize:30,
+        fontWeight:"800"
+    },
+
+    category:{
+        fontSize:16,
+        color:"#2B463C"
     },
 
     wasteContainer: {
-        height: '30%',
+        height: '33%',
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
@@ -102,8 +124,8 @@ const styles = StyleSheet.create({
     },
 
     wasteImage: {
-        width: 100,
-        height: 100
+        width: 140,
+        height: 140
     },
 
     wastePartsContainer: {
@@ -111,6 +133,18 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: "center",
         alignItems: "center",
+        paddingLeft:20,
+        paddingBottom:20,
+    },
+
+    wastePartTitle:{
+        color:Colors.white,
+        fontWeight:"800",
+        fontSize:16
+    },
+
+    wastePartTrash:{
+        color:Colors.white,
     },
 
     singleWastePartContainer: {

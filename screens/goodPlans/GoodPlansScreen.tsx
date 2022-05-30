@@ -31,7 +31,8 @@ export default function GoodPlansScreen({navigation}: NativeStackScreenProps<any
             <View style={styles.container}>
                 { user !== undefined &&
                   <View style={styles.pointsContainer}>
-                    <Text style={styles.pointsText}>{user?.points} G</Text>
+                    <Text style={styles.pointsText}>{user?.points} </Text>
+                    <Image style={styles.gaia} source={require("../../assets/img/gaia.png")} />
                   </View>
                 }
                 <ScrollView style={styles.partnersScrollContainer} showsVerticalScrollIndicator={false}>
@@ -59,7 +60,8 @@ const styles = StyleSheet.create({
 
     pointsContainer: {
         width: '100%',
-        height: 150,
+        height: 130,
+        flexDirection:"row",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: Colors.primary,
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
 
     pointsText: {
         color: Colors.white,
-        fontSize: 40,
+        fontSize: 50,
         fontWeight: "bold",
         textAlign: "center"
     },
@@ -86,7 +88,13 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: "center",
         alignItems: "center",
-        paddingTop: 40,
+        paddingTop: 20,
         paddingHorizontal: 15
+    },
+
+    gaia:{
+        tintColor: Colors.white,
+        width:50,
+        height:50
     },
 });

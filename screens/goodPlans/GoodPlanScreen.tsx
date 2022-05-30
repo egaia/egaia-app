@@ -9,6 +9,7 @@ import {UserContextType} from "../../services/types";
 import {UserContext} from "../../contexts/user";
 import {getByApiToken} from "../../repositories/auth_repository";
 import AlertUsePromotionModal from "../../components/AlertUsePromotionModal";
+import { Colors } from "../../services/constants";
 
 const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
 
@@ -45,7 +46,10 @@ const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
                     <View style={styles.infoContainer}>
                         <View style={styles.titleContainer}>
                             <Text style={styles.titleText}>{promotion.partner?.name}: {promotion.label}</Text>
-                            <Text style={styles.titleText}>{promotion.cost} G</Text>
+                            <View  style={styles.numberGaiaContainer}>
+                            <Text style={styles.gaiaText}>{promotion.cost} </Text>
+                            <Image style={styles.gaia} source={require("../../assets/img/gaia.png")} />
+                            </View>
                         </View>
                         <View>
                             <Text>{promotion.description}</Text>
@@ -121,12 +125,14 @@ const styles = StyleSheet.create({
     },
 
     titleText: {
-        fontSize: 18,
-        fontWeight: "bold"
+        fontSize: 20,
+        fontWeight: "800",
+        width:"75%"
     },
 
     buttonContainer: {
-        width: "80%"
+        width: "100%",
+        paddingHorizontal: 20,
     },
 
     hintText: {
@@ -134,7 +140,24 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontStyle: "italic",
         marginVertical: 20
-    }
+    },
+
+    numberGaiaContainer:{
+        flexDirection: "row",
+        alignItems:"center",
+        justifyContent: "space-between",
+    },
+
+    gaiaText: {
+        fontSize: 20,fontWeight: "bold",
+        color:Colors.background,
+    },
+
+    gaia:{
+        width:20,
+        height:20,
+        tintColor:Colors.background,
+    },
 })
 
 export default GoodPlanScreen

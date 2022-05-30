@@ -13,7 +13,10 @@ const PromotionCard = (props: PartnerCardProps) => {
             <Image style={styles.partnerImage} resizeMode="cover" source={{uri: props.promotion.partner?.image}} />
             <View style={styles.partnerTextContainer}>
                 <Text style={styles.partnerText}>{props.promotion.partner?.name}: {props.promotion.label}</Text>
-                <Text style={styles.partnerText}>{props.promotion.cost} G</Text>
+                <View style={styles.numberGaiaContainer}>
+                <Text style={styles.gaiaText}>{props.promotion.cost} </Text>
+                <Image style={styles.gaia} source={require("../assets/img/gaia.png")} />
+                </View>
             </View>
         </TouchableOpacity>
     )
@@ -48,7 +51,24 @@ const styles = StyleSheet.create({
 
     partnerText: {
         color: Colors.white,
-        fontSize: 18,fontWeight: "bold"
+        fontSize: 18,fontWeight: "bold",
+        width:"70%"
+    },
+    numberGaiaContainer:{
+        flexDirection: "row",
+        alignItems:"center",
+        justifyContent: "space-between",
+    },
+
+    gaiaText: {
+        color: Colors.secondary,
+        fontSize: 22,fontWeight: "bold",
+    },
+
+    gaia:{
+        tintColor: Colors.secondary,
+        width:22,
+        height:22,
     },
 })
 

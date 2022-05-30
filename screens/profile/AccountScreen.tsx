@@ -44,11 +44,11 @@ export default function AccountScreen(props: NativeStackScreenProps<any>) {
                 </View>
                 <View style={styles.pointsContainer}>
                     <View style={styles.gaiaContainer}>
-                        <Text>Nombre de gaïa :</Text>
-                        <Text>{user?.points} G</Text>
+                        <Text style={styles.TextNbGaia}>Nombre de gaïa :</Text>
+                        <Text style={styles.NbGaia}>{user?.points} G</Text>
                     </View>
                     <View style={styles.historicContainer}>
-                        <Text>Historique :</Text>
+                        <Text style={styles.textHistoric}>Historique :</Text>
                         {user?.historic.map((historicItem, index) => {
                             return (
                                 <ParticipationCard key={`historic-${historicItem.type}-${historicItem.id}`} historicItem={historicItem} withoutBorder={index+1 >= user?.historic.length} />
@@ -95,6 +95,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         paddingVertical: 20,
+        paddingHorizontal:15
+
+        
     },
 
     button: {
@@ -118,8 +121,24 @@ const styles = StyleSheet.create({
         borderRadius: 15
     },
 
+    TextNbGaia:{
+        color:Colors.white,
+        fontSize:22,
+        fontWeight:"800",
+    },
+
+    NbGaia:{
+        color:Colors.white,
+        fontSize:30,
+        fontWeight:"500"
+    },
+
     historicContainer: {
         width: '100%',
         alignItems: "flex-start"
     },
+
+    textHistoric:{
+        fontWeight:"800",
+    }
 });
