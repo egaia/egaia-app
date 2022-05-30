@@ -1,8 +1,8 @@
-import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import EgaiaContainer from "../components/EgaiaContainer";
-import MapView, {Marker, Region} from 'react-native-maps';
+import MapView, {Marker, PROVIDER_GOOGLE, Region} from 'react-native-maps';
 import React, {useEffect, useState} from "react";
 import {WasteType} from "../services/types";
 import {getAllCollectPoints} from "../repositories/collect_point_repository";
@@ -107,6 +107,7 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
             <>{loading && <Loader/>}</>
             <View style={styles.container}>
                 <MapView
+                    provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : null}
                     ref={mapRef}
                     style={{width: '100%', height: '100%'}}
                     initialRegion={region}
