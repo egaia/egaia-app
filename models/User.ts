@@ -18,5 +18,6 @@ export type UserHistoricItem = {
     label: string,
     type: string,
     points: number,
-    date: Date
+    date: Date,
+    valid: boolean
 }

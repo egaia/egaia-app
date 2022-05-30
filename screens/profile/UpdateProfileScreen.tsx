@@ -22,6 +22,7 @@ import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import * as ImagePicker from 'expo-image-picker';
 import DatePicker from 'react-native-date-picker'
 import {Colors} from "../../services/constants";
+import Loader from "../../components/Loader";
 
 const UpdateProfileSchema = yup.object().shape({
     firstname: yup.string()
@@ -63,8 +64,11 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
 
     const {user, setUser} = useContext<UserContextType>(UserContext)
 
+    const [loading, setLoading] = useState<boolean>(false)
     const [image, setImage] = useState<string | null>(null)
     const [openDate, setOpenDate] = useState<boolean>(false)
+
+    const [removeImage, setRemoveImage] = useState<boolean>(false)
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -79,20 +83,24 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
 
         if (!result.cancelled) {
             setImage(result.uri)
+            setRemoveImage(false)
         }
     }
 
     const tryCheckPassword = (values: FormDataType) => {
         if (values.password.trim() !== '' && values.newPassword.trim() !== '') {
+            setLoading(true)
             checkPassword(values.password, user?.apiToken!).then(response => {
                 tryUpdateUser(values)
-            }).catch()
+            }).catch(() => setLoading(false))
         } else {
             tryUpdateUser(values)
         }
     }
 
     const tryUpdateUser = (values: FormDataType) => {
+
+        setLoading(true)
 
         console.log('user', new Date(user?.birthdate!))
         console.log('form', new Date(values.birthdate.setDate(values.birthdate.getDate() + 1)))
@@ -103,7 +111,8 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
             birthdate: values.birthdate.toISOString() !== new Date(user?.birthdate!).toISOString() ? new Date(values.birthdate.setDate(values.birthdate.getDate())).toISOString() : null,
             image,
             email: values.email !== user?.email ? values.email : null,
-            password: values.newPassword.trim() !== '' ? values.newPassword : null
+            password: values.newPassword.trim() !== '' ? values.newPassword : null,
+            removeImage
         }
 
         if (data.firstname === null
@@ -111,24 +120,30 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
             && data.birthdate === null
             && data.image === null
             && data.email === null
-            && data.password === null) return;
+            && data.password === null
+            && data.removeImage === false) return;
 
 
         updateUser(data, user?.apiToken!).then(result => {
             setUser(result)
+            setLoading(false)
             navigation.replace("Account")
-        }).catch()
+        }).catch(() => setLoading(false))
     }
 
     return (
         <EgaiaContainer>
+            {loading && <Loader />}
             <KeyboardAvoidingView behavior="padding" enabled>
                 <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                     <View style={styles.globalContainer}>
                         <View style={styles.profileInfoContainer}>
-                            <Image style={styles.profilePicture} source={{uri: image ?? user?.image}}/>
+                            <Image style={styles.profilePicture} source={removeImage ? require("../../assets/img/profil.png") : {uri: image ?? user?.image}}/>
                             <TouchableOpacity onPress={pickImage}>
                                 <Text style={styles.changeProfilePictureText}>Changer la photo de profil</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => setRemoveImage(true)}>
+                                <Text style={styles.removeProfilePictureText}>Supprimer la photo de profil</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.formContainer}>
@@ -314,6 +329,11 @@ const styles = StyleSheet.create({
     changeProfilePictureText: {
         textDecorationLine: "underline",
         fontSize: 16,
+        marginTop: 10
+    },
+    removeProfilePictureText: {
+        textDecorationLine: "underline",
+        fontSize: 12,
         marginTop: 10
     }
 })

@@ -6,6 +6,7 @@ import EgaiaHeaderBackButton from "../components/EgaiaHeaderBackButton";
 import TabsStackNavigator from "./TabsStackNavigator";
 import AuthStackNavigator from "./AuthStackNavigator";
 import {NavigationContainer} from "@react-navigation/native";
+import {Colors} from "../services/constants";
 
 const RootStack = createNativeStackNavigator();
 
@@ -19,16 +20,11 @@ const RootStackNavigator = () => {
             <RootStack.Screen
                 name="Auth"
                 component={AuthStackNavigator}
-                options={(props) => {
-                    const {navigation} = props;
-                    return ({
-                        headerTitle: '',
-                        headerTransparent: true,
-                        headerLeft: () => (
-                            <EgaiaHeaderBackButton navigation={navigation}/>
-                        ),
-                        gestureEnabled: false,
-                    })
+                options={{
+                    headerTransparent: true,
+                    headerTitle: '',
+                    headerBackTitleVisible: false,
+                    headerTintColor: Colors.primary
                 }}
             />
         </RootStack.Navigator>

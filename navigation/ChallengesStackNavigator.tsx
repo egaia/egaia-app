@@ -4,6 +4,7 @@ import ChallengeScreen from "../screens/challenges/ChallengeScreen";
 import EgaiaHeaderBackButton from "../components/EgaiaHeaderBackButton";
 import React from "react";
 import CameraScreen from "../screens/challenges/CameraScreen";
+import {Colors} from "../services/constants";
 
 const ChallengesStack = createNativeStackNavigator()
 
@@ -14,16 +15,11 @@ const ChallengesStackNavigator = () => {
             <ChallengesStack.Screen
                 name="Challenge"
                 component={ChallengeScreen}
-                options={(props) => {
-                    const {navigation} = props;
-                    return ({
-                        headerTitle: '',
-                        headerTransparent: true,
-                        headerLeft: () => (
-                            <EgaiaHeaderBackButton navigation={navigation}/>
-                        ),
-                        gestureEnabled: false,
-                    })
+                options={{
+                    headerTransparent: true,
+                    headerTitle: '',
+                    headerBackTitleVisible: false,
+                    headerTintColor: Colors.primary
                 }}
             />
             <ChallengesStack.Screen name="Camera" component={CameraScreen} options={{headerShown: false}} />

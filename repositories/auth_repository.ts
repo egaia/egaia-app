@@ -80,6 +80,7 @@ export const updateUser = async (data: UpdateUserData, token: string): Promise<U
     data.birthdate && formData.append('birthdate', data.birthdate)
     data.email && formData.append('email', data.email)
     data.password && formData.append('password', data.password)
+    data.removeImage === true && formData.append('remove_image', '1')
 
     let uriParts = data.image && data.image.split('.');
     let fileType = uriParts && uriParts[uriParts.length - 1];
@@ -115,5 +116,6 @@ export type UpdateUserData = {
     birthdate: string | null,
     image: string | null,
     email: string | null,
-    password: string | null
+    password: string | null,
+    removeImage: boolean | null
 }

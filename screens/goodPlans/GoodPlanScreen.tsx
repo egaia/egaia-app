@@ -10,36 +10,46 @@ import {UserContext} from "../../contexts/user";
 import {getByApiToken} from "../../repositories/auth_repository";
 import AlertUsePromotionModal from "../../components/AlertUsePromotionModal";
 import { Colors } from "../../services/constants";
+import Loader from "../../components/Loader";
 
 const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
 
     const { user, setUser } = useContext<UserContextType>(UserContext)
 
+    const [loading, setLoading] = useState<boolean>(false)
     const [promotion, setPromotion] = useState<Promotion>(route.params?.promotion)
     const [alertModalVisible, setAlertModalVisible] = useState<boolean>(false)
 
     useEffect(() => {
+        setLoading(true)
         findPromotion(route.params?.promotion.id!, user?.apiToken)
-            .then(response => setPromotion(response))
-            .catch()
+            .then(response => {
+                setPromotion(response)
+                setLoading(false)
+            })
+            .catch(() => setLoading(false))
     }, [])
 
     const clickOnUse = () => {
         if(user !== undefined) {
+            setLoading(true)
             usePromotion(promotion, user?.apiToken!).then(response => {
                 if(response) {
                     getByApiToken(user?.apiToken!).then(response => {
                         setUser(response)
                         setAlertModalVisible(false)
+                        setLoading(false)
                         navigation.replace("GoodPlans")
                     })
                 }
-            }).catch()
+                setLoading(false)
+            }).catch(() => setLoading(false))
         }
     }
 
     return (
         <EgaiaContainer>
+            {loading && <Loader />}
             <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.globalContainer}>
                     <Image style={styles.image} resizeMode="cover" source={{uri: promotion.partner?.image}} />

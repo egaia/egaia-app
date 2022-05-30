@@ -6,11 +6,12 @@ import {formsStyle} from "../../assets/styles/forms.style";
 import * as yup from "yup";
 import {loginUser} from "../../repositories/auth_repository";
 import {UserContext} from "../../contexts/user";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {LoaderContextType, UserContextType} from "../../services/types";
 import {LoaderContext} from "../../contexts/loader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import PrimaryButton from "../../components/PrimaryButton";
+import Loader from "../../components/Loader";
 
 type FormValues = {
     email: string,
@@ -29,15 +30,16 @@ const LoginSchema = yup.object({
 export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
 
     const { setUser } = useContext<UserContextType>(UserContext)
-    const { setLoading } = useContext<LoaderContextType>(LoaderContext)
+
+    const [loading, setLoading] = useState<boolean>(false)
 
     const tryLoginUser = (values: FormValues) => {
         setLoading(true)
         loginUser(values.email, values.password).then(user => {
             if(user) {
                 AsyncStorage.setItem('api_token', user.apiToken).then(() => {
-                    setUser(user)
                     setLoading(false)
+                    setUser(user)
                     navigation.navigate("Tabs")
                 }).catch(() => setLoading(false))
             } else {
@@ -48,6 +50,7 @@ export default function LoginScreen({navigation}: NativeStackScreenProps<any>) {
 
     return (
         <EgaiaContainer>
+            {loading && <Loader />}
             <ScrollView style={styles.container}>
                 <Text style={{fontSize: 40, marginBottom: 15}}>Se connecter</Text>
 

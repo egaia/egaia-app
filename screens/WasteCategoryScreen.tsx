@@ -6,13 +6,11 @@ import {findWasteCategory} from "../repositories/waste_categories_repository";
 import {WasteCategory} from "../models/WasteCategory";
 import WasteLittleCard from "../components/WasteLittleCard";
 import {Colors} from "../services/constants";
-import {LoaderContextType} from "../services/types";
-import {LoaderContext} from "../contexts/loader";
+import Loader from "../components/Loader";
 
 const WasteCategoryScreen = (props: NativeStackScreenProps<any>) => {
 
-    const { setLoading } = useContext<LoaderContextType>(LoaderContext)
-
+    const [loading, setLoading] = useState<boolean>(false)
     const [wasteCategory, setWasteCategory] = useState<WasteCategory>()
 
     const wasteCategoryId: number = props.route.params?.wasteCategoryId
@@ -37,6 +35,7 @@ const WasteCategoryScreen = (props: NativeStackScreenProps<any>) => {
     return (
         <EgaiaContainer>
             <View style={styles.container}>
+                {loading && <Loader />}
                 <View style={styles.categoryContainer}>
                     <Image style={styles.image} source={{uri: wasteCategory?.image}}/>
                     <Text style={styles.categoryName}>{wasteCategory?.name}</Text>

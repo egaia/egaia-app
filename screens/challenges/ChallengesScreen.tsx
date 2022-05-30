@@ -9,17 +9,21 @@ import {Challenge} from "../../models/Challenge";
 import {AllChallengesApiResponse, getAllChallenges} from "../../repositories/challenge_repository";
 import {UserContext} from "../../contexts/user";
 import {UserContextType} from "../../services/types";
+import Loader from "../../components/Loader";
 
 export default function ChallengesScreen({navigation}: NativeStackScreenProps<any>) {
 
     const { user } = useContext<UserContextType>(UserContext)
 
+    const [loading, setLoading] = useState<boolean>(false)
     const [challengesApi, setChallengesApi] = useState<AllChallengesApiResponse|undefined>(undefined)
 
     useEffect(() => {
+        setLoading(true)
         getAllChallenges(user?.apiToken).then(response => {
             setChallengesApi(response)
-        }).catch()
+            setLoading(false)
+        }).catch(() => setLoading(false))
     }, [])
 
 
@@ -37,6 +41,7 @@ export default function ChallengesScreen({navigation}: NativeStackScreenProps<an
 
     return (
         <EgaiaContainer>
+            {loading && <Loader />}
             <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.globalContainer}>
                     {challengesApi?.currentChallenge && <TouchableOpacity style={styles.challengeOfTheDayContainer} onPress={goToChallengeOfTheWeek}>

@@ -9,17 +9,23 @@ import {UserContext} from "../../contexts/user";
 import {UserContextType} from "../../services/types";
 import {Promotion} from "../../models/Promotion";
 import {getAllPromotions} from "../../repositories/promotion_repository";
+import Loader from "../../components/Loader";
 
 export default function GoodPlansScreen({navigation}: NativeStackScreenProps<any>) {
 
     const { user } = useContext<UserContextType>(UserContext)
 
+    const [loading, setLoading] = useState<boolean>(false)
     const [promotions, setPromotions] = useState<Promotion[]>([])
 
     useEffect(() => {
+        setLoading(true)
         getAllPromotions(user?.apiToken)
-            .then(promotions => setPromotions(promotions))
-            .catch()
+            .then(promotions => {
+                setPromotions(promotions)
+                setLoading(false)
+            })
+            .catch(() => setLoading(false))
     }, [])
 
     const goToPromotion = (promotion: Promotion) => {
@@ -28,6 +34,7 @@ export default function GoodPlansScreen({navigation}: NativeStackScreenProps<any
 
     return (
         <EgaiaContainer>
+            {loading && <Loader />}
             <View style={styles.container}>
                 { user !== undefined &&
                   <View style={styles.pointsContainer}>

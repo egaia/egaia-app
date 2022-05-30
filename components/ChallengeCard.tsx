@@ -1,4 +1,4 @@
-import {ImageBackground, StyleSheet, Text, View} from "react-native";
+import {Image, ImageBackground, StyleSheet, Text, View} from "react-native";
 import {Colors} from "../services/constants";
 import {Challenge} from "../models/Challenge";
 
@@ -30,9 +30,15 @@ const ChallengeCard = (props: ChallengeCardProps) => {
         image: {
             flex: 1,
             justifyContent: "center",
+            alignItems: "center",
             width: '100%',
             height: '100%'
         },
+        checkIcon: {
+            width: 20,
+            height: 20,
+            tintColor: Colors.white
+        }
     })
 
     return (
@@ -40,6 +46,10 @@ const ChallengeCard = (props: ChallengeCardProps) => {
             {props.challenge.participation ?
                 <ImageBackground resizeMode="cover" style={styles.image} imageStyle={{borderRadius: 15, opacity: 0.5}} source={{uri: props.challenge.participation.picture}}>
                     <Text style={styles.singleParticipationText}>{props.challenge.title}</Text>
+                    { props.challenge.participation.valid ?
+                      <Image style={styles.checkIcon} source={require("../assets/icons/check.png")} />
+                        : null
+                    }
                 </ImageBackground>
                 :
                 <Text style={styles.singleParticipationText}>{props.challenge.title}</Text>

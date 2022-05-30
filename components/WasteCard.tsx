@@ -4,10 +4,47 @@ import {Colors} from "../services/constants";
 
 interface WasteCardProps {
     waste: Waste,
-    onPress: (event: GestureResponderEvent) => void
+    onPress: (event: GestureResponderEvent) => void,
+    first: boolean,
+    last: boolean
 }
 
 const WasteCard = (props: WasteCardProps) => {
+    const styles = StyleSheet.create({
+        container: {
+            flexDirection: "column",
+            width: 250,
+            marginLeft: !props.first ? 5 : 0,
+            marginRight: !props.last ? 5 : 0,
+        },
+
+        imageContainer: {
+            backgroundColor: Colors.primary,
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 10,
+            borderTopLeftRadius: 15,
+            borderTopRightRadius: 15,
+        },
+
+        image: {
+            width: 100,
+            height: 100
+        },
+
+        labelContainer: {
+            backgroundColor: Colors.secondary,
+            padding: 10,
+            borderBottomLeftRadius: 15,
+            borderBottomRightRadius: 15,
+        },
+
+        name: {
+            fontSize: 20,
+            fontWeight: "bold"
+        },
+    })
+
     return (
         <TouchableOpacity onPress={props.onPress}>
             <View style={styles.container}>
@@ -22,39 +59,5 @@ const WasteCard = (props: WasteCardProps) => {
         </TouchableOpacity>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: "column",
-        width: 250,
-        marginHorizontal: 10,
-    },
-
-    imageContainer: {
-        backgroundColor: Colors.primary,
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 10,
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
-    },
-
-    image: {
-        width: 100,
-        height: 100
-    },
-
-    labelContainer: {
-        backgroundColor: Colors.secondary,
-        padding: 10,
-        borderBottomLeftRadius: 15,
-        borderBottomRightRadius: 15,
-    },
-
-    name: {
-        fontSize: 20,
-        fontWeight: "bold"
-    },
-})
 
 export default WasteCard

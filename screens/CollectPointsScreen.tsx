@@ -10,10 +10,11 @@ import {getAllCollectPoints} from "../repositories/collect_point_repository";
 import {CollectPoint} from "../models/CollectPoint";
 import {Colors} from "../services/constants";
 import * as Location from 'expo-location';
+import Loader from "../components/Loader";
 
 export default function CollectPointsScreen({navigation}: NativeStackScreenProps<any>) {
 
-    const { setLoading } = useContext<LoaderContextType>(LoaderContext)
+    const [loading, setLoading] = useState<boolean>(false)
 
     const [location, setLocation] = useState<Location.LocationObject | undefined>(undefined);
     const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined);
@@ -104,6 +105,7 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
 
     return (
         <EgaiaContainer>
+            {loading && <Loader />}
             <View style={styles.container}>
                 <MapView
                     ref={mapRef}

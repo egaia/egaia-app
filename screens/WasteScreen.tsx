@@ -1,27 +1,42 @@
-import EgaiaContainer from "../components/EgaiaContainer";
-import {Image, StyleSheet, Text, TextInput, View} from "react-native";
+import {
+    Image, KeyboardAvoidingView,
+    Platform,
+    SafeAreaView,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from "react-native";
 import {Colors} from "../services/constants";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {useContext, useEffect, useState} from "react";
 import {Waste} from "../models/Waste";
-import {findWaste} from "../repositories/waste_repository";
-import {LoaderContextType} from "../services/types";
-import {LoaderContext} from "../contexts/loader";
+import {allWastes, findWaste} from "../repositories/waste_repository";
+import Autocomplete from 'react-native-autocomplete-input';
+import Loader from "../components/Loader";
 
 const WasteScreen = (props: NativeStackScreenProps<any>) => {
 
-    const { setLoading } = useContext<LoaderContextType>(LoaderContext)
-
+    const [loading, setLoading] = useState<boolean>(false)
     const [waste, setWaste] = useState<Waste>()
+    const [wastes, setWastes] = useState<Waste[]>([])
+    const [query, setQuery] = useState<string>('')
 
     const wasteId: number = props.route.params?.wasteId
 
+    const suggestions: Waste[] = query.trim() !== '' ? wastes.filter(waste => waste.id !== wasteId && waste.name.toLowerCase().includes(query.toLowerCase())).slice(0, 4) : []
+
     useEffect(() => {
         setLoading(true)
-        if(wasteId !== undefined) {
+        if (wasteId !== undefined) {
             findWaste(wasteId).then(result => {
                 setWaste(result)
-                setLoading(false)
+                allWastes().then(result => {
+                    setWastes(result)
+                    setLoading(false)
+                }).catch(() => setLoading(false))
             }).catch(() => setLoading(false))
         } else {
             setLoading(false)
@@ -29,97 +44,134 @@ const WasteScreen = (props: NativeStackScreenProps<any>) => {
         }
     }, [])
 
+    const clickOnSuggestion = (wasteId: number) => {
+        setQuery('')
+        props.navigation.push("Waste", {wasteId})
+    }
+
+    // @ts-ignore
     return (
-        <EgaiaContainer>
-            <View style={styles.globalContainer}>
-                <View style={styles.searchContainer}>
-                    <Text style={styles.textFindWaste}>Rechercher un déchet</Text>
-                    <TextInput style={styles.textPlaceholder} placeholder="Saisir un déchet" />
-                </View>
-                <View style={styles.wasteContainer}>
-                    <View style={styles.wasteTextContainer}>
-                        <Text style={styles.title}>{waste?.name}</Text>
-                        <Text style={styles.category}>{waste?.category.name}</Text>
-                    </View>
-                    <View style={styles.wasteImageContainer}>
-                        <Image style={styles.wasteImage} source={{uri: waste?.image}} />
-                    </View>
-                </View>
-                <View style={styles.wastePartsContainer}>
-                    {waste?.parts?.map(part => {
-                        return (
-                            <View key={`waste-part-${part.id}`} style={styles.singleWastePartContainer}>
-                                <View style={styles.wastePartTextContainer}>
-                                    <Text style={styles.wastePartTitle}>{part.name}</Text>
-                                    <Text style={styles.wastePartTrash}>{part.trashCan.name}</Text>
+        <SafeAreaView style={styles.globalContainer}>
+            {loading && <Loader />}
+            <KeyboardAvoidingView style={{height: '100%'}} behavior="padding" enabled>
+                <ScrollView style={{backgroundColor: Colors.primary}} bounces={false}
+                            showsVerticalScrollIndicator={false}>
+                    <View style={styles.searchContainer}>
+                        <Text style={styles.textFindWaste}>Rechercher un déchet</Text>
+                        <Autocomplete
+                            data={suggestions}
+                            value={query}
+                            onChangeText={(value) => setQuery(value)}
+                            placeholder="Saisir un déchet"
+                            inputContainerStyle={styles.textPlaceholder}
+                            containerStyle={{paddingVertical: 20}}
+                            //@ts-ignore
+                            renderResultList={({data}) => (
+                                <View style={{
+                                    backgroundColor: '#FFFFFF',
+                                    borderLeftWidth: 2,
+                                    borderRightWidth: 2,
+                                    borderBottomWidth: 2,
+                                    borderBottomLeftRadius: 5,
+                                    borderBottomRightRadius: 5,
+                                    paddingVertical: 10
+                                }}>
+                                    {data.map((item: Waste, index: number) => (
+                                        <TouchableOpacity key={item.id + '-' + index}
+                                                          style={{paddingVertical: 5, paddingHorizontal: 15}}
+                                                          onPress={() => clickOnSuggestion(item.id)}>
+                                            <Text style={{
+                                                fontSize: 16,
+                                            }}>
+                                                {item.name}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    ))}
                                 </View>
-                                <View style={styles.wastePartImageContainer}>
-                                    <Image resizeMode="contain" style={styles.wastePartImage} source={{uri:part.trashCan.image}} />
+                            )}
+                        />
+                    </View>
+                    <View style={styles.wasteContainer}>
+                        <View style={styles.wasteTextContainer}>
+                            <Text style={styles.title}>{waste?.name}</Text>
+                            <Text style={styles.category}>{waste?.category.name}</Text>
+                        </View>
+                        <View style={styles.wasteImageContainer}>
+                            <Image style={styles.wasteImage} source={{uri: waste?.image}}/>
+                        </View>
+                    </View>
+                    <View style={styles.wastePartsContainer}>
+                        {waste?.parts?.map(part => {
+                            return (
+                                <View key={`waste-part-${part.id}`} style={styles.singleWastePartContainer}>
+                                    <View style={styles.wastePartTextContainer}>
+                                        <Text style={styles.wastePartTitle}>{part.name}</Text>
+                                        <Text style={styles.wastePartTrash}>{part.trashCan.name}</Text>
+                                    </View>
+                                    <View style={styles.wastePartImageContainer}>
+                                        <Image resizeMode="contain" style={styles.wastePartImage}
+                                               source={{uri: part.trashCan.image}}/>
+                                    </View>
                                 </View>
-                            </View>
-                        )
-                    })}
-                </View>
-            </View>
-        </EgaiaContainer>
+                            )
+                        })}
+                    </View>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
 
     globalContainer: {
-        width: '100%',
-        height: '100%',
-        backgroundColor: Colors.primary
+        flex: 1,
+        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+        backgroundColor: Colors.white,
+        paddingBottom: 20
     },
 
     searchContainer: {
-        height: '20%',
         justifyContent: "space-evenly",
         backgroundColor: Colors.white,
-        paddingHorizontal:20
+        padding: 20,
     },
 
-    textFindWaste:{
-        fontSize:22,
+    textFindWaste: {
+        fontSize: 22,
     },
 
-    textPlaceholder:{
-        marginVertical:20,
-        borderWidth:2,
-        borderColor:Colors.black,
-        padding:10,
+    textPlaceholder: {
+        borderWidth: 2,
+        borderColor: Colors.black,
     },
 
-    title:{
-        fontSize:30,
-        fontWeight:"800"
+    title: {
+        fontSize: 30,
+        fontWeight: "800"
     },
 
-    category:{
-        fontSize:16,
-        color:"#2B463C"
+    category: {
+        fontSize: 16,
+        color: "#2B463C"
     },
 
     wasteContainer: {
-        height: '33%',
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingVertical: 10,
         paddingHorizontal: 20,
+        paddingBottom: 50,
         backgroundColor: Colors.white,
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20
     },
 
     wasteTextContainer: {
-        height: '100%',
         width: '50%',
     },
 
     wasteImageContainer: {
-        height: '100%',
         width: '50%',
     },
 
@@ -129,22 +181,21 @@ const styles = StyleSheet.create({
     },
 
     wastePartsContainer: {
-        height: '50%',
         width: '100%',
         justifyContent: "center",
         alignItems: "center",
-        paddingLeft:20,
-        paddingBottom:20,
+        paddingLeft: 20,
+        paddingVertical: 20,
     },
 
-    wastePartTitle:{
-        color:Colors.white,
-        fontWeight:"800",
-        fontSize:16
+    wastePartTitle: {
+        color: Colors.white,
+        fontWeight: "800",
+        fontSize: 16
     },
 
-    wastePartTrash:{
-        color:Colors.white,
+    wastePartTrash: {
+        color: Colors.white,
     },
 
     singleWastePartContainer: {

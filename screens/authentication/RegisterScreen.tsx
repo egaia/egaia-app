@@ -21,6 +21,7 @@ import {LoaderContext} from "../../contexts/loader";
 import DatePicker from "react-native-date-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import PrimaryButton from "../../components/PrimaryButton";
+import Loader from "../../components/Loader";
 
 type FormValues = {
     firstname: string,
@@ -54,8 +55,8 @@ const RegisterSchema = yup.object({
 export default function RegisterScreen({navigation}: NativeStackScreenProps<any>) {
 
     const {setUser} = useContext<UserContextType>(UserContext)
-    const {setLoading} = useContext<LoaderContextType>(LoaderContext)
 
+    const [loading, setLoading] = useState<boolean>(false)
     const [openDate, setOpenDate] = useState<boolean>(false)
 
     const tryRegisterUser = (values: FormValues) => {
@@ -70,8 +71,8 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
         registerUser(userDTO).then(user => {
             if (user) {
                 AsyncStorage.setItem('api_token', user.apiToken).then(() => {
-                    setUser(user)
                     setLoading(false)
+                    setUser(user)
                     navigation.navigate("Tabs")
                 }).catch(() => setLoading(false))
             } else {
@@ -82,6 +83,7 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
 
     return (
         <EgaiaContainer>
+            {loading && <Loader />}
             <KeyboardAvoidingView behavior="padding" enabled keyboardVerticalOffset={10}>
                 <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
                     <Text style={{fontSize: 40, marginBottom: 15}}>S'enregistrer</Text>

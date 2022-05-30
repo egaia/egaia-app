@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import {LoaderContext} from "../contexts/loader";
 import {LoaderContextType} from "../services/types";
+import Loader from "./Loader";
 
 interface EgaiaContainerProps {
     children: ReactElement | ReactElement[],
@@ -20,8 +21,6 @@ interface EgaiaContainerProps {
 }
 
 const EgaiaContainer = ({children, backgroundColor}: EgaiaContainerProps) => {
-
-    const {loading} = useContext<LoaderContextType>(LoaderContext)
 
     const styles = StyleSheet.create({
         container: {
@@ -54,7 +53,6 @@ const EgaiaContainer = ({children, backgroundColor}: EgaiaContainerProps) => {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <SafeAreaProvider>
                     <SafeAreaView style={styles.safeContainer}>
-                        {loading ? <View style={styles.loading}><ActivityIndicator/></View> : null}
                         {children}
                     </SafeAreaView>
                 </SafeAreaProvider>

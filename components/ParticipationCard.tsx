@@ -33,14 +33,14 @@ const ParticipationCard = ({historicItem, withoutBorder}: ParticipationCardProps
     return (
         <View style={styles.participationContainer}>
             {
-                historicItem.type === 'challenge' &&  
+                historicItem.type === 'challenge' &&
                 <View  style={styles.numberGaiaContainer}>
-                    <Text style={styles.title}>Participation à un défi : + {historicItem.points} </Text>
-                    <Image style={styles.gaia} source={require("../assets/img/gaia.png")} />
+                    <Text style={styles.title}>Participation à un défi : {historicItem.valid ? '+ '+historicItem.points : 'En attente de validation'}</Text>
+                    {historicItem.valid ? <Image style={styles.gaia} source={require("../assets/img/gaia.png")} /> : null}
                 </View>
             }
             {
-                historicItem.type === 'promotion' && 
+                historicItem.type === 'promotion' &&
                 <View  style={styles.numberGaiaContainer}>
                     <Text style={styles.title}>Utilisation d'une promotion : - {historicItem.points} </Text>
                     <Image style={styles.gaia} source={require("../assets/img/gaia.png")} />
