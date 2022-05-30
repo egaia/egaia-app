@@ -78,8 +78,6 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
             quality: 1,
         })
 
-        console.log(result)
-
         if (!result.cancelled) {
             setImage(result.uri)
             setRemoveImage(false)
@@ -100,9 +98,6 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
     const tryUpdateUser = (values: FormDataType) => {
 
         setLoading(true)
-
-        console.log('user', new Date(user?.birthdate!))
-        console.log('form', new Date(values.birthdate.setDate(values.birthdate.getDate() + 1)))
 
         const data: UpdateUserData = {
             firstname: values.firstname !== user?.firstname ? values.firstname : null,
@@ -157,7 +152,6 @@ const UpdateProfileScreen = ({navigation}: NativeStackScreenProps<any>) => {
                                     newPassword: '',
                                 }}
                                 onSubmit={(values, actions) => {
-                                    console.log(values)
                                     tryCheckPassword(values)
                                 }}
                             >

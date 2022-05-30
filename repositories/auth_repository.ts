@@ -29,7 +29,6 @@ export const loginUser = async (email: string, password: string): Promise<User> 
                 'Accept': 'application/json',
             }
         }).then((response) => {
-        console.log(response)
         return response.data.user
     }).catch(error => {
         displaySnackBarErrors(error.response.data)

@@ -98,7 +98,6 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
                             confirmPassword: '',
                         }}
                         onSubmit={(values, actions) => {
-                            console.log(values)
                             tryRegisterUser(values)
                         }}
                     >
