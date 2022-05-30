@@ -19,14 +19,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.egaia"
+      "bundleIdentifier": "com.egaia.egaia-app"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/img/favicon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.egaia"
+      "package": "com.egaia.egaia_app"
     },
     "web": {
       "favicon": "./assets/img/favicon.png"
