@@ -97,8 +97,8 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
             height: Dimensions.get("window").height * 0.05,
         },
         pointMarkerSelected: {
-            width: Dimensions.get("window").width * 0.1,
-            height: Dimensions.get("window").height * 0.1,
+            width: Platform.OS === 'ios' ? Dimensions.get("window").width * 0.1 : Dimensions.get("window").width * 0.05,
+            height: Platform.OS === 'ios' ? Dimensions.get("window").height * 0.1 : Dimensions.get("window").height * 0.05,
         }
     })
 
@@ -113,7 +113,7 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
                     initialRegion={region}
                     onRegionChangeComplete={(value) => refreshMarkers(value)}
                     onMarkerDeselect={Platform.OS === 'ios' ? () => setSelectedCollectPoint(undefined) : undefined}
-                    onPress={Platform.OS === 'android'  ? () => setSelectedCollectPoint(undefined) : undefined}
+                    onPress={Platform.OS === 'android' ? () => setSelectedCollectPoint(undefined) : undefined}
                 >
                     {location &&
                       <Marker style={{
@@ -129,7 +129,7 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
                                 key={`collect-point-${collectPoint.id}`}
                                 coordinate={{latitude: collectPoint.latitude, longitude: collectPoint.longitude}}
                                 onSelect={Platform.OS === 'ios' ? () => clickOnMarker(collectPoint) : undefined}
-                                onPress={Platform.OS === 'android'  ? () => clickOnMarker(collectPoint) : undefined}
+                                onPress={Platform.OS === 'android' ? () => clickOnMarker(collectPoint) : undefined}
                             >
                                 <Image
                                     resizeMode="contain"
