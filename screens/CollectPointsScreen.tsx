@@ -24,8 +24,8 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
     const [selectedCollectPoint, setSelectedCollectPoint] = useState<CollectPoint | undefined>(undefined)
 
     const [region, setRegion] = useState<Region>({
-        latitude: 45.782443169021704,
-        longitude: 4.889184942744952,
+        latitude: 45.763420,
+        longitude: 4.834277,
         latitudeDelta: 0.06,
         longitudeDelta: 0.06,
     })
