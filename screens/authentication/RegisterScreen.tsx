@@ -86,7 +86,7 @@ export default function RegisterScreen({navigation}: NativeStackScreenProps<any>
     }
 
     return (
-        <EgaiaContainer>
+        <EgaiaContainer doublePaddingTop={true}>
             <>{loading && <Loader/>}</>
             <KeyboardAvoidingView behavior="padding" enabled keyboardVerticalOffset={10}>
                 <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>

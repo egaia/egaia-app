@@ -33,7 +33,7 @@ const WasteCategoryScreen = (props: NativeStackScreenProps<any>) => {
     }
 
     return (
-        <EgaiaContainer>
+        <EgaiaContainer doublePaddingTop={true}>
             <View style={styles.container}>
                 {loading && <Loader/>}
                 <View style={styles.categoryContainer}>

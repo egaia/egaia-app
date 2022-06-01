@@ -48,7 +48,7 @@ const GoodPlanScreen = ({navigation, route}: NativeStackScreenProps<any>) => {
     }
 
     return (
-        <EgaiaContainer>
+        <EgaiaContainer doublePaddingTop={true}>
             <>{loading && <Loader/>}</>
             <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.globalContainer}>

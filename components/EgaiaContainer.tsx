@@ -10,10 +10,11 @@ import {
 
 interface EgaiaContainerProps {
     children: ReactElement | ReactElement[],
-    backgroundColor?: string
+    backgroundColor?: string,
+    doublePaddingTop?: boolean
 }
 
-const EgaiaContainer = ({children, backgroundColor}: EgaiaContainerProps) => {
+const EgaiaContainer = ({children, backgroundColor, doublePaddingTop}: EgaiaContainerProps) => {
 
     const styles = StyleSheet.create({
         container: {
@@ -24,7 +25,7 @@ const EgaiaContainer = ({children, backgroundColor}: EgaiaContainerProps) => {
         safeContainer: {
             flex: 1,
             height: '100%',
-            paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
+            paddingTop: Platform.OS === 'android' ? doublePaddingTop ? StatusBar.currentHeight!*2 : StatusBar.currentHeight : 0
         }
     });
 
