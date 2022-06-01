@@ -112,7 +112,8 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
                     style={{width: '100%', height: '100%'}}
                     initialRegion={region}
                     onRegionChangeComplete={(value) => refreshMarkers(value)}
-                    onMarkerDeselect={() => setSelectedCollectPoint(undefined)}
+                    onMarkerDeselect={Platform.OS === 'ios' ? () => setSelectedCollectPoint(undefined) : undefined}
+                    onPress={Platform.OS === 'android'  ? () => setSelectedCollectPoint(undefined) : undefined}
                 >
                     {location &&
                       <Marker style={{
@@ -127,7 +128,8 @@ export default function CollectPointsScreen({navigation}: NativeStackScreenProps
                             <Marker
                                 key={`collect-point-${collectPoint.id}`}
                                 coordinate={{latitude: collectPoint.latitude, longitude: collectPoint.longitude}}
-                                onSelect={() => clickOnMarker(collectPoint)}
+                                onSelect={Platform.OS === 'ios' ? () => clickOnMarker(collectPoint) : undefined}
+                                onPress={Platform.OS === 'android'  ? () => clickOnMarker(collectPoint) : undefined}
                             >
                                 <Image
                                     resizeMode="contain"
