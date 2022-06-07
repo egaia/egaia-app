@@ -4,7 +4,7 @@
     "slug": "egaia-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/img/favicon.png",
+    "icon": "./assets/img/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/img/splash-screen.png",
@@ -19,13 +19,15 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.egaia.egaia-app"
+      "bundleIdentifier": "com.egaia.egaia-app",
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/img/favicon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/img/adaptive-icon.png",
+        "backgroundColor": "#688F4E"
       },
+      "icon": "./assets/img/icon.png",
       "package": "com.egaia.egaia_app",
       "config": {
         "googleMaps": {
